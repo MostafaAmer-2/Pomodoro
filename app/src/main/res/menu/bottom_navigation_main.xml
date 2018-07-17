@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:style="http://schemas.android.com/tools">
+
+    <item
+        android:id="@+id/action_main"
+        android:color="@color/tab_enable"
+        android:icon="@drawable/ic_main"
+        android:iconTint="#FFFFFF"
+        android:title="Main"
+        app:showAsAction="ifRoom" />
+
+    <item
+        android:id="@+id/action_boards"
+        android:enabled="true"
+        android:icon="@drawable/ic_tasks"
+        android:title="Boards"
+        app:showAsAction="ifRoom"
+        android:iconTint="#FFFFFF"
+        android:color="@color/tab_disable"
+        android:state_enabled="false"/>
+
+
+</menu>
