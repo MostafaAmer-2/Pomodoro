@@ -29,11 +29,11 @@ public class BottomNavigator extends AppCompatActivity {
                 Fragment fragmentToBeLoaded=null;
                 switch(item.getItemId()){
                     case R.id.action_main:
-                        fragmentToBeLoaded = new MainFrag();
+                        //   fragmentToBeLoaded = new BoardsFrag();
                         break;
 
                     case R.id.action_boards:
-                        fragmentToBeLoaded = new BoardsFrag();
+                        fragmentToBeLoaded = new MainFrag();
                         break;
                 }
                 return loadFragment(fragmentToBeLoaded);
@@ -43,7 +43,7 @@ public class BottomNavigator extends AppCompatActivity {
         loadFragment(new MainFrag());
     }
 
-    private boolean loadFragment(Fragment fragment){
+    public boolean loadFragment(Fragment fragment){
 
         if(fragment!=null){
             getSupportFragmentManager().

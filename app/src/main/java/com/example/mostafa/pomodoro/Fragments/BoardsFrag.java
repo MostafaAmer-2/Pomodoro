@@ -1,5 +1,6 @@
 package com.example.mostafa.pomodoro.Fragments;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
@@ -13,9 +14,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
 
+import com.android.volley.NetworkResponse;
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
+import com.android.volley.toolbox.BasicNetwork;
 import com.android.volley.toolbox.JsonArrayRequest;
 import com.example.mostafa.pomodoro.Model.TrelloBoard;
 import com.example.mostafa.pomodoro.Presenter.Presenter;
@@ -34,7 +37,7 @@ import butterknife.ButterKnife;
 
 import static com.example.mostafa.pomodoro.Model.TrelloBoard.parseJSONArrayIntoBoards;
 
-
+@SuppressLint("ValidFragment")
 public class BoardsFrag extends Fragment {
 
     private static final String TAG = "BoardsFrag";
@@ -46,7 +49,12 @@ public class BoardsFrag extends Fragment {
 
 
     Presenter presenter;
+    String token;
 
+    @SuppressLint("ValidFragment")
+    public BoardsFrag(String token) {
+        this.token=token;
+    }
 
     @Nullable
     @Override
@@ -97,7 +105,7 @@ public class BoardsFrag extends Fragment {
 
     private Promise<JSONArray, VolleyError, Double> testVolley() {
         final Deferred<JSONArray, VolleyError, Double> deferred = new DeferredObject<>();
-        String url = "https://api.trello.com/1/members/me/boards?key=51eb6eb13ad2f6cc5bcb87fc923ea427&token=e1b65847d9ccf7eeaad356d340524e680af9c6efdad6babc969b33735151b348";
+        String url = "https://api.trello.com/1/members/me/boards?key=51eb6eb13ad2f6cc5bcb87fc923ea427&token="+token;
         JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(Request.Method.GET, url, null,
                 new Response.Listener<JSONArray>() {
                     @Override
@@ -110,6 +118,7 @@ public class BoardsFrag extends Fragment {
                     @Override
                     public void onErrorResponse(VolleyError error) {
                         deferred.reject(error);
+                        //TODO: check on the status code of the error "https://stackoverflow.com/questions/43377326/get-the-http-body-response-of-a-post-with-volley-android"
                     }
                 });
         //add request to queue

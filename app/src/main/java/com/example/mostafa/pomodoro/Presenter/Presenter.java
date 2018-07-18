@@ -52,4 +52,3 @@ public class Presenter {
 }
 
 //TODO: refactor the code
-//TODO: Add a progress bar until the data is loaded in the list
