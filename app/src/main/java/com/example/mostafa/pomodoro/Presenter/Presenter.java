@@ -3,7 +3,6 @@ package com.example.mostafa.pomodoro.Presenter;
 import android.content.Context;
 import android.support.v7.widget.LinearLayoutManager;
 
-import com.example.mostafa.pomodoro.Activities.BottomNavigator;
 import com.example.mostafa.pomodoro.Fragments.BoardsFrag;
 import com.example.mostafa.pomodoro.Model.TrelloBoard;
 import com.example.mostafa.pomodoro.Network.Network;
@@ -24,7 +23,7 @@ public class Presenter {
         boardsFrag = view;
         this.ctx = ctx;
 
-        network=new Network(ctx);
+        network =new Network(this, ctx);
         initAdapter(ctx, items);
 
     }
@@ -36,7 +35,7 @@ public class Presenter {
     }
 
 
-    public Network getNetwork() {
+    public Network getNetworkPresenter() {
         return network;
     }
 
@@ -48,6 +47,14 @@ public class Presenter {
         this.items = items;
         initAdapter(applicationContext, items);
         //TODO: avoid initializing the adapter with an empty array
+    }
+
+    public BoardsFrag getBoardsFrag() {
+        return boardsFrag;
+    }
+
+    public void setBoardsFrag(BoardsFrag boardsFrag) {
+        this.boardsFrag = boardsFrag;
     }
 }
 

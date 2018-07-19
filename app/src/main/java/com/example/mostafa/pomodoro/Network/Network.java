@@ -1,20 +1,96 @@
 package com.example.mostafa.pomodoro.Network;
 
 import android.content.Context;
+import android.content.SharedPreferences;
+import android.util.Log;
 
+import com.android.volley.Request;
 import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.Volley;
+import com.example.mostafa.pomodoro.Presenter.Presenter;
+
+import org.jdeferred.Deferred;
+import org.jdeferred.Promise;
+import org.jdeferred.impl.DeferredObject;
+import org.json.JSONArray;
 
 public class Network {
 
     private RequestQueue requestQueue;
+    private Presenter presenter;
+    private Context ctx;
 
-    public Network (Context ctx){
+    public Network(Presenter presenter, Context ctx){
         requestQueue = Volley.newRequestQueue(ctx); // 'this' is the Context
+        this.presenter=presenter;
     }
 
     public RequestQueue getRequestQueue() {
         return requestQueue;
     }
 
+    public Promise<JSONArray, VolleyError, Double> getBoards(String token) {
+        final Deferred<JSONArray, VolleyError, Double> deferred = new DeferredObject<>();
+        String url = "https://api.trello.com/1/members/me/boards?key=51eb6eb13ad2f6cc5bcb87fc923ea427&token="+token;
+        JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(Request.Method.GET, url, null,
+                new Response.Listener<JSONArray>() {
+                    @Override
+                    public void onResponse(JSONArray response) {
+                        Log.i("SASA", "onResponse: "+response.toString());
+                        deferred.resolve(response);
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        deferred.reject(error);
+                       if(error.networkResponse!= null && error.networkResponse.statusCode== 400 || error.networkResponse.statusCode== 401 )
+                            presenter.getBoardsFrag().goToMain();
+                        //TODO: check on the status code for no internet connection
+                    }
+                });
+        //add request to queue
+        requestQueue.add(jsonArrayRequest); //adding the request to the requestQueue in the network
+        return deferred.promise();
+    }
+
+    public Promise<JSONArray, VolleyError, Double> testTokenValid(String token) { //to be used in the splash screen
+        final Deferred<JSONArray, VolleyError, Double> deferred = new DeferredObject<>();
+        String url = "https://api.trello.com/1/members/me/boards?key=51eb6eb13ad2f6cc5bcb87fc923ea427&token="+token;
+        JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(Request.Method.GET, url, null,
+                new Response.Listener<JSONArray>() {
+                    @Override
+                    public void onResponse(JSONArray response) {
+                        Log.i("SASA", "onResponse: "+response.toString());
+                        deferred.resolve(response);
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        deferred.reject(error);
+                        if(error.networkResponse!= null && error.networkResponse.statusCode== 400 || error.networkResponse.statusCode== 401 ) {
+                            SharedPreferences sharedPreferences=ctx.getSharedPreferences("sharedPrefs",Context.MODE_PRIVATE);
+                            SharedPreferences.Editor editor = sharedPreferences.edit();
+                            editor.putString("isTokenValid", "false");
+                            editor.commit();
+                        }
+                        //TODO: check on the status code for no internet connection
+                    }
+                });
+        //add request to queue
+        requestQueue.add(jsonArrayRequest); //adding the request to the requestQueue in the network
+        return deferred.promise();
+    }
+
+    public Presenter getPresenter() {
+        return presenter;
+    }
+
+    public void setPresenter(Presenter presenter) {
+        this.presenter = presenter;
+    }
 }
