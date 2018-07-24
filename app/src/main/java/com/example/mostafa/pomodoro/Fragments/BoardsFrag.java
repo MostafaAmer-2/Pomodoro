@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -58,11 +59,13 @@ public class BoardsFrag extends Fragment {
         progressBar.setVisibility(View.VISIBLE);
 
 
-        presenter.getNetworkPresenter().getBoards(token).done(new DoneCallback<JSONArray>() {
+        presenter.getNetwork().getBoards(token).done(new DoneCallback<JSONArray>() {
             @Override
             public void onDone(JSONArray result) {
                 ArrayList<TrelloBoard> boards = parseJSONArrayIntoBoards(result);
                 presenter.setItems(getContext().getApplicationContext(), boards);
+                RecyclerView.LayoutManager mLayoutManager = new GridLayoutManager(getActivity().getApplicationContext(), 2);
+                getRecyclerView().setLayoutManager(mLayoutManager);
                 recyclerView.setVisibility(View.VISIBLE);
                 progressBar.setVisibility(View.INVISIBLE);
             }

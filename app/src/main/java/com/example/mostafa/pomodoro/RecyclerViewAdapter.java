@@ -1,7 +1,9 @@
 package com.example.mostafa.pomodoro;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.support.annotation.NonNull;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -14,6 +16,7 @@ import com.example.mostafa.pomodoro.Model.TrelloBoard;
 import com.example.mostafa.pomodoro.Presenter.Presenter;
 
 import java.util.ArrayList;
+import java.util.Random;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -70,10 +73,15 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         @BindView(R.id.item_name)
         TextView itemName;
         @BindView(R.id.parent_layout)
-        RelativeLayout parentLayout;
+        CardView parentLayout;
         public ViewHolder(View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);
+
+            //create
+            Random rnd = new Random();
+            int color = Color.argb(255, rnd.nextInt(256), rnd.nextInt(256), rnd.nextInt(256));
+            itemName.setBackgroundColor(color);
         }
     }
 }

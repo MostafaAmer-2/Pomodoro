@@ -61,8 +61,5 @@ public class BottomNavigator extends AppCompatActivity {
             Log.i("SASAA", "onResume: "+bundle.toString());
         else
             Log.i("SASAA", "onResume: nsaing");
-
-
-
     }
 }

@@ -51,7 +51,7 @@ public class MainFrag extends Fragment {
         ButterKnife.bind(this, view);
 
         token=Preferences.loadData(getActivity().getApplicationContext());
-        if(!token.equals("")){ //token already has a value stored
+        if(Preferences.isTokenPresent(getActivity().getApplicationContext()) && Preferences.loadDataFlag(getActivity().getApplicationContext())){ //token already has a value stored
             Log.i(TAG, "onClick1: "+token);
             goToBoards();
         }

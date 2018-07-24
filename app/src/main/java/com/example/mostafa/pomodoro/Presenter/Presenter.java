@@ -1,7 +1,9 @@
 package com.example.mostafa.pomodoro.Presenter;
 
 import android.content.Context;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 
 import com.example.mostafa.pomodoro.Fragments.BoardsFrag;
 import com.example.mostafa.pomodoro.Model.TrelloBoard;
@@ -35,7 +37,7 @@ public class Presenter {
     }
 
 
-    public Network getNetworkPresenter() {
+    public Network getNetwork() {
         return network;
     }
 

@@ -27,8 +27,6 @@ import java.util.ArrayList;
 
 public class MainActivity extends Activity {
     private static final String TAG = "MainActivity";
-    RequestQueue requestQueue;
-    ArrayList<TrelloBoard> boards1 = new ArrayList<>();
 
     private Network network;
     private String token;
@@ -87,6 +85,8 @@ public class MainActivity extends Activity {
         network.testTokenValid(token).fail(new FailCallback<VolleyError>() {
             @Override
             public void onFail(VolleyError result) {
+                Preferences.saveDataFlag(getApplicationContext(),false);
+
                 Intent go_to_BottomNavigator = new Intent(getApplicationContext(), BottomNavigator.class);
                 startActivity(go_to_BottomNavigator);
             }

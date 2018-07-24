@@ -26,6 +26,11 @@ public class Preferences {
         editor.commit();
     }
 
+    public static boolean loadDataFlag(Context ctx) {
+        SharedPreferences sharedpreferences = ctx.getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);
+        return sharedpreferences.getBoolean("isTokenValid", false);
+    }
+
     public static boolean isTokenPresent(Context ctx){
         return !loadData(ctx).equals("");
     }
