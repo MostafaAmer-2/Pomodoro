@@ -1,5 +1,11 @@
 package com.example.mostafa.pomodoro.Model;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.ArrayList;
+
 public class TrelloList {
     private String name;
     private String id;
@@ -25,5 +31,19 @@ public class TrelloList {
         this.id = id;
     }
 
+    public static ArrayList<TrelloList> parseJSONArrayIntoLists(JSONArray response){
+        ArrayList<TrelloList> lists = new ArrayList<>();
+        for (int i = 0; i<response.length(); i++)
+            try {
+                JSONObject firstObject = response.getJSONObject(i);
+                String name = firstObject.getString("name");
+                String id = firstObject.getString("id");
+                TrelloList list = new TrelloList(name, id);
+                lists.add(list);
 
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        return lists;
+    }
 }

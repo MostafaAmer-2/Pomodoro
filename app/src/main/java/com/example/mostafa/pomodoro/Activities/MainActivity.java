@@ -1,6 +1,5 @@
 package com.example.mostafa.pomodoro.Activities;
 
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 
@@ -12,10 +11,8 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 
-import com.android.volley.RequestQueue;
 import com.android.volley.VolleyError;
-import com.example.mostafa.pomodoro.Model.TrelloBoard;
-import com.example.mostafa.pomodoro.Network.Network;
+import com.example.mostafa.pomodoro.Network.Network_Boards;
 import com.example.mostafa.pomodoro.R;
 import com.example.mostafa.pomodoro.Settings.Preferences;
 
@@ -23,12 +20,10 @@ import org.jdeferred.DoneCallback;
 import org.jdeferred.FailCallback;
 import org.json.JSONArray;
 
-import java.util.ArrayList;
-
 public class MainActivity extends Activity {
     private static final String TAG = "MainActivity";
 
-    private Network network;
+    private Network_Boards network;
     private String token;
 
     @Override
@@ -49,7 +44,7 @@ public class MainActivity extends Activity {
             }
         }, 10000);
 
-        network =new Network(null, getApplicationContext());
+        network =new Network_Boards(null, getApplicationContext());
         token= Preferences.loadData(getApplicationContext());
 
         Log.i(TAG, "testing token: "+ Preferences.loadData(getApplicationContext()));

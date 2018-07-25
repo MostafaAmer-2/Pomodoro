@@ -12,10 +12,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
 
+import com.example.mostafa.pomodoro.Model.TrelloBoard;
 import com.example.mostafa.pomodoro.Model.TrelloList;
 import com.example.mostafa.pomodoro.Presenter.Presenter_Boards;
 import com.example.mostafa.pomodoro.Presenter.Presenter_Lists;
 import com.example.mostafa.pomodoro.R;
+import com.example.mostafa.pomodoro.Settings.Preferences;
 
 import org.jdeferred.DoneCallback;
 import org.json.JSONArray;
@@ -24,6 +26,8 @@ import java.util.ArrayList;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+
+import static com.example.mostafa.pomodoro.Model.TrelloList.parseJSONArrayIntoLists;
 
 @SuppressLint("ValidFragment")
 public class trelloLists extends Fragment {
@@ -38,10 +42,12 @@ public class trelloLists extends Fragment {
 
     Presenter_Lists presenter;
     String token;
+    String boardID;
 
     @SuppressLint("ValidFragment")
-    public trelloLists() {
-
+    public trelloLists(String token, String boardID) {
+        this.boardID=boardID;
+        this.token=token;
     }
 
     @Nullable
@@ -52,21 +58,22 @@ public class trelloLists extends Fragment {
 
         presenter =new Presenter_Lists(this, getContext().getApplicationContext());
 
-     //   recyclerView.setVisibility(View.INVISIBLE);
-     //   progressBar.setVisibility(View.VISIBLE);
+        recyclerView.setVisibility(View.INVISIBLE);
+        progressBar.setVisibility(View.VISIBLE);
 
 
 
 
-        ArrayList<TrelloList> lists=new ArrayList<TrelloList>();
-        lists.add(new TrelloList("list1","1a"));
-        lists.add(new TrelloList("list2","2a"));
-        lists.add(new TrelloList("list3","3a"));
-        presenter.setItems(getContext().getApplicationContext(), lists);
-      //  RecyclerView.LayoutManager mLayoutManager = new GridLayoutManager(getActivity().getApplicationContext(), 2);
-      //  getRecyclerView().setLayoutManager(mLayoutManager);
-        recyclerView.setVisibility(View.VISIBLE);
-        progressBar.setVisibility(View.INVISIBLE);
+
+        presenter.getNetwork().getLists(token,boardID).done(new DoneCallback<JSONArray>() {
+            @Override
+            public void onDone(JSONArray result) {
+                ArrayList<TrelloList> lists = parseJSONArrayIntoLists(result);
+                presenter.setItems(getContext().getApplicationContext(), lists);
+                recyclerView.setVisibility(View.VISIBLE);
+                progressBar.setVisibility(View.INVISIBLE);
+            }
+        });
 
         return view;
     }

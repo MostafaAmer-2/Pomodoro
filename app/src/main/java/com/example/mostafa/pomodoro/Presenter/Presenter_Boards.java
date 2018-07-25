@@ -7,7 +7,7 @@ import com.example.mostafa.pomodoro.Activities.BottomNavigator;
 import com.example.mostafa.pomodoro.Fragments.trelloBoards;
 import com.example.mostafa.pomodoro.Fragments.trelloLists;
 import com.example.mostafa.pomodoro.Model.TrelloBoard;
-import com.example.mostafa.pomodoro.Network.Network;
+import com.example.mostafa.pomodoro.Network.Network_Boards;
 import com.example.mostafa.pomodoro.RecyclerViewAdapter_Boards;
 
 import java.util.ArrayList;
@@ -17,7 +17,7 @@ public class Presenter_Boards {
     private RecyclerViewAdapter_Boards adapter;
 
     private trelloBoards boardsFrag;
-    private Network network;
+    private Network_Boards network;
     private Context ctx;
 
 
@@ -25,7 +25,7 @@ public class Presenter_Boards {
         boardsFrag = view;
         this.ctx = ctx;
 
-        network =new Network(this, ctx);
+        network =new Network_Boards(this, ctx);
         initAdapter(ctx, items);
 
     }
@@ -37,7 +37,7 @@ public class Presenter_Boards {
     }
 
 
-    public Network getNetwork() {
+    public Network_Boards getNetwork() {
         return network;
     }
 
@@ -59,8 +59,8 @@ public class Presenter_Boards {
         this.boardsFrag = boardsFrag;
     }
 
-    public void goToLists(){
-        ((BottomNavigator)boardsFrag.getActivity()).loadFragment(new trelloLists());
+    public void goToLists(String token, String boardsID){
+        ((BottomNavigator)boardsFrag.getActivity()).loadFragment(new trelloLists(token,boardsID));
     }
 }
 

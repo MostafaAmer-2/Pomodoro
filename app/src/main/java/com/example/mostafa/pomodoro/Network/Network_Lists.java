@@ -11,19 +11,21 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.mostafa.pomodoro.Presenter.Presenter_Boards;
+import com.example.mostafa.pomodoro.Presenter.Presenter_Lists;
 
 import org.jdeferred.Deferred;
 import org.jdeferred.Promise;
 import org.jdeferred.impl.DeferredObject;
 import org.json.JSONArray;
 
-public class Network {
+public class Network_Lists {
 
     private RequestQueue requestQueue;
-    private Presenter_Boards presenter;
+    private Presenter_Lists presenter;
     private Context ctx;
+  //  private String listID;
 
-    public Network(Presenter_Boards presenter, Context ctx){
+    public Network_Lists(Presenter_Lists presenter, Context ctx){
         requestQueue = Volley.newRequestQueue(ctx); // 'this' is the Context
         this.presenter=presenter;
     }
@@ -32,14 +34,13 @@ public class Network {
         return requestQueue;
     }
 
-    public Promise<JSONArray, VolleyError, Double> getBoards(String token) {
+    public Promise<JSONArray, VolleyError, Double> getLists(String token, String listID) {
         final Deferred<JSONArray, VolleyError, Double> deferred = new DeferredObject<>();
-        String url = "https://api.trello.com/1/members/me/boards?key=51eb6eb13ad2f6cc5bcb87fc923ea427&token="+token;
+        String url = "https://api.trello.com/1/boards/"+listID+"/lists?key=51eb6eb13ad2f6cc5bcb87fc923ea427&token="+token;
         JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(Request.Method.GET, url, null,
                 new Response.Listener<JSONArray>() {
                     @Override
                     public void onResponse(JSONArray response) {
-                        Log.i("SASA", "onResponse: "+response.toString());
                         deferred.resolve(response);
                     }
                 },
@@ -47,9 +48,10 @@ public class Network {
                     @Override
                     public void onErrorResponse(VolleyError error) {
                         deferred.reject(error);
-                       if(error.networkResponse!= null && error.networkResponse.statusCode== 400 || error.networkResponse.statusCode== 401 )
-                            presenter.getBoardsFrag().goToMain();
-                        //TODO: check on the status code for no internet connection
+                       if(error.networkResponse!= null && error.networkResponse.statusCode== 400 || error.networkResponse.statusCode== 401 ){
+                           //   presenter.getListsFrag().goToMain();
+                           //TODO: check on the status code for no internet connection
+                       }
                     }
                 });
         //add request to queue
@@ -57,9 +59,9 @@ public class Network {
         return deferred.promise();
     }
 
-    public Promise<JSONArray, VolleyError, Double> testTokenValid(String token) { //to be used in the splash screen
+    public Promise<JSONArray, VolleyError, Double> testTokenValid(String token, String listID) { //to be used in the splash screen
         final Deferred<JSONArray, VolleyError, Double> deferred = new DeferredObject<>();
-        String url = "https://api.trello.com/1/members/me/boards?key=51eb6eb13ad2f6cc5bcb87fc923ea427&token="+token;
+        String url = "https://api.trello.com/1/boards/"+listID+"/lists?key=51eb6eb13ad2f6cc5bcb87fc923ea427&token="+token;
         JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(Request.Method.GET, url, null,
                 new Response.Listener<JSONArray>() {
                     @Override
@@ -86,11 +88,11 @@ public class Network {
         return deferred.promise();
     }
 
-    public Presenter_Boards getPresenter() {
+    public Presenter_Lists getPresenter() {
         return presenter;
     }
 
-    public void setPresenter(Presenter_Boards presenter) {
+    public void setPresenter(Presenter_Lists presenter) {
         this.presenter = presenter;
     }
 }

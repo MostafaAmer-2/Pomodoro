@@ -3,12 +3,10 @@ package com.example.mostafa.pomodoro.Presenter;
 import android.content.Context;
 import android.support.v7.widget.LinearLayoutManager;
 
-import com.example.mostafa.pomodoro.Fragments.trelloBoards;
 import com.example.mostafa.pomodoro.Fragments.trelloLists;
-import com.example.mostafa.pomodoro.Model.TrelloBoard;
 import com.example.mostafa.pomodoro.Model.TrelloList;
-import com.example.mostafa.pomodoro.Network.Network;
-import com.example.mostafa.pomodoro.RecyclerViewAdapter_Boards;
+import com.example.mostafa.pomodoro.Network.Network_Boards;
+import com.example.mostafa.pomodoro.Network.Network_Lists;
 import com.example.mostafa.pomodoro.RecyclerViewAdapter_Lists;
 
 import java.util.ArrayList;
@@ -18,15 +16,15 @@ public class Presenter_Lists {
     private RecyclerViewAdapter_Lists adapter;
 
     private trelloLists listsFrag;
-    private Network network;
+    private Network_Lists network;
     private Context ctx;
-
 
     public Presenter_Lists(trelloLists view, Context ctx) {
         listsFrag = view;
         this.ctx = ctx;
 
-       // network =new Network(this, ctx);
+
+        network =new Network_Lists(this, ctx);
         initAdapter(ctx, items);
 
     }
@@ -38,7 +36,7 @@ public class Presenter_Lists {
     }
 
 
-    public Network getNetwork() {
+    public Network_Lists getNetwork() {
         return network;
     }
 

@@ -12,6 +12,7 @@ import android.widget.TextView;
 
 import com.example.mostafa.pomodoro.Model.TrelloBoard;
 import com.example.mostafa.pomodoro.Presenter.Presenter_Boards;
+import com.example.mostafa.pomodoro.Settings.Preferences;
 
 import java.util.ArrayList;
 import java.util.Random;
@@ -81,7 +82,8 @@ public class RecyclerViewAdapter_Boards extends RecyclerView.Adapter<RecyclerVie
                 @Override
                 public void onClick(View v) {
                     //I'v been clicked (Boards card)
-                    presenter.goToLists();
+                    String boardsID= presenter.getItems().get(getAdapterPosition()).getId();
+                    presenter.goToLists(Preferences.loadData(mContext),boardsID);
                 }
             });
         }
