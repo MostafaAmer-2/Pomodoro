@@ -1,6 +1,5 @@
 package com.example.mostafa.pomodoro.Fragments;
 
-import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.support.annotation.NonNull;
@@ -23,9 +22,9 @@ import com.example.mostafa.pomodoro.Settings.Preferences;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class MainFrag extends Fragment {
+public class trelloLogin extends Fragment {
 
-    private static final String TAG = "MainFrag";
+    private static final String TAG = "trelloLogin";
     @BindView(R.id.linearLayout)
     LinearLayout linearLayout;
     @BindView(R.id.loginBtn)
@@ -47,7 +46,7 @@ public class MainFrag extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
 
-        View view=inflater.inflate(R.layout.fragment_main,null);;
+        View view=inflater.inflate(R.layout.fragment_trello_login,null);;
         ButterKnife.bind(this, view);
 
         token=Preferences.loadData(getActivity().getApplicationContext());
@@ -90,7 +89,7 @@ public class MainFrag extends Fragment {
 
 
     private void goToBoards() {
-        ((BottomNavigator)getActivity()).loadFragment(new BoardsFrag(token));
+        ((BottomNavigator)getActivity()).loadFragment(new trelloBoards(token));
         Log.i(TAG, "goToBoards: "+Preferences.loadData(getActivity().getApplicationContext()));
     }
 

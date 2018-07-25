@@ -8,14 +8,12 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
 
-import com.example.mostafa.pomodoro.Fragments.MainFrag;
-import com.example.mostafa.pomodoro.Fragments.BoardsFrag;
-import com.example.mostafa.pomodoro.Presenter.Presenter;
+import com.example.mostafa.pomodoro.Fragments.trelloLogin;
 import com.example.mostafa.pomodoro.R;
 
 public class BottomNavigator extends AppCompatActivity {
 
-  //  Presenter presenter; //Can be found in the fragment itself (the actual view)
+  //  Presenter_Boards presenter; //Can be found in the fragment itself (the actual view)
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,18 +27,18 @@ public class BottomNavigator extends AppCompatActivity {
                 Fragment fragmentToBeLoaded=null;
                 switch(item.getItemId()){
                     case R.id.action_main:
-                        //   fragmentToBeLoaded = new BoardsFrag();
+                        //   fragmentToBeLoaded = new trelloBoards();
                         break;
 
                     case R.id.action_boards:
-                        fragmentToBeLoaded = new MainFrag();
+                        fragmentToBeLoaded = new trelloLogin();
                         break;
                 }
                 return loadFragment(fragmentToBeLoaded);
             }
         });
 
-        loadFragment(new MainFrag());
+        loadFragment(new trelloLogin());
     }
 
     public boolean loadFragment(Fragment fragment){

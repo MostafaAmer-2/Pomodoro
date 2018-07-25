@@ -1,27 +1,27 @@
 package com.example.mostafa.pomodoro.Presenter;
 
 import android.content.Context;
-import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 
-import com.example.mostafa.pomodoro.Fragments.BoardsFrag;
+import com.example.mostafa.pomodoro.Activities.BottomNavigator;
+import com.example.mostafa.pomodoro.Fragments.trelloBoards;
+import com.example.mostafa.pomodoro.Fragments.trelloLists;
 import com.example.mostafa.pomodoro.Model.TrelloBoard;
 import com.example.mostafa.pomodoro.Network.Network;
-import com.example.mostafa.pomodoro.RecyclerViewAdapter;
+import com.example.mostafa.pomodoro.RecyclerViewAdapter_Boards;
 
 import java.util.ArrayList;
 
-public class Presenter {
+public class Presenter_Boards {
     private ArrayList<TrelloBoard> items = new ArrayList<TrelloBoard>();
-    private RecyclerViewAdapter adapter;
+    private RecyclerViewAdapter_Boards adapter;
 
-    private BoardsFrag boardsFrag;
+    private trelloBoards boardsFrag;
     private Network network;
     private Context ctx;
 
 
-    public Presenter(BoardsFrag view, Context ctx) {
+    public Presenter_Boards(trelloBoards view, Context ctx) {
         boardsFrag = view;
         this.ctx = ctx;
 
@@ -31,7 +31,7 @@ public class Presenter {
     }
 
     private void initAdapter(Context ctx, ArrayList<TrelloBoard> items) {
-        adapter=new RecyclerViewAdapter(this, items, ctx);
+        adapter=new RecyclerViewAdapter_Boards(this, items, ctx);
         boardsFrag.getRecyclerView().setAdapter(adapter);
         boardsFrag.getRecyclerView().setLayoutManager(new LinearLayoutManager(ctx));
     }
@@ -51,13 +51,17 @@ public class Presenter {
         //TODO: avoid initializing the adapter with an empty array
     }
 
-    public BoardsFrag getBoardsFrag() {
+    public trelloBoards getBoardsFrag() {
         return boardsFrag;
     }
 
-    public void setBoardsFrag(BoardsFrag boardsFrag) {
+    public void setBoardsFrag(trelloBoards boardsFrag) {
         this.boardsFrag = boardsFrag;
+    }
+
+    public void goToLists(){
+        ((BottomNavigator)boardsFrag.getActivity()).loadFragment(new trelloLists());
     }
 }
 
-//TODO: refactor the code
+

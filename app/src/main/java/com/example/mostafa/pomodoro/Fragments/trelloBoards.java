@@ -7,7 +7,6 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,7 +14,7 @@ import android.widget.ProgressBar;
 
 import com.example.mostafa.pomodoro.Activities.BottomNavigator;
 import com.example.mostafa.pomodoro.Model.TrelloBoard;
-import com.example.mostafa.pomodoro.Presenter.Presenter;
+import com.example.mostafa.pomodoro.Presenter.Presenter_Boards;
 import com.example.mostafa.pomodoro.R;
 
 import org.jdeferred.DoneCallback;
@@ -29,9 +28,9 @@ import butterknife.ButterKnife;
 import static com.example.mostafa.pomodoro.Model.TrelloBoard.parseJSONArrayIntoBoards;
 
 @SuppressLint("ValidFragment")
-public class BoardsFrag extends Fragment {
+public class trelloBoards extends Fragment {
 
-    private static final String TAG = "BoardsFrag";
+    private static final String TAG = "trelloBoards";
     @BindView(R.id.recycler_view)
     RecyclerView recyclerView;
     @BindView(R.id.progressBar)
@@ -39,21 +38,21 @@ public class BoardsFrag extends Fragment {
     //TODO: here
 
 
-    Presenter presenter;
+    Presenter_Boards presenter;
     String token;
 
     @SuppressLint("ValidFragment")
-    public BoardsFrag(String token) {
+    public trelloBoards(String token) {
         this.token=token;
     }
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_tasks, null);
+        View view = inflater.inflate(R.layout.fragment_trello_boards, null);
         ButterKnife.bind(this, view);
 
-        presenter =new Presenter(this, getContext().getApplicationContext());
+        presenter =new Presenter_Boards(this, getContext().getApplicationContext());
 
         recyclerView.setVisibility(View.INVISIBLE);
         progressBar.setVisibility(View.VISIBLE);
@@ -93,7 +92,7 @@ public class BoardsFrag extends Fragment {
 
 
     public void goToMain() {
-        ((BottomNavigator)getActivity()).loadFragment(new MainFrag());
+        ((BottomNavigator)getActivity()).loadFragment(new trelloLogin());
     }
 
 }

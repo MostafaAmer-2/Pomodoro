@@ -10,7 +10,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.Volley;
-import com.example.mostafa.pomodoro.Presenter.Presenter;
+import com.example.mostafa.pomodoro.Presenter.Presenter_Boards;
 
 import org.jdeferred.Deferred;
 import org.jdeferred.Promise;
@@ -20,10 +20,10 @@ import org.json.JSONArray;
 public class Network {
 
     private RequestQueue requestQueue;
-    private Presenter presenter;
+    private Presenter_Boards presenter;
     private Context ctx;
 
-    public Network(Presenter presenter, Context ctx){
+    public Network(Presenter_Boards presenter, Context ctx){
         requestQueue = Volley.newRequestQueue(ctx); // 'this' is the Context
         this.presenter=presenter;
     }
@@ -86,11 +86,11 @@ public class Network {
         return deferred.promise();
     }
 
-    public Presenter getPresenter() {
+    public Presenter_Boards getPresenter() {
         return presenter;
     }
 
-    public void setPresenter(Presenter presenter) {
+    public void setPresenter(Presenter_Boards presenter) {
         this.presenter = presenter;
     }
 }

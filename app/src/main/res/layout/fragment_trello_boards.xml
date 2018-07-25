@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Fragments.BoardsFrag">
+    tools:context=".Fragments.trelloBoards">
 
 
     <TextView
@@ -14,7 +14,7 @@
         android:fontFamily="@font/anaphora"
         android:textSize="32dp"
         android:textColor="@color/white"
-        android:layout_marginBottom="8dp"/>
+        android:layout_margin="8dp"/>
 
     <android.support.v7.widget.RecyclerView
         android:layout_width="match_parent"
