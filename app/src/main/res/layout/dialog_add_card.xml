@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <TextView
+        android:id="@+id/addCardTitle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="New Card"
+        android:gravity="center"
+        android:textSize="32dp"
+        android:layout_margin="8dp"/>
+
+    <EditText
+        android:id="@+id/cardName"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/addCardTitle"
+        android:hint="Enter Card Name"
+        android:layout_margin="8dp"/>
+
+    <Button
+        android:id="@+id/addCardBtn"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Add Card"
+        android:layout_below="@id/cardName"
+        android:layout_margin="8dp"/>
+
+
+</RelativeLayout>
