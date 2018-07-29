@@ -1,5 +1,6 @@
 package com.example.mostafa.pomodoro.Activities;
 
+import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.Fragment;
@@ -8,6 +9,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
 
+import com.example.mostafa.pomodoro.Fragments.test;
 import com.example.mostafa.pomodoro.Fragments.trelloLogin;
 import com.example.mostafa.pomodoro.R;
 
@@ -28,6 +30,7 @@ public class BottomNavigator extends AppCompatActivity {
                 switch(item.getItemId()){
                     case R.id.action_main:
                         //   fragmentToBeLoaded = new trelloBoards();
+                        fragmentToBeLoaded=new test();
                         break;
 
                     case R.id.action_boards:
@@ -60,4 +63,5 @@ public class BottomNavigator extends AppCompatActivity {
         else
             Log.i("SASAA", "onResume: nsaing");
     }
+
 }
