@@ -52,7 +52,6 @@ public class Presenter_Cards {
     public void setItems(Context applicationContext, ArrayList<TrelloCard> items) {
         this.items = items;
         initAdapter(applicationContext, items);
-        //TODO: avoid initializing the adapter with an empty array
     }
 
     public trelloCards getCardsFrag() {

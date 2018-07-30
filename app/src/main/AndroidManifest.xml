@@ -18,8 +18,11 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".Activities.BottomNavigator"></activity>
-        <activity android:name=".Activities.test"></activity>
+        <activity android:name=".Activities.BottomNavigator"
+            android:windowSoftInputMode="adjustPan">
+
+
+        </activity>
     </application>
 
 </manifest>

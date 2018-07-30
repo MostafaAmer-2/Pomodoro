@@ -50,7 +50,6 @@ public class Network_Lists {
                         deferred.reject(error);
                        if(error.networkResponse!= null && error.networkResponse.statusCode== 400 || error.networkResponse.statusCode== 401 ){
                            //   presenter.getListsFrag().goToMain();
-                           //TODO: check on the status code for no internet connection
                        }
                     }
                 });
@@ -80,7 +79,6 @@ public class Network_Lists {
                             editor.putString("isTokenValid", "false");
                             editor.commit();
                         }
-                        //TODO: check on the status code for no internet connection
                     }
                 });
         //add request to queue

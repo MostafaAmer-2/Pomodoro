@@ -49,7 +49,6 @@ public class Network_Boards {
                         deferred.reject(error);
                        if(error.networkResponse!= null && error.networkResponse.statusCode== 400 || error.networkResponse.statusCode== 401 )
                             presenter.getBoardsFrag().goToMain();
-                        //TODO: check on the status code for no internet connection
                     }
                 });
         //add request to queue
@@ -78,7 +77,6 @@ public class Network_Boards {
                             editor.putString("isTokenValid", "false");
                             editor.commit();
                         }
-                        //TODO: check on the status code for no internet connection
                     }
                 });
         //add request to queue

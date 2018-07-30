@@ -51,7 +51,6 @@ public class trelloCards extends Fragment {
     ProgressBar progressBar;
     @BindView(R.id.fab)
     FloatingActionButton fab;
-    //TODO: here
 
 
     private Presenter_Cards presenter;

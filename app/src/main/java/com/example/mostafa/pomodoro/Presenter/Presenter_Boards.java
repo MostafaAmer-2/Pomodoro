@@ -49,7 +49,6 @@ public class Presenter_Boards {
     public void setItems(Context applicationContext, ArrayList<TrelloBoard> items) {
         this.items = items;
         initAdapter(applicationContext, items);
-        //TODO: avoid initializing the adapter with an empty array
     }
 
     public trelloBoards getBoardsFrag() {

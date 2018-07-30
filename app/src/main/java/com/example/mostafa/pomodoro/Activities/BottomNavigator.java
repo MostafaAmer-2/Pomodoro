@@ -1,6 +1,6 @@
 package com.example.mostafa.pomodoro.Activities;
 
-import android.net.Uri;
+import android.graphics.Color;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.Fragment;
@@ -8,19 +8,26 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
+import android.widget.RelativeLayout;
 
-import com.example.mostafa.pomodoro.Fragments.test;
+import com.example.mostafa.pomodoro.Fragments.timer;
 import com.example.mostafa.pomodoro.Fragments.trelloLogin;
 import com.example.mostafa.pomodoro.R;
+
+import butterknife.BindView;
+import butterknife.ButterKnife;
 
 public class BottomNavigator extends AppCompatActivity {
 
   //  Presenter_Boards presenter; //Can be found in the fragment itself (the actual view)
+    @BindView(R.id.relativeLayout)
+    RelativeLayout relativeLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_bottom_navigator);
+        ButterKnife.bind(this);
 
         BottomNavigationView bottomNavigationView= (BottomNavigationView) findViewById(R.id.bottom_navigation);
         bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -29,8 +36,7 @@ public class BottomNavigator extends AppCompatActivity {
                 Fragment fragmentToBeLoaded=null;
                 switch(item.getItemId()){
                     case R.id.action_main:
-                        //   fragmentToBeLoaded = new trelloBoards();
-                        fragmentToBeLoaded=new test();
+                        fragmentToBeLoaded=new timer();
                         break;
 
                     case R.id.action_boards:
@@ -41,7 +47,7 @@ public class BottomNavigator extends AppCompatActivity {
             }
         });
 
-        loadFragment(new trelloLogin());
+        loadFragment(new timer());
     }
 
     public boolean loadFragment(Fragment fragment){

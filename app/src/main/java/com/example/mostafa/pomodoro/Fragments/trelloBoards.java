@@ -35,7 +35,6 @@ public class trelloBoards extends Fragment {
     RecyclerView recyclerView;
     @BindView(R.id.progressBar)
     ProgressBar progressBar;
-    //TODO: here
 
 
     Presenter_Boards presenter;
