@@ -1,17 +1,30 @@
 package com.example.mostafa.pomodoro.Fragments;
 
+
+import android.app.Notification;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.NotificationCompat;
+import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.example.mostafa.pomodoro.Activities.BottomNavigator;
+import com.example.mostafa.pomodoro.Activities.MainActivity;
+import com.example.mostafa.pomodoro.Presenter.Presenter_timer;
 import com.example.mostafa.pomodoro.R;
 
 import java.util.Locale;
@@ -20,9 +33,10 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 
 import static android.content.Context.MODE_PRIVATE;
+import static android.content.Context.NOTIFICATION_SERVICE;
 
-//TODO: make sure everything is loaded correctly on page startup
 public class timer extends Fragment {
+    private static final String TAG = "timer";
     private static final long START_TIME_IN_MILLIS = 6000;
     private static final long BREAK_TIME_IN_MILLIS = 300000;
 
@@ -34,6 +48,12 @@ public class timer extends Fragment {
     Button mButtonReset;
     @BindView(R.id.card)
     LinearLayout card;
+    @BindView(R.id.recycler_view)
+    RecyclerView recyclerView;
+    @BindView(R.id.add_btn)
+    Button addBtn;
+    @BindView(R.id.item_edit_text)
+    EditText itemEditText;
 
     private CountDownTimer mCountDownTimer;
 
@@ -42,6 +62,12 @@ public class timer extends Fragment {
 
     private long mTimeLeftInMillis;
     private long mEndTime;
+
+
+    NotificationCompat.Builder notification;
+    private static final int id =45612;
+
+    Presenter_timer presenter;
 
     public timer() {
         // Required empty public constructor
@@ -59,6 +85,7 @@ public class timer extends Fragment {
         View view= inflater.inflate(R.layout.fragment_timer, container, false);
         ButterKnife.bind(this, view);
 
+        presenter=new Presenter_timer(this, getActivity().getApplicationContext());
 
         mButtonStartPause.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -89,7 +116,36 @@ public class timer extends Fragment {
                }
             }
         });
+
+        addBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                presenter.onAddBtnClicked();
+            }
+        });
+
+        notification = new NotificationCompat.Builder(getActivity().getApplicationContext());
+        notification.setAutoCancel(true);
+
         return view;
+    }
+
+    private void popNotification() {
+        notification.setSmallIcon(R.drawable.pomodoro);
+        notification.setTicker("Pomodoro done");
+        notification.setWhen(System.currentTimeMillis());
+        notification.setContentTitle("It's Break Time");
+        notification.setContentText("Reward yourself with a break");
+        notification.setDefaults(Notification.DEFAULT_SOUND);
+
+        Intent intent = new Intent(getActivity().getApplicationContext(), BottomNavigator.class);
+        PendingIntent pendingIntent = PendingIntent.getActivity(getActivity().getApplicationContext(), 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+        notification.setContentIntent(pendingIntent);
+
+
+        //Builds notification and issues it
+        NotificationManager nm = (NotificationManager) getActivity().getSystemService(NOTIFICATION_SERVICE);
+        nm.notify(id, notification.build());
     }
 
     private void updateButtonsOnDone() {
@@ -120,7 +176,7 @@ public class timer extends Fragment {
     }
 
     private void paintBackground() {
-        if(onBreak==false){
+        if(onBreak){
             card.setBackgroundColor(Color.argb(255, 69, 203, 133));
         }else{
             card.setBackgroundColor(Color.argb(255, 248, 90, 62));
@@ -142,10 +198,7 @@ public class timer extends Fragment {
             @Override
             public void onFinish() {
                doneTimer();
-                mTimerRunning = false;
-                updateButtonsOnDone();
-                mButtonStartPause.setText("start");
-                mButtonReset.setEnabled(false);
+               mTimerRunning = false;
             }
         }.start();
 
@@ -155,17 +208,30 @@ public class timer extends Fragment {
 
     private void stopTimer(){
         paintBackground();
-        resetTimer();
+        resetTimerOnStop();
         pauseTimer();
         updateButtonsOnStop();
     }
 
     private void doneTimer() {
-        onBreak=!onBreak;
-        paintBackground();
         resetTimer();
         pauseTimer();
+        updateState();
+        paintBackground();
         updateButtonsOnDone();
+        popNotification();
+    }
+
+    private void updateState() {
+        if(mTimeLeftInMillis==BREAK_TIME_IN_MILLIS){
+            onBreak=true;
+        }
+        else if (mTimeLeftInMillis==START_TIME_IN_MILLIS){
+            onBreak=false;
+        }
+        else{
+            Log.i("Notification", "updateState: none");
+        }
     }
 
     private void pauseTimer() {
@@ -175,13 +241,22 @@ public class timer extends Fragment {
     }
 
     private void resetTimer() {
-        if(onBreak==false){
+        if(!onBreak){
             mTimeLeftInMillis = BREAK_TIME_IN_MILLIS;
         }else{
             mTimeLeftInMillis = START_TIME_IN_MILLIS; //letting the timer be 5 min
         }
         updateCountDownText();
+    }
 
+    private void resetTimerOnStop() {
+        Log.i(TAG, "resetTimerOnStop: "+onBreak);
+        if(onBreak){
+            mTimeLeftInMillis = BREAK_TIME_IN_MILLIS;
+        }else{
+            mTimeLeftInMillis = START_TIME_IN_MILLIS; //letting the timer be 5 min
+        }
+        updateCountDownText();
     }
 
     private void updateCountDownText() {
@@ -243,4 +318,27 @@ public class timer extends Fragment {
         }
     }
 
+    public RecyclerView getRecyclerView() {
+        return recyclerView;
+    }
+
+    public void setRecyclerView(RecyclerView recyclerView) {
+        this.recyclerView = recyclerView;
+    }
+
+    public Button getAddBtn() {
+        return addBtn;
+    }
+
+    public void setAddBtn(Button addBtn) {
+        this.addBtn = addBtn;
+    }
+
+    public EditText getItemEditText() {
+        return itemEditText;
+    }
+
+    public void setItemEditText(EditText itemEditText) {
+        this.itemEditText = itemEditText;
+    }
 }

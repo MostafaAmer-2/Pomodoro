@@ -2,11 +2,13 @@ package com.example.mostafa.pomodoro;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
+import android.support.constraint.ConstraintLayout;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -17,6 +19,8 @@ import java.util.ArrayList;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+
+import static com.example.mostafa.pomodoro.Model.TODOitem.increasePomododro;
 
 public class RecyclerViewAdapter_TODOs extends RecyclerView.Adapter<RecyclerViewAdapter_TODOs.ViewHolder>{
     private static final String TAG = "RecyclerViewAdapter_TODOs";
@@ -59,10 +63,31 @@ public class RecyclerViewAdapter_TODOs extends RecyclerView.Adapter<RecyclerView
         @BindView(R.id.item_name)
         TextView itemName;
         @BindView(R.id.parent_layout)
-        RelativeLayout parentLayout;
+        ConstraintLayout parentLayout;
+        @BindView(R.id.addPomodoro)
+        Button addPomodoroBtn;
+        @BindView(R.id.removePomodoro)
+        Button removePomodoroBtn;
+
         public ViewHolder(View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);
+
+            //TODO: these 2 action listeners have not been tested yet + Take a look on prev. project to see how to remove the correct item from unordered list.
+            addPomodoroBtn.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    TODOitem itemSelected= presenter.getItems().get(getAdapterPosition());
+                    increasePomododro(itemSelected);
+                }
+            });
+            removePomodoroBtn.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    TODOitem itemSelected= presenter.getItems().get(getAdapterPosition());
+                    increasePomododro(itemSelected);
+                }
+            });
         }
     }
 }

@@ -37,7 +37,7 @@ public class RecyclerViewAdapter_Lists extends RecyclerView.Adapter<RecyclerView
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view= LayoutInflater.from(parent.getContext()).inflate(R.layout.layout_listitem, parent, false);
+        View view= LayoutInflater.from(parent.getContext()).inflate(R.layout.layout_carditem, parent, false);
         ViewHolder holder= new ViewHolder(view);
         return holder;
     }
@@ -70,7 +70,7 @@ public class RecyclerViewAdapter_Lists extends RecyclerView.Adapter<RecyclerView
         @BindView(R.id.item_name)
         TextView itemName;
         @BindView(R.id.parent_layout)
-        RelativeLayout parentLayout;
+        CardView parentLayout;
         public ViewHolder(View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);

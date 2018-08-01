@@ -71,11 +71,13 @@ public class Network_Boards {
                     @Override
                     public void onErrorResponse(VolleyError error) {
                         deferred.reject(error);
-                        if(error.networkResponse!= null && error.networkResponse.statusCode== 400 || error.networkResponse.statusCode== 401 ) {
-                            SharedPreferences sharedPreferences=ctx.getSharedPreferences("sharedPrefs",Context.MODE_PRIVATE);
-                            SharedPreferences.Editor editor = sharedPreferences.edit();
-                            editor.putString("isTokenValid", "false");
-                            editor.commit();
+                        if(error.networkResponse!= null) {
+                            if (error.networkResponse.statusCode == 400 || error.networkResponse.statusCode == 401) {
+                                SharedPreferences sharedPreferences = ctx.getSharedPreferences("sharedPrefs", Context.MODE_PRIVATE);
+                                SharedPreferences.Editor editor = sharedPreferences.edit();
+                                editor.putString("isTokenValid", "false");
+                                editor.commit();
+                            }
                         }
                     }
                 });
