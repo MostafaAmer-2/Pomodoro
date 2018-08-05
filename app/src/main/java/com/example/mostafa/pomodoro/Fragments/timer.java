@@ -24,6 +24,7 @@ import android.widget.TextView;
 
 import com.example.mostafa.pomodoro.Activities.BottomNavigator;
 import com.example.mostafa.pomodoro.Activities.MainActivity;
+import com.example.mostafa.pomodoro.Model.TODOitem;
 import com.example.mostafa.pomodoro.Presenter.Presenter_timer;
 import com.example.mostafa.pomodoro.R;
 
@@ -50,6 +51,8 @@ public class timer extends Fragment {
     LinearLayout card;
     @BindView(R.id.recycler_view)
     RecyclerView recyclerView;
+    @BindView(R.id.recycler_view2)
+    RecyclerView recyclerView2;
     @BindView(R.id.add_btn)
     Button addBtn;
     @BindView(R.id.item_edit_text)
@@ -300,15 +303,22 @@ public class timer extends Fragment {
         updateCountDownText();
         mButtonStartPause.setText("start");
 
-        if (mTimerRunning) {
+        Log.i(TAG, "onStart: "+ mTimerRunning);
+
+        if (true) {
             mEndTime = prefs.getLong("endTime", 0);
             mTimeLeftInMillis = mEndTime - System.currentTimeMillis();
+            Log.i(TAG, "onStart: "+ mTimeLeftInMillis);
 
-            if (mTimeLeftInMillis < 0) {
+            if (mTimeLeftInMillis <= 0) {
+                Log.i(TAG, "onStart: in here");
                 mTimeLeftInMillis = 0;
                 mTimerRunning = false;
-                updateCountDownText();
-             //   updateButtons();
+                resetTimer();
+//                pauseTimer();
+                updateState();
+                paintBackground();
+                updateButtonsOnDone();
             } else {
                 startTimer();
             }
@@ -320,6 +330,10 @@ public class timer extends Fragment {
 
     public RecyclerView getRecyclerView() {
         return recyclerView;
+    }
+
+    public RecyclerView getRecyclerView2() {
+        return recyclerView2;
     }
 
     public void setRecyclerView(RecyclerView recyclerView) {
@@ -340,5 +354,9 @@ public class timer extends Fragment {
 
     public void setItemEditText(EditText itemEditText) {
         this.itemEditText = itemEditText;
+    }
+
+    public void updateBtnText(Button btn, TODOitem itemSelected) {
+        btn.setText(itemSelected.getPomodoros()+"");
     }
 }

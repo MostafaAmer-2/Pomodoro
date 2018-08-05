@@ -1,6 +1,9 @@
 package com.example.mostafa.pomodoro.Network;
 
 import android.content.Context;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
+import android.util.Log;
 
 import com.example.mostafa.pomodoro.Model.TODOitem;
 import com.example.mostafa.pomodoro.Presenter.Presenter_timer;
@@ -10,14 +13,15 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 public class Network_timer {
 
-    //Root node
-    private DatabaseReference dref = FirebaseDatabase.getInstance().getReference("ha");
-    //Child from the root node: users
-    private DatabaseReference usersRef = dref.child("items");
-    //Child from the users node: depending on the id of the user
+    private DatabaseReference dref = FirebaseDatabase.getInstance().getReference();
+    private DatabaseReference itemsRef = dref.child("items");
+    private DatabaseReference doneRef = dref.child("done");
+
+    private DatabaseReference usersRef = dref.child("users");
     private DatabaseReference IDref;// = usersRef.child(FirebaseAuth.getInstance().getCurrentUser().getUid());
 
     Presenter_timer presenter;
@@ -32,7 +36,7 @@ public class Network_timer {
      * Method to add the child event listener to the reference
      */
     private void addChildEventListener() {
-        usersRef.addChildEventListener(new ChildEventListener() {
+        itemsRef.addChildEventListener(new ChildEventListener() {
             /**
              * Add the new item present in the database to the ArrayList
              * @param dataSnapshot
@@ -40,8 +44,27 @@ public class Network_timer {
              */
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+
+//                for(DataSnapshot data:dataSnapshot.getChildren()){
+//                    Log.i("Testing FB", data.toString());
+//                    Log.i("Testing FB Key", data.getKey());
+//                    Log.i("Testing FB Value", data.getValue().toString());
+//
+//                }
+//                Log.i("Testing FB Value", dataSnapshot.getValue().toString());
+
                 TODOitem itemToBeAdded = TODOitem.convertToItem(dataSnapshot);
-                presenter.addItem(itemToBeAdded);
+               if(!itemToBeAdded.isDone())
+                   presenter.addItem(itemToBeAdded);
+               else
+                   presenter.addItemDone(itemToBeAdded);
+
+//                Log.i("Network_timer", "Item"+itemToBeAdded.getDescription());
+//                Log.i("pst", "onChildAdded: "+dataSnapshot.child("pomodoros").getValue().toString());
+//                itemToBeAdded.setPomodoros((int)(long)dataSnapshot.child("pomodoros").getValue());
+//                itemToBeAdded.setDone((boolean) dataSnapshot.child("isDone").getValue());
+//                Log.i("pst2", "onChildAdded: "+dataSnapshot.child("isDone").getValue());
+
             }
 
             @Override
@@ -68,11 +91,22 @@ public class Network_timer {
 
             }
         });
+
+
     }
 
     public void addItem(TODOitem newItem) {
-        usersRef.child(newItem.getDescription()).setValue("");
+        itemsRef.child(newItem.getDescription()).child("isDone").setValue(newItem.isDone());
+        itemsRef.child(newItem.getDescription()).child("pomodoros").setValue(newItem.getPomodoros());
     }
 
 
+    public void updatePomodoros(TODOitem itemSelected) {
+        itemsRef.child(itemSelected.getDescription()).child("pomodoros").setValue(itemSelected.getPomodoros());
+
+    }
+
+    public DatabaseReference getItemsRef() {
+        return itemsRef;
+    }
 }

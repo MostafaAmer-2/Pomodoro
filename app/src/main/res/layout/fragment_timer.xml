@@ -90,9 +90,26 @@
                     android:text="add" />
             </LinearLayout>
 
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="TODO List"/>
+
 
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/recycler_view"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="8dp" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Done"/>
+
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/recycler_view2"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="8dp" />

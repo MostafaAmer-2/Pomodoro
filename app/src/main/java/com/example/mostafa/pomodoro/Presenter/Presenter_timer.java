@@ -13,7 +13,10 @@ import java.util.ArrayList;
 
 public class Presenter_timer {
     private ArrayList<TODOitem> items = new ArrayList<TODOitem>();
+    private ArrayList<TODOitem> doneItems = new ArrayList<TODOitem>();
+
     private RecyclerViewAdapter_TODOs adapter;
+    private RecyclerViewAdapter_TODOs doneAdapter;
 
     private timer timer;
     private Network_timer network;
@@ -23,10 +26,16 @@ public class Presenter_timer {
         this.timer = timer;
         this.ctx = ctx;
         network = new Network_timer(this, ctx);
+
         adapter=new RecyclerViewAdapter_TODOs(this, items, ctx);
         timer.getRecyclerView().setAdapter(adapter);
         timer.getRecyclerView().setLayoutManager(new LinearLayoutManager(ctx));
         timer.getRecyclerView().setNestedScrollingEnabled(false);
+
+        doneAdapter=new RecyclerViewAdapter_TODOs(this, doneItems, ctx);
+        timer.getRecyclerView2().setAdapter(doneAdapter);
+        timer.getRecyclerView2().setLayoutManager(new LinearLayoutManager(ctx));
+        timer.getRecyclerView2().setNestedScrollingEnabled(false);
     }
 
     public void onAddBtnClicked() {
@@ -45,6 +54,15 @@ public class Presenter_timer {
         notifyAdapter();
     }
 
+    public void addItemDone(TODOitem item) {
+        doneItems.add(item);
+//        notifyAdapterDone();
+    }
+//
+//    private void notifyAdapterDone() {
+//        doneAdapter.notifyDataSetChanged();
+//    }
+
     public void removeItem(TODOitem item) {
         for (int i=0;i<items.size();i++) {
             if(items.get(i).getDescription().equals(item.getDescription()))
@@ -56,5 +74,13 @@ public class Presenter_timer {
 
     public ArrayList<TODOitem> getItems() {
         return items;
+    }
+
+    public com.example.mostafa.pomodoro.Fragments.timer getTimer() {
+        return timer;
+    }
+
+    public Network_timer getNetwork() {
+        return network;
     }
 }

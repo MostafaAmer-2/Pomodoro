@@ -17,6 +17,11 @@ import com.example.mostafa.pomodoro.Fragments.timer;
 import com.example.mostafa.pomodoro.Fragments.trelloLogin;
 import com.example.mostafa.pomodoro.R;
 
+import org.jdeferred.Deferred;
+import org.jdeferred.DoneCallback;
+import org.jdeferred.Promise;
+import org.jdeferred.impl.DeferredObject;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
@@ -31,7 +36,6 @@ public class BottomNavigator extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_bottom_navigator);
         ButterKnife.bind(this);
-
         BottomNavigationView bottomNavigationView= (BottomNavigationView) findViewById(R.id.bottom_navigation);
         bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override

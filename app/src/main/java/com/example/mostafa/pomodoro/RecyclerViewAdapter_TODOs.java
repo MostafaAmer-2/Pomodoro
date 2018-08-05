@@ -20,6 +20,7 @@ import java.util.ArrayList;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
+import static com.example.mostafa.pomodoro.Model.TODOitem.decreasePomododro;
 import static com.example.mostafa.pomodoro.Model.TODOitem.increasePomododro;
 
 public class RecyclerViewAdapter_TODOs extends RecyclerView.Adapter<RecyclerViewAdapter_TODOs.ViewHolder>{
@@ -48,6 +49,8 @@ public class RecyclerViewAdapter_TODOs extends RecyclerView.Adapter<RecyclerView
     public void onBindViewHolder(@NonNull ViewHolder holder, final int position) {
         if(!mItems.isEmpty() && holder != null && holder.itemName!= null) {
             holder.itemName.setText(mItems.get(position).getDescription());
+            presenter.getTimer().updateBtnText(holder.addPomodoroBtn, mItems.get(position));
+            presenter.getNetwork().getItemsRef().child(mItems.get(position).getDescription()).child("pomodoros");
         }
         else{
         }
@@ -73,21 +76,29 @@ public class RecyclerViewAdapter_TODOs extends RecyclerView.Adapter<RecyclerView
             super(itemView);
             ButterKnife.bind(this, itemView);
 
-            //TODO: these 2 action listeners have not been tested yet + Take a look on prev. project to see how to remove the correct item from unordered list.
             addPomodoroBtn.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     TODOitem itemSelected= presenter.getItems().get(getAdapterPosition());
                     increasePomododro(itemSelected);
+                    presenter.getTimer().updateBtnText(addPomodoroBtn, itemSelected);
+                    presenter.getNetwork().updatePomodoros(itemSelected);
                 }
             });
             removePomodoroBtn.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     TODOitem itemSelected= presenter.getItems().get(getAdapterPosition());
-                    increasePomododro(itemSelected);
+                    decreasePomododro(itemSelected);
+                    presenter.getTimer().updateBtnText(addPomodoroBtn, itemSelected);
+                    presenter.getNetwork().updatePomodoros(itemSelected);
                 }
             });
+
+
         }
+
+
+
     }
 }

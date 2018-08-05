@@ -1,11 +1,19 @@
 package com.example.mostafa.pomodoro.Model;
 
+import android.util.Log;
+
 import com.google.firebase.database.DataSnapshot;
 
 public class TODOitem {
     private String description;
     private boolean done;
     private int pomodoros;
+
+    public TODOitem(String title, boolean isDone, int pomodoros){
+        this.description=title;
+        this.done=isDone;
+        this.pomodoros=pomodoros;
+    }
 
     public TODOitem(String title){
         this.description=title;
@@ -38,7 +46,12 @@ public class TODOitem {
     }
 
     public static TODOitem convertToItem(DataSnapshot snapshot) {
-        return new TODOitem(snapshot.getKey());
+        Log.i("ayHaga", "convertToItem: "+snapshot.toString());
+        if(snapshot.child("pomodoros").getValue()!=null)
+            return new TODOitem(snapshot.getKey(), Boolean.parseBoolean(snapshot.child("isDone").getValue().toString()),Integer.parseInt(snapshot.child("pomodoros").getValue().toString()));
+        else
+            return new TODOitem(snapshot.getKey(), Boolean.parseBoolean(snapshot.child("isDone").getValue().toString()),1);
+
     }
 
     public static void increasePomododro(TODOitem item){
