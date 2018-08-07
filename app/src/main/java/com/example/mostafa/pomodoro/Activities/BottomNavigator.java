@@ -29,6 +29,10 @@ public class BottomNavigator extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_bottom_navigator);
         ButterKnife.bind(this);
+        handleButtonNavigationFunctionality();
+    }
+
+    private void handleButtonNavigationFunctionality() {
         loadFragment(new timer());
         bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
@@ -43,7 +47,6 @@ public class BottomNavigator extends AppCompatActivity {
                 }
             }
         });
-
     }
 
     public boolean loadFragment(Fragment fragment) {
