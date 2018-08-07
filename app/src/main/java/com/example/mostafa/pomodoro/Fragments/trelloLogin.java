@@ -15,7 +15,7 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
-import com.example.mostafa.pomodoro.Activities.BottomNavigator;
+import com.example.mostafa.pomodoro.Activities.BottomNavigatorActivity;
 import com.example.mostafa.pomodoro.R;
 import com.example.mostafa.pomodoro.Settings.Preferences;
 
@@ -89,7 +89,7 @@ public class trelloLogin extends Fragment {
 
 
     private void goToBoards() {
-        ((BottomNavigator)getActivity()).loadFragment(new trelloBoards(token));
+        ((BottomNavigatorActivity)getActivity()).loadFragment(new trelloBoards(token));
         Log.i(TAG, "goToBoards: "+Preferences.loadData(getActivity().getApplicationContext()));
     }
 

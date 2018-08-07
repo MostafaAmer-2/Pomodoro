@@ -12,7 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
 
-import com.example.mostafa.pomodoro.Activities.BottomNavigator;
+import com.example.mostafa.pomodoro.Activities.BottomNavigatorActivity;
 import com.example.mostafa.pomodoro.Model.TrelloBoard;
 import com.example.mostafa.pomodoro.Presenter.Presenter_Boards;
 import com.example.mostafa.pomodoro.R;
@@ -90,7 +90,7 @@ public class trelloBoards extends Fragment {
 
 
     public void goToMain() {
-        ((BottomNavigator)getActivity()).loadFragment(new trelloLogin());
+        ((BottomNavigatorActivity)getActivity()).loadFragment(new trelloLogin());
     }
 
 }

@@ -1,19 +1,15 @@
 package com.example.mostafa.pomodoro.Network;
 
 import android.content.Context;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.util.Log;
 
 import com.example.mostafa.pomodoro.Model.TODOitem;
-import com.example.mostafa.pomodoro.Presenter.Presenter_timer;
+import com.example.mostafa.pomodoro.Presenter.Presenter_TODOitems;
 //import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
 
 public class Network_timer {
 
@@ -24,10 +20,10 @@ public class Network_timer {
     private DatabaseReference usersRef = dref.child("users");
     private DatabaseReference IDref;// = usersRef.child(FirebaseAuth.getInstance().getCurrentUser().getUid());
 
-    Presenter_timer presenter;
+    Presenter_TODOitems presenter;
 
 
-    public Network_timer(Presenter_timer presenter, Context ctx) {
+    public Network_timer(Presenter_TODOitems presenter, Context ctx) {
         this.presenter = presenter;
         addChildEventListener();
     }

@@ -1,20 +1,17 @@
 package com.example.mostafa.pomodoro;
 
 import android.content.Context;
-import android.graphics.Color;
 import android.support.annotation.NonNull;
 import android.support.constraint.ConstraintLayout;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.example.mostafa.pomodoro.Model.TODOitem;
-import com.example.mostafa.pomodoro.Presenter.Presenter_timer;
+import com.example.mostafa.pomodoro.Presenter.Presenter_TODOitems;
 
 import java.util.ArrayList;
 
@@ -29,9 +26,9 @@ public class RecyclerViewAdapter_TODOs extends RecyclerView.Adapter<RecyclerView
     private static final String TAG = "RecyclerViewAdapter_TODOs";
     private ArrayList<TODOitem> mItems= new ArrayList<TODOitem>();
     private Context mContext;
-    private Presenter_timer presenter;
+    private Presenter_TODOitems presenter;
 
-    public RecyclerViewAdapter_TODOs(Presenter_timer presenter, ArrayList<TODOitem> mItems, Context context){
+    public RecyclerViewAdapter_TODOs(Presenter_TODOitems presenter, ArrayList<TODOitem> mItems, Context context){
         this.presenter=presenter;
         this.mItems=mItems;
         this.mContext=context;
@@ -50,7 +47,7 @@ public class RecyclerViewAdapter_TODOs extends RecyclerView.Adapter<RecyclerView
     public void onBindViewHolder(@NonNull final ViewHolder holder, final int position) {
         if(!mItems.isEmpty() && holder != null && holder.itemName!= null) {
             holder.itemName.setText(mItems.get(position).getDescription());
-            presenter.getTimer().updateBtnText(holder.addPomodoroBtn, mItems.get(position));
+            presenter.getTimerFragment().updateBtnText(holder.addPomodoroBtn, mItems.get(position));
             presenter.getNetwork().getItemsRef().child(mItems.get(position).getDescription()).child("pomodoros");
 
             holder.parentLayout.setOnClickListener(new View.OnClickListener() {
@@ -96,7 +93,7 @@ public class RecyclerViewAdapter_TODOs extends RecyclerView.Adapter<RecyclerView
                 public void onClick(View view) {
                     TODOitem itemSelected= presenter.getItems().get(getAdapterPosition());
                     increasePomododro(itemSelected);
-                    presenter.getTimer().updateBtnText(addPomodoroBtn, itemSelected);
+                    presenter.getTimerFragment().updateBtnText(addPomodoroBtn, itemSelected);
                     presenter.getNetwork().updatePomodoros(itemSelected);
                 }
             });
@@ -110,7 +107,7 @@ public class RecyclerViewAdapter_TODOs extends RecyclerView.Adapter<RecyclerView
                         presenter.getNetwork().removeNode(itemSelected.getDescription());
                     }
                     else{
-                        presenter.getTimer().updateBtnText(addPomodoroBtn, itemSelected);
+                        presenter.getTimerFragment().updateBtnText(addPomodoroBtn, itemSelected);
                         presenter.getNetwork().updatePomodoros(itemSelected);
                     }
                 }

@@ -7,10 +7,8 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
-import android.support.v7.widget.AlertDialogLayout;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,16 +17,12 @@ import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
-import com.android.volley.VolleyError;
-import com.example.mostafa.pomodoro.Activities.BottomNavigator;
-import com.example.mostafa.pomodoro.Model.TrelloBoard;
+import com.example.mostafa.pomodoro.Activities.BottomNavigatorActivity;
 import com.example.mostafa.pomodoro.Model.TrelloCard;
-import com.example.mostafa.pomodoro.Presenter.Presenter_Boards;
 import com.example.mostafa.pomodoro.Presenter.Presenter_Cards;
 import com.example.mostafa.pomodoro.R;
 
 import org.jdeferred.DoneCallback;
-import org.jdeferred.FailCallback;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -37,8 +31,6 @@ import java.util.ArrayList;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-import static android.os.Build.VERSION_CODES.O;
-import static com.example.mostafa.pomodoro.Model.TrelloBoard.parseJSONArrayIntoBoards;
 import static com.example.mostafa.pomodoro.Model.TrelloCard.parseJSONArrayIntoCards;
 
 @SuppressLint("ValidFragment")
@@ -151,7 +143,7 @@ public class trelloCards extends Fragment {
 
 
     public void goToMain() {
-        ((BottomNavigator)getActivity()).loadFragment(new trelloLogin());
+        ((BottomNavigatorActivity)getActivity()).loadFragment(new trelloLogin());
     }
 
 }

@@ -4,7 +4,7 @@ import android.content.Context;
 import android.graphics.Color;
 import android.support.v7.widget.LinearLayoutManager;
 
-import com.example.mostafa.pomodoro.Fragments.timer;
+import com.example.mostafa.pomodoro.Fragments.TimerFragment;
 import com.example.mostafa.pomodoro.Model.TODOitem;
 import com.example.mostafa.pomodoro.Network.Network_timer;
 import com.example.mostafa.pomodoro.RecyclerViewAdapter_TODOs;
@@ -13,7 +13,7 @@ import com.example.mostafa.pomodoro.RecyclerViewAdapter_TODOs_done;
 
 import java.util.ArrayList;
 
-public class Presenter_timer {
+public class Presenter_TODOitems {
     private ArrayList<TODOitem> items = new ArrayList<TODOitem>();
     private ArrayList<TODOitem> doneItems = new ArrayList<TODOitem>();
 
@@ -23,29 +23,27 @@ public class Presenter_timer {
     private RecyclerViewAdapter_TODOs adapter;
     private RecyclerViewAdapter_TODOs_done doneAdapter;
 
-    private timer timer;
+    private TimerFragment timerFragment;
     private Network_timer network;
-    private Context ctx;
 
-    public Presenter_timer(timer timer, Context ctx) {
-        this.timer = timer;
-        this.ctx = ctx;
+    public Presenter_TODOitems(TimerFragment TimerFragment, Context ctx) {
+        this.timerFragment = TimerFragment;
         network = new Network_timer(this, ctx);
 
         adapter=new RecyclerViewAdapter_TODOs(this, items, ctx);
-        timer.getRecyclerView().setAdapter(adapter);
-        timer.getRecyclerView().setLayoutManager(new LinearLayoutManager(ctx));
-        timer.getRecyclerView().setNestedScrollingEnabled(false);
+        TimerFragment.getRecyclerView_todoList().setAdapter(adapter);
+        TimerFragment.getRecyclerView_todoList().setLayoutManager(new LinearLayoutManager(ctx));
+        TimerFragment.getRecyclerView_todoList().setNestedScrollingEnabled(false);
 
         doneAdapter=new RecyclerViewAdapter_TODOs_done(this, doneItems, ctx);
-        timer.getRecyclerView2().setAdapter(doneAdapter);
-        timer.getRecyclerView2().setLayoutManager(new LinearLayoutManager(ctx));
-        timer.getRecyclerView2().setNestedScrollingEnabled(false);
+        TimerFragment.getRecyclerView_doneList().setAdapter(doneAdapter);
+        TimerFragment.getRecyclerView_doneList().setLayoutManager(new LinearLayoutManager(ctx));
+        TimerFragment.getRecyclerView_doneList().setNestedScrollingEnabled(false);
     }
 
     public void onAddBtnClicked() {
-        String itemEntered = timer.getItemEditText().getText().toString();
-        timer.getItemEditText().setText("");
+        String itemEntered = timerFragment.getItemNameField().getText().toString();
+        timerFragment.getItemNameField().setText("");
         TODOitem newItem = new TODOitem(itemEntered);
         network.addItem(newItem);
     }
@@ -72,7 +70,6 @@ public class Presenter_timer {
         for (int i=0;i<items.size();i++) {
             if(items.get(i).getDescription().equals(item.getDescription()))
                 items.remove(i);
-
         }
         notifyAdapter();
     }
@@ -81,8 +78,8 @@ public class Presenter_timer {
         return items;
     }
 
-    public com.example.mostafa.pomodoro.Fragments.timer getTimer() {
-        return timer;
+    public TimerFragment getTimerFragment() {
+        return timerFragment;
     }
 
     public Network_timer getNetwork() {

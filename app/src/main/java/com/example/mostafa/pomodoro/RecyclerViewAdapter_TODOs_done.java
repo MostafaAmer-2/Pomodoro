@@ -11,24 +11,20 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.example.mostafa.pomodoro.Model.TODOitem;
-import com.example.mostafa.pomodoro.Presenter.Presenter_timer;
+import com.example.mostafa.pomodoro.Presenter.Presenter_TODOitems;
 
 import java.util.ArrayList;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-import static com.example.mostafa.pomodoro.Model.TODOitem.decreasePomododro;
-import static com.example.mostafa.pomodoro.Model.TODOitem.increasePomododro;
-import static com.example.mostafa.pomodoro.Model.TODOitem.markDone;
-
 public class RecyclerViewAdapter_TODOs_done extends RecyclerView.Adapter<RecyclerViewAdapter_TODOs_done.ViewHolder>{
     private static final String TAG = "RecyclerViewAdapter_TODOs";
     private ArrayList<TODOitem> mItems= new ArrayList<TODOitem>();
     private Context mContext;
-    private Presenter_timer presenter;
+    private Presenter_TODOitems presenter;
 
-    public RecyclerViewAdapter_TODOs_done(Presenter_timer presenter, ArrayList<TODOitem> mItems, Context context){
+    public RecyclerViewAdapter_TODOs_done(Presenter_TODOitems presenter, ArrayList<TODOitem> mItems, Context context){
         this.presenter=presenter;
         this.mItems=mItems;
         this.mContext=context;

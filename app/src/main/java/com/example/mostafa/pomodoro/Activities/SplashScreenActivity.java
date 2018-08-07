@@ -21,8 +21,8 @@ import org.json.JSONArray;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class MainActivity extends Activity {
-    private static final String TAG = "MainActivity";
+public class SplashScreenActivity extends Activity {
+    private static final String TAG = "SplashScreenActivity";
     @BindView(R.id.imageView)
     ImageView splashScreenImage;
 
@@ -36,7 +36,7 @@ public class MainActivity extends Activity {
     }
 
     private void goToBottomNavigator() {
-        Intent go_to_BottomNavigator = new Intent(getApplicationContext(), BottomNavigator.class);
+        Intent go_to_BottomNavigator = new Intent(getApplicationContext(), BottomNavigatorActivity.class);
         startActivity(go_to_BottomNavigator);
     }
 

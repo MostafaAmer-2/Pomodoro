@@ -5,18 +5,17 @@ import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.MenuItem;
 import android.widget.RelativeLayout;
 
-import com.example.mostafa.pomodoro.Fragments.timer;
+import com.example.mostafa.pomodoro.Fragments.TimerFragment;
 import com.example.mostafa.pomodoro.Fragments.trelloLogin;
 import com.example.mostafa.pomodoro.R;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class BottomNavigator extends AppCompatActivity {
+public class BottomNavigatorActivity extends AppCompatActivity {
 
     //  Presenter_Boards presenter; //Can be found in the fragment itself (the actual view)
     @BindView(R.id.relativeLayout)
@@ -33,13 +32,13 @@ public class BottomNavigator extends AppCompatActivity {
     }
 
     private void handleButtonNavigationFunctionality() {
-        loadFragment(new timer());
+        loadFragment(new TimerFragment());
         bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                 switch (item.getItemId()) {
                     case R.id.action_main:
-                        return loadFragment(new timer());
+                        return loadFragment(new TimerFragment());
                     case R.id.action_boards:
                         return loadFragment(new trelloLogin());
                     default:

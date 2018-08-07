@@ -92,7 +92,7 @@ public class trelloLists extends Fragment {
 
 
   //  public void goToMain() {
-  //      ((BottomNavigator)getActivity()).loadFragment(new trelloLogin());
+  //      ((BottomNavigatorActivity)getActivity()).loadFragment(new trelloLogin());
   //  }
 
 }

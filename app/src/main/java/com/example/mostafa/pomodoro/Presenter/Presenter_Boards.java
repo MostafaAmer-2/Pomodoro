@@ -1,10 +1,9 @@
 package com.example.mostafa.pomodoro.Presenter;
 
 import android.content.Context;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.LinearLayoutManager;
 
-import com.example.mostafa.pomodoro.Activities.BottomNavigator;
+import com.example.mostafa.pomodoro.Activities.BottomNavigatorActivity;
 import com.example.mostafa.pomodoro.Fragments.trelloBoards;
 import com.example.mostafa.pomodoro.Fragments.trelloLists;
 import com.example.mostafa.pomodoro.Model.TrelloBoard;
@@ -61,7 +60,7 @@ public class Presenter_Boards {
 
     public void goToLists(String token, String boardsID){
         trelloLists trelloLists= new trelloLists(token,boardsID);
-        ((BottomNavigator)boardsFrag.getActivity()).loadFragment(trelloLists);
+        ((BottomNavigatorActivity)boardsFrag.getActivity()).loadFragment(trelloLists);
     }
 }
 
