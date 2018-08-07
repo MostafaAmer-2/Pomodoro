@@ -15,20 +15,20 @@ public class Preferences {
         SharedPreferences sharedpreferences = ctx.getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedpreferences.edit();
         editor.putString("token", token);
-        editor.putString("isTokenValid", "true");
+        editor.putString("checkTokenValidityAndUpdatePrefrences", "true");
         editor.commit();
     }
 
     public static void saveDataFlag(Context ctx, boolean bool) {
         SharedPreferences sharedpreferences = ctx.getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedpreferences.edit();
-        editor.putBoolean("isTokenValid", bool);
+        editor.putBoolean("checkTokenValidityAndUpdatePrefrences", bool);
         editor.commit();
     }
 
     public static boolean loadDataFlag(Context ctx) {
         SharedPreferences sharedpreferences = ctx.getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);
-        return sharedpreferences.getBoolean("isTokenValid", false);
+        return sharedpreferences.getBoolean("checkTokenValidityAndUpdatePrefrences", false);
     }
 
     public static boolean isTokenPresent(Context ctx){

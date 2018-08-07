@@ -26,6 +26,7 @@ public class Network_Boards {
     public Network_Boards(Presenter_Boards presenter, Context ctx){
         requestQueue = Volley.newRequestQueue(ctx); // 'this' is the Context
         this.presenter=presenter;
+        this.ctx=ctx;
     }
 
     public RequestQueue getRequestQueue() {
@@ -75,7 +76,7 @@ public class Network_Boards {
                             if (error.networkResponse.statusCode == 400 || error.networkResponse.statusCode == 401) {
                                 SharedPreferences sharedPreferences = ctx.getSharedPreferences("sharedPrefs", Context.MODE_PRIVATE);
                                 SharedPreferences.Editor editor = sharedPreferences.edit();
-                                editor.putString("isTokenValid", "false");
+                                editor.putString("checkTokenValidityAndUpdatePrefrences", "false");
                                 editor.commit();
                             }
                         }

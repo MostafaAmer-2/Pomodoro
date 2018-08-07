@@ -5,8 +5,6 @@ import android.os.Bundle;
 
 import android.app.Activity;
 import android.os.Handler;
-import android.util.Log;
-import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
@@ -20,119 +18,63 @@ import org.jdeferred.DoneCallback;
 import org.jdeferred.FailCallback;
 import org.json.JSONArray;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
 public class MainActivity extends Activity {
     private static final String TAG = "MainActivity";
-
-    private Network_Boards network;
-    private String token;
+    @BindView(R.id.imageView)
+    ImageView splashScreenImage;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        ButterKnife.bind(this);
+        doSplashScreenAnimation();
+        checkTokenValidityAndUpdatePrefrences();
+    }
 
-        final ImageView image = (ImageView)findViewById(R.id.imageView);
-        final Animation animation1 = AnimationUtils.loadAnimation(getApplicationContext(),
-                R.anim.clockwise);
-        image.startAnimation(animation1);
+    private void goToBottomNavigator() {
+        Intent go_to_BottomNavigator = new Intent(getApplicationContext(), BottomNavigator.class);
+        startActivity(go_to_BottomNavigator);
+    }
+
+    private void doSplashScreenAnimation() {
+        final Animation clockwiseAnimation = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.clockwise);
+        splashScreenImage.startAnimation(clockwiseAnimation);
 
         Handler handler = new Handler();
         handler.postDelayed(new Runnable() {
             @Override
             public void run() {
-                image.startAnimation(animation1);
+                splashScreenImage.startAnimation(clockwiseAnimation);
             }
         }, 10000);
+    }
 
-        network =new Network_Boards(null, getApplicationContext());
-        token= Preferences.loadData(getApplicationContext());
+    public void checkTokenValidityAndUpdatePrefrences() {
+        String token = Preferences.loadData(getApplicationContext());
+        Network_Boards network = new Network_Boards(null, getApplicationContext());
 
-        Log.i(TAG, "testing token: "+ Preferences.loadData(getApplicationContext()));
-        if(Preferences.isTokenPresent(getApplicationContext())){
-            isTokenValid(Preferences.loadData(getApplicationContext()));
-            Log.i("SASA", "inside");
+        if (Preferences.isTokenPresent(getApplicationContext())) {
+            //initialized once to access methods of Network class. Will be initialized again in trelloBoards
+            network.testTokenValid(token).done(new DoneCallback<JSONArray>() {
+                @Override
+                public void onDone(JSONArray result) {
+                    Preferences.saveDataFlag(getApplicationContext(), true);
+                    goToBottomNavigator();
+                }
+            }).fail(new FailCallback<VolleyError>() {
+                @Override
+                public void onFail(VolleyError result) {
+                    Preferences.saveDataFlag(getApplicationContext(), false);
+                    goToBottomNavigator();
+                }
+            });
+        } else {
+            Preferences.saveDataFlag(getApplicationContext(), false);
+            goToBottomNavigator();
         }
-        else{
-            Log.i("SASA", "outside");
-            Preferences.saveDataFlag(getApplicationContext(),false);
-            Intent go_to_BottomNavigator = new Intent(getApplicationContext(), BottomNavigator.class);
-            startActivity(go_to_BottomNavigator);
-        }
-
-
-
     }
-
-
-
-
-    public void isTokenValid(String token){
-        network.testTokenValid(token).done(new DoneCallback<JSONArray>() {
-            @Override
-            public void onDone(JSONArray result) {
-                Preferences.saveDataFlag(getApplicationContext(),true);
-
-                Intent go_to_BottomNavigator = new Intent(getApplicationContext(), BottomNavigator.class);
-                startActivity(go_to_BottomNavigator);
-            }
-        });
-
-        network.testTokenValid(token).fail(new FailCallback<VolleyError>() {
-            @Override
-            public void onFail(VolleyError result) {
-                Preferences.saveDataFlag(getApplicationContext(),false);
-
-                Intent go_to_BottomNavigator = new Intent(getApplicationContext(), BottomNavigator.class);
-                startActivity(go_to_BottomNavigator);
-            }
-        });
-    }
-
-
-    public void clockwise(View view){
-        ImageView image = (ImageView)findViewById(R.id.imageView);
-        Animation animation1 = AnimationUtils.loadAnimation(getApplicationContext(),
-                R.anim.clockwise);
-        image.startAnimation(animation1);
-
-    }
-
-    public void zoom(View view){
-
-        ImageView image = (ImageView)findViewById(R.id.imageView);
-        Animation animation = AnimationUtils.loadAnimation(getApplicationContext(),
-                R.anim.myanimation);
-        image.startAnimation(animation);
-    }
-
-    public void fade(View view){
-        ImageView image = (ImageView)findViewById(R.id.imageView);
-        Animation animation1 =
-                AnimationUtils.loadAnimation(getApplicationContext(),
-                        R.anim.fade);
-        image.startAnimation(animation1);
-    }
-
-    public void blink(View view){
-        ImageView image = (ImageView)findViewById(R.id.imageView);
-        Animation animation1 =
-                AnimationUtils.loadAnimation(getApplicationContext(),
-                        R.anim.blink);
-        image.startAnimation(animation1);
-    }
-
-    public void move(View view){
-        ImageView image = (ImageView)findViewById(R.id.imageView);
-        Animation animation1 =
-                AnimationUtils.loadAnimation(getApplicationContext(), R.anim.move);
-        image.startAnimation(animation1);
-    }
-
-    public void slide(View view){
-        ImageView image = (ImageView)findViewById(R.id.imageView);
-        Animation animation1 =
-                AnimationUtils.loadAnimation(getApplicationContext(), R.anim.slide);
-        image.startAnimation(animation1);
-    }
-
 }

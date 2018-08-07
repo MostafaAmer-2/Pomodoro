@@ -36,7 +36,6 @@ public class trelloBoards extends Fragment {
     @BindView(R.id.progressBar)
     ProgressBar progressBar;
 
-
     Presenter_Boards presenter;
     String token;
 

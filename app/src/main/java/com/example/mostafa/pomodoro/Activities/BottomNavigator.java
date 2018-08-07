@@ -1,11 +1,7 @@
 package com.example.mostafa.pomodoro.Activities;
 
-import android.app.Activity;
-
-import android.graphics.Color;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
-
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -17,64 +13,42 @@ import com.example.mostafa.pomodoro.Fragments.timer;
 import com.example.mostafa.pomodoro.Fragments.trelloLogin;
 import com.example.mostafa.pomodoro.R;
 
-import org.jdeferred.Deferred;
-import org.jdeferred.DoneCallback;
-import org.jdeferred.Promise;
-import org.jdeferred.impl.DeferredObject;
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class BottomNavigator extends AppCompatActivity {
 
-  //  Presenter_Boards presenter; //Can be found in the fragment itself (the actual view)
+    //  Presenter_Boards presenter; //Can be found in the fragment itself (the actual view)
     @BindView(R.id.relativeLayout)
     RelativeLayout relativeLayout;
+    @BindView(R.id.bottom_navigation)
+    BottomNavigationView bottomNavigationView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_bottom_navigator);
         ButterKnife.bind(this);
-        BottomNavigationView bottomNavigationView= (BottomNavigationView) findViewById(R.id.bottom_navigation);
+        loadFragment(new timer());
         bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-                Fragment fragmentToBeLoaded=null;
-                switch(item.getItemId()){
+                switch (item.getItemId()) {
                     case R.id.action_main:
-                        fragmentToBeLoaded=new timer();
-                        break;
-
+                        return loadFragment(new timer());
                     case R.id.action_boards:
-                        fragmentToBeLoaded = new trelloLogin();
-                        break;
+                        return loadFragment(new trelloLogin());
+                    default:
+                        return false;
                 }
-                return loadFragment(fragmentToBeLoaded);
             }
         });
 
-        loadFragment(new timer());
     }
 
-    public boolean loadFragment(Fragment fragment){
-
-        if(fragment!=null){
-            getSupportFragmentManager().
-                    beginTransaction().replace(R.id.fragment_container, fragment).commit();
-            return true;
-        }
-        return false;
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-        Bundle bundle = getIntent().getExtras();
-        if (bundle!=null)
-            Log.i("SASAA", "onResume: "+bundle.toString());
-        else
-            Log.i("SASAA", "onResume: nsaing");
+    public boolean loadFragment(Fragment fragment) {
+        getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, fragment).commit();
+        return true;
     }
 
 }

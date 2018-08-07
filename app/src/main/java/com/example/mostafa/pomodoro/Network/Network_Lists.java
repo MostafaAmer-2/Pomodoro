@@ -76,7 +76,7 @@ public class Network_Lists {
                         if(error.networkResponse!= null && error.networkResponse.statusCode== 400 || error.networkResponse.statusCode== 401 ) {
                             SharedPreferences sharedPreferences=ctx.getSharedPreferences("sharedPrefs",Context.MODE_PRIVATE);
                             SharedPreferences.Editor editor = sharedPreferences.edit();
-                            editor.putString("isTokenValid", "false");
+                            editor.putString("checkTokenValidityAndUpdatePrefrences", "false");
                             editor.commit();
                         }
                     }
