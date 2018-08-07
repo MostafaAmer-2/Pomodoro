@@ -35,6 +35,8 @@ import butterknife.ButterKnife;
 
 import static android.content.Context.MODE_PRIVATE;
 import static android.content.Context.NOTIFICATION_SERVICE;
+import static com.example.mostafa.pomodoro.Model.TODOitem.decreasePomododro;
+import static com.example.mostafa.pomodoro.Model.TODOitem.markDone;
 
 public class timer extends Fragment {
     private static final String TAG = "timer";
@@ -134,21 +136,23 @@ public class timer extends Fragment {
     }
 
     private void popNotification() {
-        notification.setSmallIcon(R.drawable.pomodoro);
-        notification.setTicker("Pomodoro done");
-        notification.setWhen(System.currentTimeMillis());
-        notification.setContentTitle("It's Break Time");
-        notification.setContentText("Reward yourself with a break");
-        notification.setDefaults(Notification.DEFAULT_SOUND);
+        if(onBreak){
+            notification.setSmallIcon(R.drawable.pomodoro);
+            notification.setTicker("Pomodoro done");
+            notification.setWhen(System.currentTimeMillis());
+            notification.setContentTitle("It's Break Time");
+            notification.setContentText("Reward yourself with a break");
+            notification.setDefaults(Notification.DEFAULT_SOUND);
 
-        Intent intent = new Intent(getActivity().getApplicationContext(), BottomNavigator.class);
-        PendingIntent pendingIntent = PendingIntent.getActivity(getActivity().getApplicationContext(), 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
-        notification.setContentIntent(pendingIntent);
+            Intent intent = new Intent(getActivity().getApplicationContext(), BottomNavigator.class);
+            PendingIntent pendingIntent = PendingIntent.getActivity(getActivity().getApplicationContext(), 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+            notification.setContentIntent(pendingIntent);
 
 
-        //Builds notification and issues it
-        NotificationManager nm = (NotificationManager) getActivity().getSystemService(NOTIFICATION_SERVICE);
-        nm.notify(id, notification.build());
+            //Builds notification and issues it
+            NotificationManager nm = (NotificationManager) getActivity().getSystemService(NOTIFICATION_SERVICE);
+            nm.notify(id, notification.build());
+        }
     }
 
     private void updateButtonsOnDone() {
@@ -223,6 +227,27 @@ public class timer extends Fragment {
         paintBackground();
         updateButtonsOnDone();
         popNotification();
+
+        Log.i(TAG, "doneTimer: "+onBreak);
+
+        //decreasing a pomodoro
+        TODOitem currentItem= presenter.getCurrentItem();
+        if(currentItem!= null && onBreak){
+            decreasePomododro(currentItem);
+            presenter.getNetwork().updatePomodoros(currentItem);
+            updateBtnText(presenter.getCurrentHolder().add_pomodoro_btn, currentItem);
+            if(currentItem.getPomodoros()==0){
+                presenter.getNetwork().removeNode(currentItem.getDescription());
+                markDone(currentItem);
+                presenter.getNetwork().addNode(currentItem.getDescription(),currentItem.isDone(),currentItem.getPomodoros());
+
+                //resetting everything in the viewHolder
+                presenter.setCurrentItem(null);
+                int normalColor = Color.argb(255,226,193,199);
+                presenter.getCurrentHolder().parent_layout.setBackgroundColor(normalColor);
+                presenter.setCurrentHolder(null);
+            }
+        }
     }
 
     private void updateState() {
@@ -333,7 +358,9 @@ public class timer extends Fragment {
     }
 
     public RecyclerView getRecyclerView2() {
-        return recyclerView2;
+        RecyclerView rec= this.recyclerView2;
+
+        return rec;
     }
 
     public void setRecyclerView(RecyclerView recyclerView) {

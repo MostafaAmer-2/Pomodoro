@@ -2,17 +2,22 @@ package com.example.mostafa.pomodoro.Presenter;
 
 import android.content.Context;
 import android.support.v7.widget.LinearLayoutManager;
+import android.widget.Toast;
 
-import com.example.mostafa.pomodoro.Activities.BottomNavigator;
-import com.example.mostafa.pomodoro.Fragments.trelloBoards;
+import com.android.volley.VolleyError;
 import com.example.mostafa.pomodoro.Fragments.trelloCards;
-import com.example.mostafa.pomodoro.Fragments.trelloLists;
-import com.example.mostafa.pomodoro.Model.TrelloBoard;
+import com.example.mostafa.pomodoro.Model.TODOitem;
 import com.example.mostafa.pomodoro.Model.TrelloCard;
-import com.example.mostafa.pomodoro.Network.Network_Boards;
 import com.example.mostafa.pomodoro.Network.Network_Cards;
-import com.example.mostafa.pomodoro.RecyclerViewAdapter_Boards;
 import com.example.mostafa.pomodoro.RecyclerViewAdapter_Cards;
+
+
+import org.jdeferred.Deferred;
+import org.jdeferred.DoneCallback;
+import org.jdeferred.FailCallback;
+import org.jdeferred.Promise;
+import org.jdeferred.impl.DeferredObject;
+import org.json.JSONArray;
 
 import java.util.ArrayList;
 
@@ -64,6 +69,22 @@ public class Presenter_Cards {
 
     public RecyclerViewAdapter_Cards getAdapter() {
         return adapter;
+    }
+
+    public void onItemLongClicked(String name) {
+        TODOitem newItem = new TODOitem(name);
+        network.addItem(newItem).done(new DoneCallback<String>() {
+            @Override
+            public void onDone(String result) {
+                Toast.makeText(ctx, result, Toast.LENGTH_SHORT).show();
+            }
+        });
+        network.addItem(newItem).fail(new FailCallback<String>() {
+            @Override
+            public void onFail(String result) {
+                Toast.makeText(ctx, result, Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 }
 

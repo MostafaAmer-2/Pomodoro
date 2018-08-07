@@ -12,8 +12,12 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
+import com.example.mostafa.pomodoro.Model.TODOitem;
 import com.example.mostafa.pomodoro.Presenter.Presenter_Cards;
 import com.example.mostafa.pomodoro.Presenter.Presenter_Lists;
+import com.google.firebase.FirebaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 import org.jdeferred.Deferred;
 import org.jdeferred.Promise;
@@ -22,6 +26,9 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 public class Network_Cards {
+
+    private DatabaseReference dref = FirebaseDatabase.getInstance().getReference();
+    private DatabaseReference itemsRef = dref.child("items");
 
     private RequestQueue requestQueue;
     private Presenter_Cards presenter;
@@ -116,5 +123,18 @@ public class Network_Cards {
 
     public void setPresenter(Presenter_Cards presenter) {
         this.presenter = presenter;
+    }
+
+    public Promise<String, String, Double> addItem(TODOitem newItem) {
+        final Deferred<String, String, Double> deferred = new DeferredObject<>();
+        try{
+            itemsRef.child(newItem.getDescription()).child("isDone").setValue(newItem.isDone());
+            itemsRef.child(newItem.getDescription()).child("pomodoros").setValue(newItem.getPomodoros());
+            deferred.resolve("Item added");
+        }
+        catch(Error error){
+            deferred.reject("Item not added");
+        }
+        return deferred.promise();
     }
 }

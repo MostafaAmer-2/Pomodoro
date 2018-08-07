@@ -45,12 +45,16 @@ public class RecyclerViewAdapter_Cards extends RecyclerView.Adapter<RecyclerView
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, final int position) {
-        if(!mItems.isEmpty() && holder != null && holder.itemName!= null) {
-            holder.itemName.setText(mItems.get(position).getName());
-        }
-        else{
-            //print outside
-        }
+        holder.itemName.setText(mItems.get(position).getName());
+        holder.parentLayout.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View view) {
+                presenter.onItemLongClicked(mItems.get(position).getName());
+                notifyDataSetChanged();
+                return false;
+            }
+        });
+
     }
 
     @Override

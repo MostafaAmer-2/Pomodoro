@@ -46,7 +46,6 @@ public class TODOitem {
     }
 
     public static TODOitem convertToItem(DataSnapshot snapshot) {
-        Log.i("ayHaga", "convertToItem: "+snapshot.toString());
         if(snapshot.child("pomodoros").getValue()!=null)
             return new TODOitem(snapshot.getKey(), Boolean.parseBoolean(snapshot.child("isDone").getValue().toString()),Integer.parseInt(snapshot.child("pomodoros").getValue().toString()));
         else
@@ -59,6 +58,14 @@ public class TODOitem {
     }
 
     public static void decreasePomododro(TODOitem item){
-        item.pomodoros=item.pomodoros-1;
+        if(item.pomodoros>=1)
+            item.pomodoros=item.pomodoros-1;
+        else{
+            item.pomodoros=0;
+        }
+    }
+
+    public static void markDone(TODOitem item){
+        item.done=true;
     }
 }

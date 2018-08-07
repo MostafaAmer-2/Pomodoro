@@ -58,7 +58,6 @@ public class Network_timer {
                    presenter.addItem(itemToBeAdded);
                else
                    presenter.addItemDone(itemToBeAdded);
-
 //                Log.i("Network_timer", "Item"+itemToBeAdded.getDescription());
 //                Log.i("pst", "onChildAdded: "+dataSnapshot.child("pomodoros").getValue().toString());
 //                itemToBeAdded.setPomodoros((int)(long)dataSnapshot.child("pomodoros").getValue());
@@ -69,7 +68,7 @@ public class Network_timer {
 
             @Override
             public void onChildChanged(DataSnapshot dataSnapshot, String s) {
-
+                presenter.notifyAdapter();
             }
 
             /**
@@ -83,12 +82,12 @@ public class Network_timer {
 
             @Override
             public void onChildMoved(DataSnapshot dataSnapshot, String s) {
-
+                presenter.notifyAdapter();
             }
 
             @Override
             public void onCancelled(DatabaseError databaseError) {
-
+                presenter.notifyAdapter();
             }
         });
 
@@ -109,4 +108,21 @@ public class Network_timer {
     public DatabaseReference getItemsRef() {
         return itemsRef;
     }
+
+    public void removeNode(String name) {
+        presenter.getNetwork().getItemsRef().child(name).setValue(null);
+        presenter.notifyAdapter();
+
+    }
+
+    public void addNode(String itemName, boolean done, int pomodoros) {
+        presenter.getNetwork().getItemsRef().child(itemName).child("isDone").setValue(done);
+        presenter.getNetwork().getItemsRef().child(itemName).child("pomodoros").setValue(pomodoros);
+
+    }
+
+    //TODO: Not needed for now
+//    public void markDone(TODOitem itemSelected) {
+//        itemsRef.child(itemSelected.getDescription()).child("isDone").setValue(itemSelected.isDone());
+//    }
 }
