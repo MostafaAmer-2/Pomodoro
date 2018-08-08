@@ -32,8 +32,8 @@ public class Presenter_Boards {
 
     private void initAdapter(Context ctx, ArrayList<TrelloBoard> items) {
         adapter=new RecyclerViewAdapter_Boards(this, items, ctx);
-        boardsFrag.getRecyclerView().setAdapter(adapter);
-        boardsFrag.getRecyclerView().setLayoutManager(new LinearLayoutManager(ctx));
+        boardsFrag.getRecyclerView_bards().setAdapter(adapter);
+        boardsFrag.getRecyclerView_bards().setLayoutManager(new LinearLayoutManager(ctx));
     }
 
 

@@ -186,23 +186,9 @@ public class TimerFragment extends Fragment {
         prefs = getActivity().getApplicationContext().getSharedPreferences("prefs", MODE_PRIVATE);
         downloadFromSharedPreferences();
         updateCountDownText();
-        mButtonStartPause.setText("start");
-
-        if (mTimerRunning) {
-            mEndTime = prefs.getLong("endTime", 0);
-            mTimeLeftInMillis = mEndTime - System.currentTimeMillis();
-            if (mTimeLeftInMillis <= 0) {
-                mTimeLeftInMillis = 0;
-                mTimerRunning = false;
-                presenter_timer.resetTimer();
-//                pauseTimer();
-                presenter_timer.updateState();
-                paintBackground();
-                presenter_timer.updateButtonsOnDone();
-            } else {
-                presenter_timer.startTimer();
-            }
-        }
+//        mButtonStartPause.setText("start");
+        presenter_timer.checkIfTimerFinished();
+        paintBackground();
     }
 
     private void downloadFromSharedPreferences() {
@@ -296,5 +282,17 @@ public class TimerFragment extends Fragment {
 
     public void setmEndTime(long mEndTime) {
         this.mEndTime = mEndTime;
+    }
+
+    public boolean ismTimerRunning() {
+        return mTimerRunning;
+    }
+
+    public SharedPreferences getPrefs() {
+        return prefs;
+    }
+
+    public long getmEndTime() {
+        return mEndTime;
     }
 }

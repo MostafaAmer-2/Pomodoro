@@ -4,7 +4,6 @@ import android.content.Context;
 import android.support.v7.widget.LinearLayoutManager;
 import android.widget.Toast;
 
-import com.android.volley.VolleyError;
 import com.example.mostafa.pomodoro.Fragments.trelloCards;
 import com.example.mostafa.pomodoro.Model.TODOitem;
 import com.example.mostafa.pomodoro.Model.TrelloCard;
@@ -12,12 +11,8 @@ import com.example.mostafa.pomodoro.Network.Network_Cards;
 import com.example.mostafa.pomodoro.RecyclerViewAdapter_Cards;
 
 
-import org.jdeferred.Deferred;
 import org.jdeferred.DoneCallback;
 import org.jdeferred.FailCallback;
-import org.jdeferred.Promise;
-import org.jdeferred.impl.DeferredObject;
-import org.json.JSONArray;
 
 import java.util.ArrayList;
 
@@ -41,8 +36,8 @@ public class Presenter_Cards {
 
     private void initAdapter(Context ctx, ArrayList<TrelloCard> items) {
         adapter=new RecyclerViewAdapter_Cards(this, items, ctx);
-        cardsFrag.getRecyclerView().setAdapter(adapter);
-        cardsFrag.getRecyclerView().setLayoutManager(new LinearLayoutManager(ctx));
+        cardsFrag.getRecyclerView_cards().setAdapter(adapter);
+        cardsFrag.getRecyclerView_cards().setLayoutManager(new LinearLayoutManager(ctx));
     }
 
 

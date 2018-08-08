@@ -32,7 +32,7 @@ public class trelloBoards extends Fragment {
 
     private static final String TAG = "trelloBoards";
     @BindView(R.id.recycler_view)
-    RecyclerView recyclerView;
+    RecyclerView recyclerView_boards;
     @BindView(R.id.progressBar)
     ProgressBar progressBar;
 
@@ -51,28 +51,28 @@ public class trelloBoards extends Fragment {
         ButterKnife.bind(this, view);
 
         presenter =new Presenter_Boards(this, getContext().getApplicationContext());
+        startProgressBar();
+        loadBoards();
+        return view;
+    }
 
-        recyclerView.setVisibility(View.INVISIBLE);
+    private void startProgressBar() {
+        recyclerView_boards.setVisibility(View.INVISIBLE);
         progressBar.setVisibility(View.VISIBLE);
+    }
 
-
+    private void loadBoards() {
         presenter.getNetwork().getBoards(token).done(new DoneCallback<JSONArray>() {
             @Override
             public void onDone(JSONArray result) {
                 ArrayList<TrelloBoard> boards = parseJSONArrayIntoBoards(result);
                 presenter.setItems(getContext().getApplicationContext(), boards);
                 RecyclerView.LayoutManager mLayoutManager = new GridLayoutManager(getActivity().getApplicationContext(), 2);
-                getRecyclerView().setLayoutManager(mLayoutManager);
-                recyclerView.setVisibility(View.VISIBLE);
+                getRecyclerView_bards().setLayoutManager(mLayoutManager);
+                recyclerView_boards.setVisibility(View.VISIBLE);
                 progressBar.setVisibility(View.INVISIBLE);
             }
         });
-
-
-
-
-
-        return view;
     }
 
 
@@ -83,8 +83,8 @@ public class trelloBoards extends Fragment {
 
     }
 
-    public RecyclerView getRecyclerView() {
-        return recyclerView;
+    public RecyclerView getRecyclerView_bards() {
+        return recyclerView_boards;
     }
 
 

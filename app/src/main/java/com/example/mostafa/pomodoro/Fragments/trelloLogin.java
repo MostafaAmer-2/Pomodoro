@@ -30,15 +30,12 @@ public class trelloLogin extends Fragment {
     @BindView(R.id.loginBtn)
     Button loginBtn;
     @BindView(R.id.enterButton)
-    Button enterButton;
+    Button enterTokenButton;
     @BindView(R.id.editText)
-    EditText editText;
+    EditText tokenField;
 
-    private boolean returned=false;
-    private String key="51eb6eb13ad2f6cc5bcb87fc923ea427";
-    private String secret="512eb8d81b5a5e139c64a58d49b471e6f3c7b572123423cc99705dc3323c76be";
-
-    public static String token="";
+    private boolean returnedFromLogin = false;
+    public static String token = "";
 
 
     @Nullable
@@ -46,51 +43,52 @@ public class trelloLogin extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
 
-        View view=inflater.inflate(R.layout.fragment_trello_login,null);;
+        View view = inflater.inflate(R.layout.fragment_trello_login, null);
+        ;
         ButterKnife.bind(this, view);
 
-        token=Preferences.loadData(getActivity().getApplicationContext());
-        if(Preferences.isTokenPresent(getActivity().getApplicationContext()) && Preferences.loadDataFlag(getActivity().getApplicationContext())){ //token already has a value stored
-            Log.i(TAG, "onClick1: "+token);
+        loadToken();
+        if (Preferences.isTokenPresent(getActivity().getApplicationContext()) && Preferences.loadDataFlag(getActivity().getApplicationContext())) { //token already has a value stored
             goToBoards();
-        }
-        else {
-
-            Log.i(TAG, "onClick2: "+token);
-            if (!returned) {
+        } else { //No Valid token present
+            if (!returnedFromLogin) { //Still did not go to trello login page
                 linearLayout.setVisibility(View.INVISIBLE);
             }
-
-            loginBtn.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    returned = true;
-                    Intent intent = new Intent(Intent.ACTION_VIEW, Uri
-                            .parse("https://trello.com/1/authorize?expiration=never&scope=read,write,account&response_type=token&name=Server%20Token&key=51eb6eb13ad2f6cc5bcb87fc923ea427"));
-                    startActivity(intent);
-                    Toast.makeText(getActivity(), "Please Copy your token into your clipboard", Toast.LENGTH_LONG).show();
-                }
-            });
-
-            enterButton.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    Preferences.saveData(getActivity().getApplicationContext(),editText.getText().toString());
-                   // loadData();
-                    goToBoards();
-                }
-            });
-
+            setButtonListeners();
         }
 
         return view;
     }
 
+    private void setButtonListeners() {
+        loginBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                returnedFromLogin = true;
+                Intent intent = new Intent(Intent.ACTION_VIEW, Uri
+                        .parse("https://trello.com/1/authorize?expiration=never&scope=read,write,account&response_type=token&name=Server%20Token&key=51eb6eb13ad2f6cc5bcb87fc923ea427"));
+                startActivity(intent);
+                Toast.makeText(getActivity(), "Please Copy your token into your clipboard", Toast.LENGTH_LONG).show();
+            }
+        });
+
+        enterTokenButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Preferences.saveData(getActivity().getApplicationContext(), tokenField.getText().toString());
+                // loadData();
+                goToBoards();
+            }
+        });
+    }
+
+    private void loadToken() {
+        token = Preferences.loadData(getActivity().getApplicationContext());
+    }
 
 
     private void goToBoards() {
-        ((BottomNavigatorActivity)getActivity()).loadFragment(new trelloBoards(token));
-        Log.i(TAG, "goToBoards: "+Preferences.loadData(getActivity().getApplicationContext()));
+        ((BottomNavigatorActivity) getActivity()).loadFragment(new trelloBoards(token));
     }
 
 
@@ -98,7 +96,7 @@ public class trelloLogin extends Fragment {
     public void onResume() {
         super.onResume();
 
-        if(returned==true){
+        if (returnedFromLogin == true) {
             linearLayout.setVisibility(View.VISIBLE);
         }
     }

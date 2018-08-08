@@ -38,11 +38,11 @@ public class trelloCards extends Fragment {
 
     private static final String TAG = "trelloCards";
     @BindView(R.id.recycler_view)
-    RecyclerView recyclerView;
+    RecyclerView recyclerView_cards;
     @BindView(R.id.progressBar)
     ProgressBar progressBar;
     @BindView(R.id.fab)
-    FloatingActionButton fab;
+    FloatingActionButton floatingActionButton;
 
 
     private Presenter_Cards presenter;
@@ -62,70 +62,80 @@ public class trelloCards extends Fragment {
         ButterKnife.bind(this, view);
 
         presenter =new Presenter_Cards(this, getContext().getApplicationContext());
+        startProgressBar();
+        loadCards();
+        addFloatingActionButtonListener();
 
-        recyclerView.setVisibility(View.INVISIBLE);
-        progressBar.setVisibility(View.VISIBLE);
+        return view;
+    }
 
+    private void addFloatingActionButtonListener() {
+        floatingActionButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                createAndPopAlertDialog();
+            }
+        });
 
+    }
+
+    private void createAndPopAlertDialog(){
+        AlertDialog.Builder mBuilder= new AlertDialog.Builder(getActivity());
+        View mView=getLayoutInflater().inflate(R.layout.dialog_add_card,null);
+        final EditText cardName=(EditText) mView.findViewById(R.id.cardName);
+        Button addCardBtn= (Button) mView.findViewById(R.id.addCardBtn);
+
+        mBuilder.setView(mView);
+        final AlertDialog dialog=mBuilder.create();
+        dialog.show();
+
+        addCardBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(!cardName.getText().toString().isEmpty()){
+                    recyclerView_cards.setVisibility(View.INVISIBLE);
+                    progressBar.setVisibility(View.VISIBLE);
+                    presenter.getNetwork().addCard(token,listID,cardName.getText().toString()).done(new DoneCallback<JSONObject>() {
+                        @Override
+                        public void onDone(JSONObject result) {
+                            presenter.getNetwork().getCards(token,listID).done(new DoneCallback<JSONArray>() {
+                                @Override
+                                public void onDone(JSONArray result) {
+                                    ArrayList<TrelloCard> cards = parseJSONArrayIntoCards(result);
+                                    presenter.setItems(getContext().getApplicationContext(), cards);
+                                    RecyclerView.LayoutManager mLayoutManager = new GridLayoutManager(getActivity().getApplicationContext(), 2);
+                                    getRecyclerView_cards().setLayoutManager(mLayoutManager);
+                                    recyclerView_cards.setVisibility(View.VISIBLE);
+                                    progressBar.setVisibility(View.INVISIBLE);
+                                }
+                            });
+                        }
+                    });
+                    dialog.dismiss();
+                }else{
+                    Toast.makeText(getActivity().getApplicationContext(), "Please Insert a Name", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+    }
+
+    private void loadCards() {
         presenter.getNetwork().getCards(token,listID).done(new DoneCallback<JSONArray>() {
             @Override
             public void onDone(JSONArray result) {
                 ArrayList<TrelloCard> cards = parseJSONArrayIntoCards(result);
                 presenter.setItems(getContext().getApplicationContext(), cards);
                 RecyclerView.LayoutManager mLayoutManager = new GridLayoutManager(getActivity().getApplicationContext(), 2);
-                getRecyclerView().setLayoutManager(mLayoutManager);
-                recyclerView.setVisibility(View.VISIBLE);
+                getRecyclerView_cards().setLayoutManager(mLayoutManager);
+                recyclerView_cards.setVisibility(View.VISIBLE);
                 progressBar.setVisibility(View.INVISIBLE);
             }
         });
+    }
 
-
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                AlertDialog.Builder mBuilder= new AlertDialog.Builder(getActivity());
-                View mView=getLayoutInflater().inflate(R.layout.dialog_add_card,null);
-                final EditText cardName=(EditText) mView.findViewById(R.id.cardName);
-                Button addCardBtn= (Button) mView.findViewById(R.id.addCardBtn);
-
-                mBuilder.setView(mView);
-                final AlertDialog dialog=mBuilder.create();
-                dialog.show();
-
-                addCardBtn.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        if(!cardName.getText().toString().isEmpty()){
-                            recyclerView.setVisibility(View.INVISIBLE);
-                            progressBar.setVisibility(View.VISIBLE);
-                            presenter.getNetwork().addCard(token,listID,cardName.getText().toString()).done(new DoneCallback<JSONObject>() {
-                                @Override
-                                public void onDone(JSONObject result) {
-                                    presenter.getNetwork().getCards(token,listID).done(new DoneCallback<JSONArray>() {
-                                        @Override
-                                        public void onDone(JSONArray result) {
-                                            ArrayList<TrelloCard> cards = parseJSONArrayIntoCards(result);
-                                            presenter.setItems(getContext().getApplicationContext(), cards);
-                                            RecyclerView.LayoutManager mLayoutManager = new GridLayoutManager(getActivity().getApplicationContext(), 2);
-                                            getRecyclerView().setLayoutManager(mLayoutManager);
-                                            recyclerView.setVisibility(View.VISIBLE);
-                                            progressBar.setVisibility(View.INVISIBLE);
-                                        }
-                                    });
-                                }
-                            });
-                            dialog.dismiss();
-                        }else{
-                            Toast.makeText(getActivity().getApplicationContext(), "Please Insert a Name", Toast.LENGTH_SHORT).show();
-                        }
-                    }
-                });
-            }
-        });
-
-
-
-        return view;
+    private void startProgressBar() {
+        recyclerView_cards.setVisibility(View.INVISIBLE);
+        progressBar.setVisibility(View.VISIBLE);
     }
 
 
@@ -136,14 +146,8 @@ public class trelloCards extends Fragment {
 
     }
 
-    public RecyclerView getRecyclerView() {
-        return recyclerView;
-    }
-
-
-
-    public void goToMain() {
-        ((BottomNavigatorActivity)getActivity()).loadFragment(new trelloLogin());
+    public RecyclerView getRecyclerView_cards() {
+        return recyclerView_cards;
     }
 
 }

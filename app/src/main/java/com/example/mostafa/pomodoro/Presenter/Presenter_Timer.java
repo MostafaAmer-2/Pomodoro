@@ -133,7 +133,7 @@ public class Presenter_Timer {
 
     public void resetTimer() {
         if (!timerFragment.isOnBreak()) {
-           timerFragment.setmTimeLeftInMillis(timerFragment.getBreakTimeInMillis());
+            timerFragment.setmTimeLeftInMillis(timerFragment.getBreakTimeInMillis());
         } else {
             timerFragment.setmTimeLeftInMillis(timerFragment.getStartTimeInMillis()); //letting the TimerFragment be 5 min
         }
@@ -149,4 +149,21 @@ public class Presenter_Timer {
         timerFragment.updateCountDownText();
     }
 
+    public void checkIfTimerFinished() {
+        if (timerFragment.ismTimerRunning()) {
+            timerFragment.setmEndTime(timerFragment.getPrefs().getLong("endTime", 0));
+            timerFragment.setmTimeLeftInMillis(timerFragment.getmEndTime() - System.currentTimeMillis());
+            if (timerFragment.getmTimeLeftInMillis() <= 0) {
+                timerFragment.setmTimeLeftInMillis(0);
+                timerFragment.setmTimerRunning(false);
+                timerFragment.getPresenter_timer().resetTimer();
+//                pauseTimer();
+                timerFragment.getPresenter_timer().updateState();
+//                timerFragment.paintBackground(); //Already done in TimerFragment inside onStart method
+                timerFragment.getPresenter_timer().updateButtonsOnDone();
+            } else {
+                timerFragment.getPresenter_timer().startTimer();
+            }
+        }
+    }
 }
