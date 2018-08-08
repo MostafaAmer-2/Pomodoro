@@ -28,38 +28,15 @@ public class Network_timer {
         addChildEventListener();
     }
 
-    /**
-     * Method to add the child event listener to the reference
-     */
     private void addChildEventListener() {
         itemsRef.addChildEventListener(new ChildEventListener() {
-            /**
-             * Add the new item present in the database to the ArrayList
-             * @param dataSnapshot
-             * @param s
-             */
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-
-//                for(DataSnapshot data:dataSnapshot.getChildren()){
-//                    Log.i("Testing FB", data.toString());
-//                    Log.i("Testing FB Key", data.getKey());
-//                    Log.i("Testing FB Value", data.getValue().toString());
-//
-//                }
-//                Log.i("Testing FB Value", dataSnapshot.getValue().toString());
-
                 TODOitem itemToBeAdded = TODOitem.convertToItem(dataSnapshot);
                if(!itemToBeAdded.isDone())
                    presenter.addItem(itemToBeAdded);
                else
                    presenter.addItemDone(itemToBeAdded);
-//                Log.i("Network_timer", "Item"+itemToBeAdded.getDescription());
-//                Log.i("pst", "onChildAdded: "+dataSnapshot.child("pomodoros").getValue().toString());
-//                itemToBeAdded.setPomodoros((int)(long)dataSnapshot.child("pomodoros").getValue());
-//                itemToBeAdded.setDone((boolean) dataSnapshot.child("isDone").getValue());
-//                Log.i("pst2", "onChildAdded: "+dataSnapshot.child("isDone").getValue());
-
             }
 
             @Override
@@ -67,10 +44,6 @@ public class Network_timer {
                 presenter.notifyAdapter();
             }
 
-            /**
-             * Remove the item that was deleted from the database, from the ArrayList
-             * @param dataSnapshot
-             */
             @Override
             public void onChildRemoved(DataSnapshot dataSnapshot) {
                 presenter.removeItem(TODOitem.convertToItem(dataSnapshot));
@@ -86,8 +59,6 @@ public class Network_timer {
                 presenter.notifyAdapter();
             }
         });
-
-
     }
 
     public void addItem(TODOitem newItem) {
@@ -98,7 +69,6 @@ public class Network_timer {
 
     public void updatePomodoros(TODOitem itemSelected) {
         itemsRef.child(itemSelected.getDescription()).child("pomodoros").setValue(itemSelected.getPomodoros());
-
     }
 
     public DatabaseReference getItemsRef() {

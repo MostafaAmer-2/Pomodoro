@@ -35,12 +35,8 @@ public class Network_Cards {
     private Context ctx;
 
     public Network_Cards(Presenter_Cards presenter, Context ctx){
-        requestQueue = Volley.newRequestQueue(ctx); // 'this' is the Context
+        requestQueue = Volley.newRequestQueue(ctx);
         this.presenter=presenter;
-    }
-
-    public RequestQueue getRequestQueue() {
-        return requestQueue;
     }
 
     public Promise<JSONArray, VolleyError, Double> getCards(String token, String listID) {
@@ -96,7 +92,6 @@ public class Network_Cards {
                 new Response.Listener<JSONArray>() {
                     @Override
                     public void onResponse(JSONArray response) {
-                        Log.i("SASA", "onResponse: "+response.toString());
                         deferred.resolve(response);
                     }
                 },

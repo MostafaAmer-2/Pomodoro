@@ -30,10 +30,6 @@ public class Network_Lists {
         this.presenter=presenter;
     }
 
-    public RequestQueue getRequestQueue() {
-        return requestQueue;
-    }
-
     public Promise<JSONArray, VolleyError, Double> getLists(String token, String boardID) {
         final Deferred<JSONArray, VolleyError, Double> deferred = new DeferredObject<>();
         String url = "https://api.trello.com/1/boards/"+boardID+"/lists?key=51eb6eb13ad2f6cc5bcb87fc923ea427&token="+token;
@@ -65,7 +61,6 @@ public class Network_Lists {
                 new Response.Listener<JSONArray>() {
                     @Override
                     public void onResponse(JSONArray response) {
-                        Log.i("SASA", "onResponse: "+response.toString());
                         deferred.resolve(response);
                     }
                 },

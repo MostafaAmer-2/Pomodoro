@@ -29,10 +29,6 @@ public class Network_Boards {
         this.ctx=ctx;
     }
 
-    public RequestQueue getRequestQueue() {
-        return requestQueue;
-    }
-
     public Promise<JSONArray, VolleyError, Double> getBoards(String token) {
         final Deferred<JSONArray, VolleyError, Double> deferred = new DeferredObject<>();
         String url = "https://api.trello.com/1/members/me/boards?key=51eb6eb13ad2f6cc5bcb87fc923ea427&token="+token;
@@ -48,7 +44,7 @@ public class Network_Boards {
                     @Override
                     public void onErrorResponse(VolleyError error) {
                         deferred.reject(error);
-                       if(error.networkResponse!= null && error.networkResponse.statusCode== 400 || error.networkResponse.statusCode== 401 )
+                        if(error.networkResponse!= null && error.networkResponse.statusCode== 400 || error.networkResponse.statusCode== 401 )
                             presenter.getBoardsFrag().goToMain();
                     }
                 });
@@ -64,7 +60,6 @@ public class Network_Boards {
                 new Response.Listener<JSONArray>() {
                     @Override
                     public void onResponse(JSONArray response) {
-                        Log.i("SASA", "onResponse: "+response.toString());
                         deferred.resolve(response);
                     }
                 },
