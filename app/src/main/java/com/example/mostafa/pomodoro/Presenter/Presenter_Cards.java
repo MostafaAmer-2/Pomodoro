@@ -35,7 +35,7 @@ public class Presenter_Cards {
     }
 
     private void initAdapter(Context ctx, ArrayList<TrelloCard> items) {
-        adapter=new RecyclerViewAdapter_Cards(this, items, ctx);
+        adapter=new RecyclerViewAdapter_Cards(this, items);
         cardsFrag.getRecyclerView_cards().setAdapter(adapter);
         cardsFrag.getRecyclerView_cards().setLayoutManager(new LinearLayoutManager(ctx));
     }
@@ -54,14 +54,6 @@ public class Presenter_Cards {
         initAdapter(applicationContext, items);
     }
 
-    public trelloCards getCardsFrag() {
-        return cardsFrag;
-    }
-
-    public void setCardsFrag(trelloCards boardsFrag) {
-        this.cardsFrag = cardsFrag;
-    }
-
     public RecyclerViewAdapter_Cards getAdapter() {
         return adapter;
     }
@@ -73,8 +65,7 @@ public class Presenter_Cards {
             public void onDone(String result) {
                 Toast.makeText(ctx, result, Toast.LENGTH_SHORT).show();
             }
-        });
-        network.addItem(newItem).fail(new FailCallback<String>() {
+        }).fail(new FailCallback<String>() {
             @Override
             public void onFail(String result) {
                 Toast.makeText(ctx, result, Toast.LENGTH_SHORT).show();

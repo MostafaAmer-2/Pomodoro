@@ -99,7 +99,7 @@ public class Presenter_Timer {
         if (currentItem != null && timerFragment.isOnBreak()) {
             decreasePomododro(currentItem);
             timerFragment.getPresenter_todos().getNetwork().updatePomodoros(currentItem);
-            timerFragment.updateBtnText(timerFragment.getPresenter_todos().getCurrentHolder().add_pomodoro_btn, currentItem);
+            timerFragment.updateBtnText(timerFragment.getPresenter_todos().getCurrentHolder().getAdd_pomodoro_btn(), currentItem);
             if (currentItem.getPomodoros() == 0) {
                 timerFragment.getPresenter_todos().getNetwork().removeNode(currentItem.getDescription());
                 markDone(currentItem);
@@ -108,7 +108,7 @@ public class Presenter_Timer {
                 //resetting everything in the viewHolder
                 timerFragment.getPresenter_todos().setCurrentItem(null);
                 int normalColor = Color.argb(255, 226, 193, 199);
-                timerFragment.getPresenter_todos().getCurrentHolder().parent_layout.setBackgroundColor(normalColor);
+                timerFragment.getPresenter_todos().getCurrentHolder().getParent_layout().setBackgroundColor(normalColor);
                 timerFragment.getPresenter_todos().setCurrentHolder(null);
             }
         }

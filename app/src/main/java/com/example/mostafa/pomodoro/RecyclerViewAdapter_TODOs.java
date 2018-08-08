@@ -25,13 +25,11 @@ import static com.example.mostafa.pomodoro.Model.TODOitem.markDone;
 public class RecyclerViewAdapter_TODOs extends RecyclerView.Adapter<RecyclerViewAdapter_TODOs.ViewHolder>{
     private static final String TAG = "RecyclerViewAdapter_TODOs";
     private ArrayList<TODOitem> mItems= new ArrayList<TODOitem>();
-    private Context mContext;
     private Presenter_TODOitems presenter;
 
-    public RecyclerViewAdapter_TODOs(Presenter_TODOitems presenter, ArrayList<TODOitem> mItems, Context context){
+    public RecyclerViewAdapter_TODOs(Presenter_TODOitems presenter, ArrayList<TODOitem> mItems){
         this.presenter=presenter;
         this.mItems=mItems;
-        this.mContext=context;
     }
 
 
@@ -47,10 +45,10 @@ public class RecyclerViewAdapter_TODOs extends RecyclerView.Adapter<RecyclerView
     public void onBindViewHolder(@NonNull final ViewHolder holder, final int position) {
         if(!mItems.isEmpty() && holder != null && holder.itemName!= null) {
             holder.itemName.setText(mItems.get(position).getDescription());
-            presenter.getTimerFragment().updateBtnText(holder.addPomodoroBtn, mItems.get(position));
+            presenter.getTimerFragment().updateBtnText(holder.add_pomodoro_btn, mItems.get(position));
             presenter.getNetwork().getItemsRef().child(mItems.get(position).getDescription()).child("pomodoros");
 
-            holder.parentLayout.setOnClickListener(new View.OnClickListener() {
+            holder.parent_layout.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     presenter.onItemClicked(holder,mItems.get(position));
@@ -71,32 +69,41 @@ public class RecyclerViewAdapter_TODOs extends RecyclerView.Adapter<RecyclerView
         @BindView(R.id.item_name)
         TextView itemName;
         @BindView(R.id.parent_layout)
-        ConstraintLayout parentLayout;
+        ConstraintLayout parent_layout;
         @BindView(R.id.addPomodoro)
-        Button addPomodoroBtn;
+        Button add_pomodoro_btn;
         @BindView(R.id.removePomodoro)
         Button removePomodoroBtn;
         @BindView(R.id.markDone)
         Button markDone;
 
-        public ConstraintLayout parent_layout;
-        public Button add_pomodoro_btn;
 
         public ViewHolder(View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);
-            parent_layout=parentLayout;
-            add_pomodoro_btn=addPomodoroBtn;
 
-            addPomodoroBtn.setOnClickListener(new View.OnClickListener() {
+            setOnClickListeners();
+        }
+
+        public ConstraintLayout getParent_layout() {
+            return parent_layout;
+        }
+
+        public Button getAdd_pomodoro_btn() {
+            return add_pomodoro_btn;
+        }
+
+        private void setOnClickListeners() {
+            add_pomodoro_btn.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     TODOitem itemSelected= presenter.getItems().get(getAdapterPosition());
                     increasePomododro(itemSelected);
-                    presenter.getTimerFragment().updateBtnText(addPomodoroBtn, itemSelected);
+                    presenter.getTimerFragment().updateBtnText(add_pomodoro_btn, itemSelected);
                     presenter.getNetwork().updatePomodoros(itemSelected);
                 }
             });
+
             removePomodoroBtn.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -107,7 +114,7 @@ public class RecyclerViewAdapter_TODOs extends RecyclerView.Adapter<RecyclerView
                         presenter.getNetwork().removeNode(itemSelected.getDescription());
                     }
                     else{
-                        presenter.getTimerFragment().updateBtnText(addPomodoroBtn, itemSelected);
+                        presenter.getTimerFragment().updateBtnText(add_pomodoro_btn, itemSelected);
                         presenter.getNetwork().updatePomodoros(itemSelected);
                     }
                 }
@@ -124,12 +131,6 @@ public class RecyclerViewAdapter_TODOs extends RecyclerView.Adapter<RecyclerView
 
                 }
             });
-
-
-
         }
-
-
-
     }
 }

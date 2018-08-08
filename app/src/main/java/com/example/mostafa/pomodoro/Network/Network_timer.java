@@ -36,7 +36,7 @@ public class Network_timer {
                if(!itemToBeAdded.isDone())
                    presenter.addItem(itemToBeAdded);
                else
-                   presenter.addItemDone(itemToBeAdded);
+                   presenter.addDoneItem(itemToBeAdded);
             }
 
             @Override

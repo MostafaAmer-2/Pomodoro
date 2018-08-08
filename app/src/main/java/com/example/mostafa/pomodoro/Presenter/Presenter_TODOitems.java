@@ -25,20 +25,30 @@ public class Presenter_TODOitems {
 
     private TimerFragment timerFragment;
     private Network_timer network;
+    private Context ctx;
 
     public Presenter_TODOitems(TimerFragment TimerFragment, Context ctx) {
         this.timerFragment = TimerFragment;
+        this.ctx=ctx;
         network = new Network_timer(this, ctx);
+        setAdapterForTODOitems();
+        setAdapterForDoneItems();
+        }
 
-        adapter=new RecyclerViewAdapter_TODOs(this, items, ctx);
-        TimerFragment.getRecyclerView_todoList().setAdapter(adapter);
-        TimerFragment.getRecyclerView_todoList().setLayoutManager(new LinearLayoutManager(ctx));
-        TimerFragment.getRecyclerView_todoList().setNestedScrollingEnabled(false);
-
+    private void setAdapterForDoneItems() {
         doneAdapter=new RecyclerViewAdapter_TODOs_done(this, doneItems, ctx);
-        TimerFragment.getRecyclerView_doneList().setAdapter(doneAdapter);
-        TimerFragment.getRecyclerView_doneList().setLayoutManager(new LinearLayoutManager(ctx));
-        TimerFragment.getRecyclerView_doneList().setNestedScrollingEnabled(false);
+        timerFragment.getRecyclerView_doneList().setAdapter(doneAdapter);
+        timerFragment.getRecyclerView_doneList().setLayoutManager(new LinearLayoutManager(ctx));
+        timerFragment.getRecyclerView_doneList().setNestedScrollingEnabled(false);
+
+    }
+
+    private void setAdapterForTODOitems() {
+        adapter=new RecyclerViewAdapter_TODOs(this, items);
+        timerFragment.getRecyclerView_todoList().setAdapter(adapter);
+        timerFragment.getRecyclerView_todoList().setLayoutManager(new LinearLayoutManager(ctx));
+        timerFragment.getRecyclerView_todoList().setNestedScrollingEnabled(false);
+
     }
 
     public void onAddBtnClicked() {
@@ -57,12 +67,12 @@ public class Presenter_TODOitems {
         notifyAdapter();
     }
 
-    public void addItemDone(TODOitem item) {
+    public void addDoneItem(TODOitem item) {
         doneItems.add(item);
-        notifyAdapterDone();
+        notifyDoneAdapter();
     }
 
-    public void notifyAdapterDone() {
+    public void notifyDoneAdapter() {
         doneAdapter.notifyDataSetChanged();
     }
 
@@ -112,19 +122,18 @@ public class Presenter_TODOitems {
         if(currentHolder==null){
             currentHolder=holder;
             currentItem=item;
-            holder.parent_layout.setBackgroundColor(shaded);
-
+            holder.getParent_layout().setBackgroundColor(shaded);
         }
         else if(currentHolder.equals(holder)){
             currentHolder=null;
             currentItem=null;
-            holder.parent_layout.setBackgroundColor(normal);
+            holder.getParent_layout().setBackgroundColor(normal);
         }
         else{
-            currentHolder.parent_layout.setBackgroundColor(normal);
+            currentHolder.getParent_layout().setBackgroundColor(normal);
             currentHolder=holder;
             currentItem=item;
-            holder.parent_layout.setBackgroundColor(shaded);
+            holder.getParent_layout().setBackgroundColor(shaded);
         }
     }
 }

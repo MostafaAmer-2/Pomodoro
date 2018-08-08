@@ -54,10 +54,6 @@ public class Presenter_Boards {
         return boardsFrag;
     }
 
-    public void setBoardsFrag(trelloBoards boardsFrag) {
-        this.boardsFrag = boardsFrag;
-    }
-
     public void goToLists(String token, String boardsID){
         trelloLists trelloLists= new trelloLists(token,boardsID);
         ((BottomNavigatorActivity)boardsFrag.getActivity()).loadFragment(trelloLists);

@@ -21,8 +21,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class RecyclerViewAdapter_Boards extends RecyclerView.Adapter<RecyclerViewAdapter_Boards.ViewHolder>{
-    private static final String TAG = "RecyclerViewAdapter_Boards";
-    private ArrayList<TrelloBoard> mItems= new ArrayList<TrelloBoard>();
+    private ArrayList<TrelloBoard> mItems;
     private Context mContext;
     private Presenter_Boards presenter;
 
@@ -42,19 +41,8 @@ public class RecyclerViewAdapter_Boards extends RecyclerView.Adapter<RecyclerVie
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, final int position) {
-        if(!mItems.isEmpty() && holder != null && holder.itemName!= null) {
-            holder.itemName.setText(mItems.get(position).getName());
-            holder.parentLayout.setOnLongClickListener(new View.OnLongClickListener() {
-                @Override
-                public boolean onLongClick(View view) {
-                //    presenter.onItemClicked(position);
-                    notifyDataSetChanged();
-                    return false;
-                }
-            });
-        }
-        else{
-            //print outside
+        if(!mItems.isEmpty() && holder != null && holder.boardName != null) {
+            holder.boardName.setText(mItems.get(position).getName());
         }
     }
 
@@ -66,18 +54,16 @@ public class RecyclerViewAdapter_Boards extends RecyclerView.Adapter<RecyclerVie
     public class ViewHolder extends RecyclerView.ViewHolder{
 
         @BindView(R.id.item_name)
-        TextView itemName;
+        TextView boardName;
         @BindView(R.id.parent_layout)
-        CardView parentLayout;
+        CardView card;
         public ViewHolder(View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);
 
             //create random colours for cards
-            Random rnd = new Random();
-            int color = Color.argb(255, rnd.nextInt(256), rnd.nextInt(256), rnd.nextInt(256));
-            itemName.setBackgroundColor(color);
-
+            createRandomBackgroundColour();
+            //setting onClick listener on the board's card
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -87,5 +73,12 @@ public class RecyclerViewAdapter_Boards extends RecyclerView.Adapter<RecyclerVie
                 }
             });
         }
+
+        private void createRandomBackgroundColour() {
+            Random rnd = new Random();
+            int color = Color.argb(255, rnd.nextInt(256), rnd.nextInt(256), rnd.nextInt(256));
+            boardName.setBackgroundColor(color);
+        }
+
     }
 }

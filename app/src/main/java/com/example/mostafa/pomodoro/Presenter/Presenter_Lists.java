@@ -50,14 +50,6 @@ public class Presenter_Lists {
         initAdapter(applicationContext, items);
     }
 
-    public trelloLists getListsFrag() {
-        return listsFrag;
-    }
-
-    public void setListsFrag(trelloLists listsFrag) {
-        this.listsFrag = listsFrag;
-    }
-
     public void goToCards(String token, String listID){
         ((BottomNavigatorActivity)listsFrag.getActivity()).loadFragment(new trelloCards(token,listID));
     }
