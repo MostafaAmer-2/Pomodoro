@@ -17,17 +17,22 @@ import java.util.ArrayList;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import io.realm.Realm;
+
+import static com.example.mostafa.pomodoro.Model.TODOitem.markDone;
 
 public class RecyclerViewAdapter_TODOs_done extends RecyclerView.Adapter<RecyclerViewAdapter_TODOs_done.ViewHolder>{
     private static final String TAG = "RecyclerViewAdapter_TODOs";
     private ArrayList<TODOitem> mItems= new ArrayList<TODOitem>();
     private Context mContext;
     private Presenter_TODOitems presenter;
+    Realm realm;
 
     public RecyclerViewAdapter_TODOs_done(Presenter_TODOitems presenter, ArrayList<TODOitem> mItems, Context context){
         this.presenter=presenter;
         this.mItems=mItems;
         this.mContext=context;
+        realm = Realm.getDefaultInstance();
     }
 
 
@@ -74,6 +79,7 @@ public class RecyclerViewAdapter_TODOs_done extends RecyclerView.Adapter<Recycle
                 public void onClick(View view) {
                     TODOitem itemSelected= presenter.getDoneItems().get(getAdapterPosition());
                     presenter.getNetwork().removeNode(itemSelected.getDescription());
+                    presenter.getNetwork().removeFromRealm(itemSelected);
                     presenter.getDoneItems().remove(itemSelected);
                     presenter.notifyDoneAdapter();
                 }
