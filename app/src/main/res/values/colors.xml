@@ -9,6 +9,12 @@
 
 
 
+    <color name="pomodoroRed">#D33E43</color>
+    <color name="pomodoroYellow">#FFD166</color>
+    <color name="pomodoroGreen">#06D6A0</color>
+    <color name="pomodoroBlue">#118AB2</color>
+    <color name="pomodoroDarkBlue">#073B4C</color>
+
     <!--reds-->
     <color name="md_red_50">#FFEBEE</color>
     <color name="md_red_100">#FFCDD2</color>
