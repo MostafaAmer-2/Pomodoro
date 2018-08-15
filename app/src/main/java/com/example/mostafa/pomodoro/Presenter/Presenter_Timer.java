@@ -8,6 +8,7 @@ import android.util.Log;
 
 import com.example.mostafa.pomodoro.Fragments.TimerFragment;
 import com.example.mostafa.pomodoro.Model.TODOitem;
+import com.example.mostafa.pomodoro.R;
 
 import static android.content.Context.NOTIFICATION_SERVICE;
 import static com.example.mostafa.pomodoro.Model.TODOitem.decreasePomododro;
@@ -15,9 +16,11 @@ import static com.example.mostafa.pomodoro.Model.TODOitem.markDone;
 
 public class Presenter_Timer {
     private TimerFragment timerFragment;
+    private Context ctx;
 
     public Presenter_Timer(TimerFragment timerFragment, Context ctx) {
         this.timerFragment = timerFragment;
+        this.ctx=ctx;
     }
 
     public void popNotification() {
@@ -28,7 +31,6 @@ public class Presenter_Timer {
         }
     }
 
-    //TODO: merge all these updateButtons into one method with a switch statement
     public void updateButtonsOnDone() {
         timerFragment.getmButtonStartPause().setText("start");
         timerFragment.getmButtonResetDone().setEnabled(false);
@@ -107,8 +109,7 @@ public class Presenter_Timer {
 
                 //resetting everything in the viewHolder
                 timerFragment.getPresenter_todos().setCurrentItem(null);
-                int normalColor = Color.argb(255, 226, 193, 199);
-                timerFragment.getPresenter_todos().getCurrentHolder().getParent_layout().setBackgroundColor(normalColor);
+                timerFragment.getPresenter_todos().getCurrentHolder().getParent_layout().setBackgroundColor(ctx.getResources().getColor(R.color.pomodoroRed));
                 timerFragment.getPresenter_todos().setCurrentHolder(null);
             }
         }

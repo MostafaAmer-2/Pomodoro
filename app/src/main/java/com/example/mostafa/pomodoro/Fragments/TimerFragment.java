@@ -141,10 +141,10 @@ public class TimerFragment extends Fragment {
 
     public void paintBackground() {
         if (onBreak) {
-            timerCard.setBackgroundColor(Color.argb(255, 69, 203, 133));
+            timerCard.setBackgroundColor(getResources().getColor(R.color.pomodoroGreen));
         } else {
-            timerCard.setBackgroundColor(Color.argb(255, 248, 90, 62));
-        }
+            timerCard.setBackgroundColor(getResources().getColor(R.color.pomodoroRed));        }
+
     }
 
 
