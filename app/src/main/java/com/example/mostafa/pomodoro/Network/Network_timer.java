@@ -11,6 +11,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
 import io.realm.Realm;
+import io.realm.RealmResults;
 
 //import com.google.firebase.auth.FirebaseAuth;
 
@@ -39,15 +40,13 @@ public class Network_timer {
         itemsRef.addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-                //TODO: Sync with cache
-//                boolean present=false;
-//                RealmResults<TODOitem> realmResults=realm.where(TODOitem.class).findAll();
-//                for(int i=0; i<realmResults.size();i++){
-//                    if(realmResults.get(i).getDescription().equals(itemToBeAdded.getDescription())){
-//                        present=true;
-//                        break;
-//                    }
-//                }
+                TODOitem newItem = TODOitem.convertToItem(dataSnapshot);
+                RealmResults<TODOitem> realmResults = realm.where(TODOitem.class).equalTo("description", newItem.getDescription()).findAll();
+                if (realmResults.size() == 0) {
+                    realm.beginTransaction();
+                    realm.copyToRealm(newItem);
+                    realm.commitTransaction();
+                }
             }
 
             @Override

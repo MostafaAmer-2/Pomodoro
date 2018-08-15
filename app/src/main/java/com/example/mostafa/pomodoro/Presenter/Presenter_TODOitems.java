@@ -36,12 +36,11 @@ public class Presenter_TODOitems {
         this.timerFragment = TimerFragment;
         this.ctx = ctx;
         realm = Realm.getDefaultInstance();
-
-        setAdaptersAndUpdateLists();
         network = new Network_timer(this, ctx);
+        setAdaptersAndUpdateLists();
     }
 
-    public void setAdaptersAndUpdateLists() {
+    private void setAdaptersAndUpdateLists() {
         setAdapterForTODOitems();
         setAdapterForDoneItems();
         updateBotheItemsLists();
