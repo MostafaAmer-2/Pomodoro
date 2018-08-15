@@ -17,6 +17,7 @@ import java.util.ArrayList;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import io.realm.Realm;
 
 import static com.example.mostafa.pomodoro.Model.TODOitem.decreasePomododro;
 import static com.example.mostafa.pomodoro.Model.TODOitem.increasePomododro;
@@ -26,10 +27,18 @@ public class RecyclerViewAdapter_TODOs extends RecyclerView.Adapter<RecyclerView
     private static final String TAG = "RecyclerViewAdapter_TODOs";
     private ArrayList<TODOitem> mItems= new ArrayList<TODOitem>();
     private Presenter_TODOitems presenter;
+    Realm realm;
 
     public RecyclerViewAdapter_TODOs(Presenter_TODOitems presenter, ArrayList<TODOitem> mItems){
         this.presenter=presenter;
         this.mItems=mItems;
+
+        // Initialize Realm (just once per application)
+        Realm.init(presenter.getTimerFragment().getActivity().getApplicationContext());
+
+// Get a Realm instance for this thread
+        realm = Realm.getDefaultInstance();
+
     }
 
 
@@ -98,7 +107,9 @@ public class RecyclerViewAdapter_TODOs extends RecyclerView.Adapter<RecyclerView
                 @Override
                 public void onClick(View view) {
                     TODOitem itemSelected= presenter.getItems().get(getAdapterPosition());
+                    realm.beginTransaction();
                     increasePomododro(itemSelected);
+                    realm.commitTransaction();
                     presenter.getTimerFragment().updateBtnText(add_pomodoro_btn, itemSelected);
                     presenter.getNetwork().updatePomodoros(itemSelected);
                 }
@@ -125,7 +136,10 @@ public class RecyclerViewAdapter_TODOs extends RecyclerView.Adapter<RecyclerView
                 public void onClick(View view) {
                     TODOitem itemSelected= presenter.getItems().get(getAdapterPosition());
                     presenter.getNetwork().removeNode(itemSelected.getDescription());
+                    realm.beginTransaction();
                     markDone(itemSelected);
+                    realm.commitTransaction();
+
                     presenter.getNetwork().addNode(itemSelected.getDescription(), itemSelected.isDone(), itemSelected.getPomodoros());
 //                    presenter.getNetwork().markDone(itemSelected);
 

@@ -4,10 +4,16 @@ import android.util.Log;
 
 import com.google.firebase.database.DataSnapshot;
 
-public class TODOitem {
+import io.realm.RealmObject;
+
+public class TODOitem extends RealmObject {
     private String description;
     private boolean done;
     private int pomodoros;
+
+    public TODOitem(){
+        //empty
+    }
 
     public TODOitem(String title, boolean isDone, int pomodoros){
         this.description=title;

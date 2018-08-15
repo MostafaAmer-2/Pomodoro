@@ -6,9 +6,15 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 
-public class TrelloCard {
+import io.realm.RealmObject;
+
+public class TrelloCard extends RealmObject {
     private String name;
     private String id;
+
+    public TrelloCard() {
+
+    }
 
     public TrelloCard(String name, String id) {
         this.name = name;

@@ -7,6 +7,7 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,6 +25,8 @@ import java.util.ArrayList;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import io.realm.Realm;
+import io.realm.RealmResults;
 
 import static com.example.mostafa.pomodoro.Model.TrelloBoard.parseJSONArrayIntoBoards;
 
@@ -38,6 +41,7 @@ public class trelloBoards extends Fragment {
 
     Presenter_Boards presenter;
     String token;
+    Realm realm;
 
     @SuppressLint("ValidFragment")
     public trelloBoards(String token) {
@@ -50,6 +54,12 @@ public class trelloBoards extends Fragment {
         View view = inflater.inflate(R.layout.fragment_trello_boards, null);
         ButterKnife.bind(this, view);
 
+        // Initialize Realm (just once per application)
+        io.realm.Realm.init(getActivity().getApplicationContext());
+
+// Get a Realm instance for this thread
+        realm = io.realm.Realm.getDefaultInstance();
+
         presenter =new Presenter_Boards(this, getContext().getApplicationContext());
         startProgressBar();
         loadBoards();
@@ -57,18 +67,47 @@ public class trelloBoards extends Fragment {
     }
 
     private void startProgressBar() {
-        recyclerView_boards.setVisibility(View.INVISIBLE);
-        progressBar.setVisibility(View.VISIBLE);
+//        recyclerView_boards.setVisibility(View.INVISIBLE);
+//        progressBar.setVisibility(View.VISIBLE);
+
+        RealmResults<TrelloBoard> cach = realm.where(TrelloBoard.class).findAll();
+        Log.i(TAG, "loadBoards: "+cach.size());
+        ArrayList<TrelloBoard> cachedBoards=new ArrayList<TrelloBoard>();
+        for(int i=0; i< cach.size();i++){
+            cachedBoards.add(cach.get(i));
+        }
+        presenter.setItems(getContext().getApplicationContext(), cachedBoards);
+        RecyclerView.LayoutManager mLayoutManager = new GridLayoutManager(getActivity().getApplicationContext(), 2);
+        getRecyclerView_boards().setLayoutManager(mLayoutManager);
+        recyclerView_boards.setVisibility(View.VISIBLE);
+        progressBar.setVisibility(View.INVISIBLE);
+
+
     }
 
     private void loadBoards() {
+
         presenter.getNetwork().getBoards(token).done(new DoneCallback<JSONArray>() {
             @Override
             public void onDone(JSONArray result) {
                 ArrayList<TrelloBoard> boards = parseJSONArrayIntoBoards(result);
-                presenter.setItems(getContext().getApplicationContext(), boards);
+//                Log.i(TAG, "onDone: "+boards.size());
+//                Log.i(TAG, "onDone: "+realm.where(TrelloBoard.class).findAll().size());
+                if(boards.size()!=realm.where(TrelloBoard.class).findAll().size()){
+                   //updating the cache
+                    realm.beginTransaction();
+                    realm.deleteAll();
+                    for(int i=0; i< boards.size();i++){
+                        TrelloBoard tmpBoard= boards.get(i);
+                        TrelloBoard realmBoard = realm.copyToRealm(tmpBoard);
+                    }
+                    realm.commitTransaction();
+
+                    presenter.setCache(getContext().getApplicationContext(), boards);
+                    presenter.setItems(getContext().getApplicationContext(), presenter.getCache());
+                }
                 RecyclerView.LayoutManager mLayoutManager = new GridLayoutManager(getActivity().getApplicationContext(), 2);
-                getRecyclerView_bards().setLayoutManager(mLayoutManager);
+                getRecyclerView_boards().setLayoutManager(mLayoutManager);
                 recyclerView_boards.setVisibility(View.VISIBLE);
                 progressBar.setVisibility(View.INVISIBLE);
             }
@@ -83,7 +122,7 @@ public class trelloBoards extends Fragment {
 
     }
 
-    public RecyclerView getRecyclerView_bards() {
+    public RecyclerView getRecyclerView_boards() {
         return recyclerView_boards;
     }
 

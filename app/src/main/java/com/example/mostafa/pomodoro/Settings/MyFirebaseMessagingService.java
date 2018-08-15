@@ -1,4 +1,4 @@
-package com.example.mostafa.pomodoro;
+package com.example.mostafa.pomodoro.Settings;
 
 import android.app.NotificationManager;
 import android.app.PendingIntent;
@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.support.v4.app.NotificationCompat;
 
 import com.example.mostafa.pomodoro.Activities.SplashScreenActivity;
+import com.example.mostafa.pomodoro.R;
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
 

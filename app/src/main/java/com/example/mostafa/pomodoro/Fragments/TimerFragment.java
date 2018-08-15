@@ -9,6 +9,7 @@ import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.os.CountDownTimer;
+import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.NotificationCompat;
 import android.support.v7.widget.RecyclerView;
@@ -165,6 +166,7 @@ public class TimerFragment extends Fragment {
         if (mCountDownTimer != null) {
             mCountDownTimer.cancel();
         }
+//        presenter_todos.getNetwork().onCloseUpdateCache();
     }
 
     private void uploadToSharedPreferences() {
@@ -295,4 +297,6 @@ public class TimerFragment extends Fragment {
     public long getmEndTime() {
         return mEndTime;
     }
+
+
 }

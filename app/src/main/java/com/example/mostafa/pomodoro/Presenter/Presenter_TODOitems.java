@@ -30,9 +30,9 @@ public class Presenter_TODOitems {
     public Presenter_TODOitems(TimerFragment TimerFragment, Context ctx) {
         this.timerFragment = TimerFragment;
         this.ctx=ctx;
-        network = new Network_timer(this, ctx);
         setAdapterForTODOitems();
         setAdapterForDoneItems();
+        network = new Network_timer(this, ctx);
         }
 
     private void setAdapterForDoneItems() {
@@ -55,6 +55,7 @@ public class Presenter_TODOitems {
         String itemEntered = timerFragment.getItemNameField().getText().toString();
         timerFragment.getItemNameField().setText("");
         TODOitem newItem = new TODOitem(itemEntered);
+        network.addItemToRecyclerView(newItem);
         network.addItem(newItem);
     }
 
@@ -135,5 +136,13 @@ public class Presenter_TODOitems {
             currentItem=item;
             holder.getParent_layout().setBackgroundColor(shaded);
         }
+    }
+
+    public void setItems(Context ctx, ArrayList<TODOitem> items) {
+        this.items = items;
+    }
+
+    public void setDoneItems(ArrayList<TODOitem> doneItems) {
+        this.doneItems = doneItems;
     }
 }

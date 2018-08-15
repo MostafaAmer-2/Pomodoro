@@ -14,6 +14,7 @@ import java.util.ArrayList;
 
 public class Presenter_Boards {
     private ArrayList<TrelloBoard> items = new ArrayList<TrelloBoard>();
+    private ArrayList<TrelloBoard> cache = new ArrayList<TrelloBoard>();
     private RecyclerViewAdapter_Boards adapter;
 
     private trelloBoards boardsFrag;
@@ -32,8 +33,8 @@ public class Presenter_Boards {
 
     private void initAdapter(Context ctx, ArrayList<TrelloBoard> items) {
         adapter=new RecyclerViewAdapter_Boards(this, items, ctx);
-        boardsFrag.getRecyclerView_bards().setAdapter(adapter);
-        boardsFrag.getRecyclerView_bards().setLayoutManager(new LinearLayoutManager(ctx));
+        boardsFrag.getRecyclerView_boards().setAdapter(adapter);
+        boardsFrag.getRecyclerView_boards().setLayoutManager(new LinearLayoutManager(ctx));
     }
 
 
@@ -43,6 +44,14 @@ public class Presenter_Boards {
 
     public ArrayList<TrelloBoard> getItems() {
         return items;
+    }
+
+    public ArrayList<TrelloBoard> getCache() {
+        return cache;
+    }
+
+    public void setCache(Context applicationContext, ArrayList<TrelloBoard> cache) {
+        this.cache = cache;
     }
 
     public void setItems(Context applicationContext, ArrayList<TrelloBoard> items) {

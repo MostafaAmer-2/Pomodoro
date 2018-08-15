@@ -6,9 +6,15 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 
-public class TrelloBoard {
+import io.realm.RealmObject;
+
+public class TrelloBoard extends RealmObject {
     private String name;
     private String id;
+
+    public TrelloBoard(){
+
+    }
 
     public String getName() {
         return name;
