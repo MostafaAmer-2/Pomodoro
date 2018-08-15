@@ -1,9 +1,8 @@
 package com.example.mostafa.pomodoro.Activities;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-
-import android.app.Activity;
 import android.os.Handler;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
@@ -20,6 +19,7 @@ import org.json.JSONArray;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import io.realm.Realm;
 
 public class SplashScreenActivity extends Activity {
     private static final String TAG = "SplashScreenActivity";
@@ -33,6 +33,8 @@ public class SplashScreenActivity extends Activity {
         ButterKnife.bind(this);
         doSplashScreenAnimation();
         checkTokenValidityAndUpdatePrefrences();
+        // Initialize Realm (just once per application)
+        Realm.init(getApplicationContext());
     }
 
     private void goToBottomNavigator() {

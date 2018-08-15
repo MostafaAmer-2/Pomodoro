@@ -3,6 +3,7 @@ package com.example.mostafa.pomodoro.Presenter;
 import android.content.Context;
 import android.graphics.Color;
 import android.support.v7.widget.LinearLayoutManager;
+import android.util.Log;
 
 import com.example.mostafa.pomodoro.Fragments.TimerFragment;
 import com.example.mostafa.pomodoro.Model.TODOitem;
@@ -10,8 +11,10 @@ import com.example.mostafa.pomodoro.Network.Network_timer;
 import com.example.mostafa.pomodoro.RecyclerViewAdapter_TODOs;
 import com.example.mostafa.pomodoro.RecyclerViewAdapter_TODOs_done;
 
-
 import java.util.ArrayList;
+
+import io.realm.Realm;
+import io.realm.RealmResults;
 
 public class Presenter_TODOitems {
     private ArrayList<TODOitem> items = new ArrayList<TODOitem>();
@@ -29,22 +32,48 @@ public class Presenter_TODOitems {
 
     public Presenter_TODOitems(TimerFragment TimerFragment, Context ctx) {
         this.timerFragment = TimerFragment;
-        this.ctx=ctx;
+        this.ctx = ctx;
+        setAdaptersAndUpdateLists();
+
+        network = new Network_timer(this, ctx);
+    }
+
+    public void setAdaptersAndUpdateLists() {
         setAdapterForTODOitems();
         setAdapterForDoneItems();
-        network = new Network_timer(this, ctx);
-        }
+        updateBotheItemsLists();
+        getTimerFragment().getRecyclerView_todoList().setLayoutManager(new LinearLayoutManager(ctx));
+    }
 
     private void setAdapterForDoneItems() {
-        doneAdapter=new RecyclerViewAdapter_TODOs_done(this, doneItems, ctx);
+        doneAdapter = new RecyclerViewAdapter_TODOs_done(this, doneItems, ctx);
         timerFragment.getRecyclerView_doneList().setAdapter(doneAdapter);
         timerFragment.getRecyclerView_doneList().setLayoutManager(new LinearLayoutManager(ctx));
         timerFragment.getRecyclerView_doneList().setNestedScrollingEnabled(false);
 
     }
 
+    private void updateBotheItemsLists() {
+        Realm realm = io.realm.Realm.getDefaultInstance();
+
+        RealmResults<TODOitem> cache = realm.where(TODOitem.class).equalTo("done", false).findAll();
+        RealmResults<TODOitem> cacheDone = realm.where(TODOitem.class).equalTo("done", true).findAll();
+        Log.i("Network_timer", "loadBoards0: " + cache.size());
+        for (int i = 0; i < cache.size(); i++) {
+            TODOitem cachedItem = cache.get(i);
+            addItem(cachedItem);
+        }
+        for (int i = 0; i < cacheDone.size(); i++) {
+            TODOitem cachedItem = cacheDone.get(i);
+            addDoneItem(cachedItem);
+        }
+        notifyAdapter();
+        notifyDoneAdapter();
+
+    }
+
     private void setAdapterForTODOitems() {
-        adapter=new RecyclerViewAdapter_TODOs(this, items);
+        adapter = new RecyclerViewAdapter_TODOs(this, items);
         timerFragment.getRecyclerView_todoList().setAdapter(adapter);
         timerFragment.getRecyclerView_todoList().setLayoutManager(new LinearLayoutManager(ctx));
         timerFragment.getRecyclerView_todoList().setNestedScrollingEnabled(false);
@@ -78,8 +107,8 @@ public class Presenter_TODOitems {
     }
 
     public void removeItem(TODOitem item) {
-        for (int i=0;i<items.size();i++) {
-            if(items.get(i).getDescription().equals(item.getDescription()))
+        for (int i = 0; i < items.size(); i++) {
+            if (items.get(i).getDescription().equals(item.getDescription()))
                 items.remove(i);
         }
         notifyAdapter();
@@ -118,22 +147,20 @@ public class Presenter_TODOitems {
     }
 
     public void onItemClicked(RecyclerViewAdapter_TODOs.ViewHolder holder, TODOitem item) {
-        int normal = Color.argb(255,226,193,199);
-        int shaded = Color.argb(255,255,50,50);
-        if(currentHolder==null){
-            currentHolder=holder;
-            currentItem=item;
+        int normal = Color.argb(255, 226, 193, 199);
+        int shaded = Color.argb(255, 255, 50, 50);
+        if (currentHolder == null) {
+            currentHolder = holder;
+            currentItem = item;
             holder.getParent_layout().setBackgroundColor(shaded);
-        }
-        else if(currentHolder.equals(holder)){
-            currentHolder=null;
-            currentItem=null;
+        } else if (currentHolder.equals(holder)) {
+            currentHolder = null;
+            currentItem = null;
             holder.getParent_layout().setBackgroundColor(normal);
-        }
-        else{
+        } else {
             currentHolder.getParent_layout().setBackgroundColor(normal);
-            currentHolder=holder;
-            currentItem=item;
+            currentHolder = holder;
+            currentItem = item;
             holder.getParent_layout().setBackgroundColor(shaded);
         }
     }

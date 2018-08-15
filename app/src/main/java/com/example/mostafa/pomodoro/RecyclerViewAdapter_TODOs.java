@@ -1,6 +1,5 @@
 package com.example.mostafa.pomodoro;
 
-import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.constraint.ConstraintLayout;
 import android.support.v7.widget.RecyclerView;
@@ -23,20 +22,15 @@ import static com.example.mostafa.pomodoro.Model.TODOitem.decreasePomododro;
 import static com.example.mostafa.pomodoro.Model.TODOitem.increasePomododro;
 import static com.example.mostafa.pomodoro.Model.TODOitem.markDone;
 
-public class RecyclerViewAdapter_TODOs extends RecyclerView.Adapter<RecyclerViewAdapter_TODOs.ViewHolder>{
+public class RecyclerViewAdapter_TODOs extends RecyclerView.Adapter<RecyclerViewAdapter_TODOs.ViewHolder> {
     private static final String TAG = "RecyclerViewAdapter_TODOs";
-    private ArrayList<TODOitem> mItems= new ArrayList<TODOitem>();
+    private ArrayList<TODOitem> mItems;
     private Presenter_TODOitems presenter;
     Realm realm;
 
-    public RecyclerViewAdapter_TODOs(Presenter_TODOitems presenter, ArrayList<TODOitem> mItems){
-        this.presenter=presenter;
-        this.mItems=mItems;
-
-        // Initialize Realm (just once per application)
-        Realm.init(presenter.getTimerFragment().getActivity().getApplicationContext());
-
-// Get a Realm instance for this thread
+    public RecyclerViewAdapter_TODOs(Presenter_TODOitems presenter, ArrayList<TODOitem> mItems) {
+        this.presenter = presenter;
+        this.mItems = mItems;
         realm = Realm.getDefaultInstance();
 
     }
@@ -45,26 +39,23 @@ public class RecyclerViewAdapter_TODOs extends RecyclerView.Adapter<RecyclerView
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view= LayoutInflater.from(parent.getContext()).inflate(R.layout.layout_listitem, parent, false);
-        ViewHolder holder= new ViewHolder(view);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.layout_listitem, parent, false);
+        ViewHolder holder = new ViewHolder(view);
         return holder;
     }
 
     @Override
     public void onBindViewHolder(@NonNull final ViewHolder holder, final int position) {
-        if(!mItems.isEmpty() && holder != null && holder.itemName!= null) {
+        if (!mItems.isEmpty() && holder != null && holder.itemName != null) {
             holder.itemName.setText(mItems.get(position).getDescription());
             presenter.getTimerFragment().updateBtnText(holder.add_pomodoro_btn, mItems.get(position));
             presenter.getNetwork().getItemsRef().child(mItems.get(position).getDescription()).child("pomodoros");
-
             holder.parent_layout.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    presenter.onItemClicked(holder,mItems.get(position));
+                    presenter.onItemClicked(holder, mItems.get(position));
                 }
             });
-        }
-        else{
         }
     }
 
@@ -73,7 +64,7 @@ public class RecyclerViewAdapter_TODOs extends RecyclerView.Adapter<RecyclerView
         return mItems.size();
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder{
+    public class ViewHolder extends RecyclerView.ViewHolder {
 
         @BindView(R.id.item_name)
         TextView itemName;
@@ -90,7 +81,6 @@ public class RecyclerViewAdapter_TODOs extends RecyclerView.Adapter<RecyclerView
         public ViewHolder(View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);
-
             setOnClickListeners();
         }
 
@@ -106,7 +96,7 @@ public class RecyclerViewAdapter_TODOs extends RecyclerView.Adapter<RecyclerView
             add_pomodoro_btn.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    TODOitem itemSelected= presenter.getItems().get(getAdapterPosition());
+                    TODOitem itemSelected = presenter.getItems().get(getAdapterPosition());
                     realm.beginTransaction();
                     increasePomododro(itemSelected);
                     realm.commitTransaction();
@@ -118,16 +108,15 @@ public class RecyclerViewAdapter_TODOs extends RecyclerView.Adapter<RecyclerView
             removePomodoroBtn.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    TODOitem itemSelected= presenter.getItems().get(getAdapterPosition());
+                    TODOitem itemSelected = presenter.getItems().get(getAdapterPosition());
                     realm.beginTransaction();
                     decreasePomododro(itemSelected);
                     realm.commitTransaction();
-                    if(itemSelected.getPomodoros()==0){
+                    if (itemSelected.getPomodoros() == 0) {
                         presenter.getNetwork().removeNode(itemSelected.getDescription());
                         presenter.removeItem(itemSelected);
                         presenter.getNetwork().removeFromRealm(itemSelected);
-                    }
-                    else{
+                    } else {
                         presenter.getTimerFragment().updateBtnText(add_pomodoro_btn, itemSelected);
                         presenter.getNetwork().updatePomodoros(itemSelected);
                     }
@@ -137,15 +126,13 @@ public class RecyclerViewAdapter_TODOs extends RecyclerView.Adapter<RecyclerView
             markDone.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    TODOitem itemSelected= presenter.getItems().get(getAdapterPosition());
-                    presenter.getNetwork().removeNode(itemSelected.getDescription());
+                    TODOitem itemSelected = presenter.getItems().get(getAdapterPosition());
+                    presenter.getNetwork().markNodeDone(itemSelected.getDescription());
+                    presenter.getItems().remove(itemSelected);
                     realm.beginTransaction();
                     markDone(itemSelected);
                     realm.commitTransaction();
-
-                    presenter.getNetwork().addNode(itemSelected.getDescription(), itemSelected.isDone(), itemSelected.getPomodoros());
-//                    presenter.getNetwork().markDone(itemSelected);
-
+                    presenter.addDoneItem(itemSelected);
                 }
             });
         }

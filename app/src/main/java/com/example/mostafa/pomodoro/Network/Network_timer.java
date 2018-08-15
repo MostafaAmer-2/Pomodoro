@@ -1,27 +1,18 @@
 package com.example.mostafa.pomodoro.Network;
 
 import android.content.Context;
-import android.support.v7.widget.GridLayoutManager;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
-import android.util.Log;
-import android.view.View;
 
 import com.example.mostafa.pomodoro.Model.TODOitem;
-import com.example.mostafa.pomodoro.Model.TrelloBoard;
 import com.example.mostafa.pomodoro.Presenter.Presenter_TODOitems;
-//import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
-import java.util.ArrayList;
-
 import io.realm.Realm;
-import io.realm.RealmList;
-import io.realm.RealmResults;
+
+//import com.google.firebase.auth.FirebaseAuth;
 
 public class Network_timer {
 
@@ -39,33 +30,11 @@ public class Network_timer {
     public Network_timer(Presenter_TODOitems presenter, Context ctx) {
         this.presenter = presenter;
         addChildEventListener();
-
-        // Initialize Realm (just once per application)
-        io.realm.Realm.init(ctx);
-
-// Get a Realm instance for this thread
+        // Get a Realm instance for this thread
         realm = io.realm.Realm.getDefaultInstance();
-
-
-
-        RealmResults<TODOitem> cache = realm.where(TODOitem.class).equalTo("done", false).findAll();
-        RealmResults<TODOitem> cacheDone = realm.where(TODOitem.class).equalTo("done", true).findAll();
-        Log.i("Network_timer", "loadBoards0: "+cache.size());
-        for(int i=0; i< cache.size();i++) {
-            TODOitem cachedItem = cache.get(i);
-            presenter.addItem(cachedItem);
-        }
-        for(int i=0; i< cacheDone.size();i++){
-            TODOitem cachedItem = cacheDone.get(i);
-            presenter.addDoneItem(cachedItem);
-        }
-        presenter.notifyAdapter();
-        presenter.notifyDoneAdapter();
-        presenter.getTimerFragment().getRecyclerView_todoList().setLayoutManager(new LinearLayoutManager(ctx));
-
     }
 
-    public void addItemToRecyclerView(TODOitem itemToBeAdded){
+    public void addItemToRecyclerView(TODOitem itemToBeAdded) {
         if (!itemToBeAdded.isDone()) {
             presenter.addItem(itemToBeAdded);
             presenter.notifyAdapter();
@@ -76,10 +45,12 @@ public class Network_timer {
         }
         moveToRealm(itemToBeAdded);
     }
+
     private void addChildEventListener() {
         itemsRef.addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+                //TODO: Sync with cache
 //                boolean present=false;
 //                RealmResults<TODOitem> realmResults=realm.where(TODOitem.class).findAll();
 //                for(int i=0; i<realmResults.size();i++){
@@ -92,18 +63,14 @@ public class Network_timer {
 
             @Override
             public void onChildChanged(DataSnapshot dataSnapshot, String s) {
-                presenter.notifyAdapter();
             }
 
             @Override
             public void onChildRemoved(DataSnapshot dataSnapshot) {
-//                removeFromRealm(TODOitem.convertToItem(dataSnapshot));
-//                presenter.removeItem(TODOitem.convertToItem(dataSnapshot));
             }
 
             @Override
             public void onChildMoved(DataSnapshot dataSnapshot, String s) {
-                presenter.notifyAdapter();
             }
 
             @Override
@@ -145,13 +112,19 @@ public class Network_timer {
 
     }
 
+    public void markNodeDone(String name) {
+        presenter.getNetwork().getItemsRef().child(name).child("isDone").setValue(true);
+        presenter.notifyAdapter();
+
+    }
+
     public void addNode(String itemName, boolean done, int pomodoros) {
         presenter.getNetwork().getItemsRef().child(itemName).child("isDone").setValue(done);
         presenter.getNetwork().getItemsRef().child(itemName).child("pomodoros").setValue(pomodoros);
 
     }
 
-    public void onCloseUpdateCache(){
+    public void onCloseUpdateCache() {
         realm.beginTransaction();
         realm.deleteAll();
         realm.insert(presenter.getItems());
@@ -159,8 +132,4 @@ public class Network_timer {
         realm.commitTransaction();
     }
 
-    //TODO: Not needed for now
-//    public void markDone(TODOitem itemSelected) {
-//        itemsRef.child(itemSelected.getDescription()).child("isDone").setValue(itemSelected.isDone());
-//    }
 }
