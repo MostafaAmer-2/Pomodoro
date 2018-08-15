@@ -97,7 +97,7 @@ public class Network_timer {
 
             @Override
             public void onChildRemoved(DataSnapshot dataSnapshot) {
-                removeFromRealm(TODOitem.convertToItem(dataSnapshot));
+//                removeFromRealm(TODOitem.convertToItem(dataSnapshot));
 //                presenter.removeItem(TODOitem.convertToItem(dataSnapshot));
             }
 
@@ -113,25 +113,10 @@ public class Network_timer {
         });
     }
 
-    private void removeFromRealm(TODOitem itemToBeRemoved) {
+    public void removeFromRealm(TODOitem itemToBeRemoved) {
         realm.beginTransaction();
-        TODOitem realmItem = realm.where(TODOitem.class).equalTo("description", itemToBeRemoved.getDescription()).findFirst();
-//        Log.i("Network_timer", "removeFromRealm: "+realmItem.isValid());
-//        realmItem.deleteFromRealm();
-        Log.i("Network_timer", "loadBoards2: " + realm.where(TODOitem.class).findAll().size());
-        realm.commitTransaction();ArrayList<TODOitem> tmp=new ArrayList<TODOitem>();
-//        ArrayList<TODOitem> tmpDone=new ArrayList<TODOitem>();
-//        RealmResults<TODOitem> realmResults=realm.where(TODOitem.class).equalTo("done",false).findAll();
-//        for(int i=0; i<realmResults.size();i++){
-//            if (!realmResults.get(i).isDone()) {
-//                tmp.add(realmResults.get(i));
-//            } else {
-//                tmpDone.add(realmResults.get(i));
-//
-//            }
-//        }
-//        presenter.setItems(presenter.getTimerFragment().getActivity().getApplicationContext(),tmp);
-//        presenter.setDoneItems(tmpDone);
+        itemToBeRemoved.deleteFromRealm();
+        realm.commitTransaction();
     }
 
     private void moveToRealm(TODOitem itemToBeAdded) {

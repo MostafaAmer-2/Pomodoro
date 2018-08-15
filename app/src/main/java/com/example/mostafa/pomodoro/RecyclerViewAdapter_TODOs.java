@@ -119,10 +119,13 @@ public class RecyclerViewAdapter_TODOs extends RecyclerView.Adapter<RecyclerView
                 @Override
                 public void onClick(View view) {
                     TODOitem itemSelected= presenter.getItems().get(getAdapterPosition());
+                    realm.beginTransaction();
                     decreasePomododro(itemSelected);
-                    presenter.getNetwork().updatePomodoros(itemSelected);
+                    realm.commitTransaction();
                     if(itemSelected.getPomodoros()==0){
                         presenter.getNetwork().removeNode(itemSelected.getDescription());
+                        presenter.removeItem(itemSelected);
+                        presenter.getNetwork().removeFromRealm(itemSelected);
                     }
                     else{
                         presenter.getTimerFragment().updateBtnText(add_pomodoro_btn, itemSelected);
