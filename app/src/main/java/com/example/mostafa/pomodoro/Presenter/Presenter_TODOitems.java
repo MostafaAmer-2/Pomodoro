@@ -30,11 +30,14 @@ public class Presenter_TODOitems {
     private Network_timer network;
     private Context ctx;
 
+    Realm realm;
+
     public Presenter_TODOitems(TimerFragment TimerFragment, Context ctx) {
         this.timerFragment = TimerFragment;
         this.ctx = ctx;
-        setAdaptersAndUpdateLists();
+        realm = Realm.getDefaultInstance();
 
+        setAdaptersAndUpdateLists();
         network = new Network_timer(this, ctx);
     }
 
@@ -46,7 +49,7 @@ public class Presenter_TODOitems {
     }
 
     private void setAdapterForDoneItems() {
-        doneAdapter = new RecyclerViewAdapter_TODOs_done(this, doneItems, ctx);
+        doneAdapter = new RecyclerViewAdapter_TODOs_done(this, doneItems);
         timerFragment.getRecyclerView_doneList().setAdapter(doneAdapter);
         timerFragment.getRecyclerView_doneList().setLayoutManager(new LinearLayoutManager(ctx));
         timerFragment.getRecyclerView_doneList().setNestedScrollingEnabled(false);
@@ -54,8 +57,6 @@ public class Presenter_TODOitems {
     }
 
     private void updateBotheItemsLists() {
-        Realm realm = io.realm.Realm.getDefaultInstance();
-
         RealmResults<TODOitem> cache = realm.where(TODOitem.class).equalTo("done", false).findAll();
         RealmResults<TODOitem> cacheDone = realm.where(TODOitem.class).equalTo("done", true).findAll();
         Log.i("Network_timer", "loadBoards0: " + cache.size());
@@ -83,9 +84,23 @@ public class Presenter_TODOitems {
     public void onAddBtnClicked() {
         String itemEntered = timerFragment.getItemNameField().getText().toString();
         timerFragment.getItemNameField().setText("");
-        TODOitem newItem = new TODOitem(itemEntered);
-        network.addItemToRecyclerView(newItem);
+        realm.beginTransaction();
+        TODOitem newItem = realm.createObject(TODOitem.class);
+        newItem.setDescription(itemEntered);
+        realm.commitTransaction();
+        addItemToRecyclerView(newItem);
         network.addItem(newItem);
+    }
+
+    private void addItemToRecyclerView(TODOitem itemToBeAdded) {
+        if (!itemToBeAdded.isDone()) {
+            addItem(itemToBeAdded);
+            notifyAdapter();
+        } else {
+            addDoneItem(itemToBeAdded);
+            notifyDoneAdapter();
+
+        }
     }
 
     public void notifyAdapter() {

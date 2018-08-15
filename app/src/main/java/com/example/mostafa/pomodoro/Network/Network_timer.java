@@ -34,17 +34,6 @@ public class Network_timer {
         realm = io.realm.Realm.getDefaultInstance();
     }
 
-    public void addItemToRecyclerView(TODOitem itemToBeAdded) {
-        if (!itemToBeAdded.isDone()) {
-            presenter.addItem(itemToBeAdded);
-            presenter.notifyAdapter();
-        } else {
-            presenter.addDoneItem(itemToBeAdded);
-            presenter.notifyDoneAdapter();
-
-        }
-        moveToRealm(itemToBeAdded);
-    }
 
     private void addChildEventListener() {
         itemsRef.addChildEventListener(new ChildEventListener() {
@@ -83,12 +72,6 @@ public class Network_timer {
     public void removeFromRealm(TODOitem itemToBeRemoved) {
         realm.beginTransaction();
         itemToBeRemoved.deleteFromRealm();
-        realm.commitTransaction();
-    }
-
-    private void moveToRealm(TODOitem itemToBeAdded) {
-        realm.beginTransaction();
-        realm.copyToRealm(itemToBeAdded);
         realm.commitTransaction();
     }
 

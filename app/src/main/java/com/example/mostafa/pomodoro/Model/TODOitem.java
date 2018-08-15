@@ -10,7 +10,8 @@ public class TODOitem extends RealmObject {
     private int pomodoros;
 
     public TODOitem() {
-        //empty
+        this.done = false;
+        this.pomodoros = 1;
     }
 
     public TODOitem(String title, boolean isDone, int pomodoros) {

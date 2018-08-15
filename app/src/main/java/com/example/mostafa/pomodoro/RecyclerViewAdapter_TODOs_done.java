@@ -1,6 +1,5 @@
 package com.example.mostafa.pomodoro;
 
-import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.constraint.ConstraintLayout;
 import android.support.v7.widget.RecyclerView;
@@ -19,19 +18,15 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import io.realm.Realm;
 
-import static com.example.mostafa.pomodoro.Model.TODOitem.markDone;
-
-public class RecyclerViewAdapter_TODOs_done extends RecyclerView.Adapter<RecyclerViewAdapter_TODOs_done.ViewHolder>{
+public class RecyclerViewAdapter_TODOs_done extends RecyclerView.Adapter<RecyclerViewAdapter_TODOs_done.ViewHolder> {
     private static final String TAG = "RecyclerViewAdapter_TODOs";
-    private ArrayList<TODOitem> mItems= new ArrayList<TODOitem>();
-    private Context mContext;
+    private ArrayList<TODOitem> mItems;
     private Presenter_TODOitems presenter;
     Realm realm;
 
-    public RecyclerViewAdapter_TODOs_done(Presenter_TODOitems presenter, ArrayList<TODOitem> mItems, Context context){
-        this.presenter=presenter;
-        this.mItems=mItems;
-        this.mContext=context;
+    public RecyclerViewAdapter_TODOs_done(Presenter_TODOitems presenter, ArrayList<TODOitem> mItems) {
+        this.presenter = presenter;
+        this.mItems = mItems;
         realm = Realm.getDefaultInstance();
     }
 
@@ -39,18 +34,16 @@ public class RecyclerViewAdapter_TODOs_done extends RecyclerView.Adapter<Recycle
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view= LayoutInflater.from(parent.getContext()).inflate(R.layout.layout_listitem_done, parent, false);
-        ViewHolder holder= new ViewHolder(view);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.layout_listitem_done, parent, false);
+        ViewHolder holder = new ViewHolder(view);
         return holder;
     }
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, final int position) {
-        if(!mItems.isEmpty() && holder != null && holder.itemName!= null) {
+        if (!mItems.isEmpty() && holder != null && holder.itemName != null) {
             holder.itemName.setText(mItems.get(position).getDescription());
             presenter.getNetwork().getItemsRef().child(mItems.get(position).getDescription()).child("pomodoros");
-        }
-        else{
         }
     }
 
@@ -59,7 +52,7 @@ public class RecyclerViewAdapter_TODOs_done extends RecyclerView.Adapter<Recycle
         return mItems.size();
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder{
+    public class ViewHolder extends RecyclerView.ViewHolder {
 
         @BindView(R.id.item_name)
         TextView itemName;
@@ -77,19 +70,13 @@ public class RecyclerViewAdapter_TODOs_done extends RecyclerView.Adapter<Recycle
             deleteBtn.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    TODOitem itemSelected= presenter.getDoneItems().get(getAdapterPosition());
+                    TODOitem itemSelected = presenter.getDoneItems().get(getAdapterPosition());
                     presenter.getNetwork().removeNode(itemSelected.getDescription());
-                    presenter.getNetwork().removeFromRealm(itemSelected);
                     presenter.getDoneItems().remove(itemSelected);
+                    presenter.getNetwork().removeFromRealm(itemSelected);
                     presenter.notifyDoneAdapter();
                 }
             });
-
-
-
         }
-
-
-
     }
 }
