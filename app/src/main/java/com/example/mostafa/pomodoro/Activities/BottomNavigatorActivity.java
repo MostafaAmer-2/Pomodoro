@@ -14,14 +14,15 @@ import com.example.mostafa.pomodoro.R;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import io.realm.Realm;
 
 public class BottomNavigatorActivity extends AppCompatActivity {
 
-    //  Presenter_Boards presenter; //Can be found in the fragment itself (the actual view)
     @BindView(R.id.relativeLayout)
     RelativeLayout relativeLayout;
     @BindView(R.id.bottom_navigation)
     BottomNavigationView bottomNavigationView;
+    Realm realm;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,6 +30,9 @@ public class BottomNavigatorActivity extends AppCompatActivity {
         setContentView(R.layout.activity_bottom_navigator);
         ButterKnife.bind(this);
         handleButtonNavigationFunctionality();
+        //TODO: remove realm initialization from here
+        Realm.init(getApplicationContext());
+
     }
 
     private void handleButtonNavigationFunctionality() {

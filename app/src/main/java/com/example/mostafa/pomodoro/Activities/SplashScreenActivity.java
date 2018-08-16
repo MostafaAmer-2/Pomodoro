@@ -34,7 +34,7 @@ public class SplashScreenActivity extends Activity {
         doSplashScreenAnimation();
         checkTokenValidityAndUpdatePrefrences();
         // Initialize Realm (just once per application)
-        Realm.init(getApplicationContext());
+        //TODO: initialize realm         Realm.init(getApplicationContext());
     }
 
     private void goToBottomNavigator() {

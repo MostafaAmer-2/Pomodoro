@@ -5,7 +5,7 @@
     android:layout_height="60dp"
     android:layout_margin="4dp"
     android:id="@+id/parent_layout"
-    android:background="@color/pomodoroGreen">
+    android:background="@color/pomodoroBlue">
 
     <TextView xmlns:android="http://schemas.android.com/apk/res/android"
         android:id="@+id/item_name"

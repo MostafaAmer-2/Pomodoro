@@ -8,6 +8,7 @@ import android.util.Log;
 import com.example.mostafa.pomodoro.Fragments.TimerFragment;
 import com.example.mostafa.pomodoro.Model.TODOitem;
 import com.example.mostafa.pomodoro.Network.Network_timer;
+import com.example.mostafa.pomodoro.R;
 import com.example.mostafa.pomodoro.RecyclerViewAdapter_TODOs;
 import com.example.mostafa.pomodoro.RecyclerViewAdapter_TODOs_done;
 
@@ -166,16 +167,16 @@ public class Presenter_TODOitems {
         if (currentHolder == null) {
             currentHolder = holder;
             currentItem = item;
-            holder.getParent_layout().setBackgroundColor(shaded);
+            holder.getParent_layout().setBackgroundColor(ctx.getResources().getColor(R.color.pomodoroDarkBlue));
         } else if (currentHolder.equals(holder)) {
             currentHolder = null;
             currentItem = null;
-            holder.getParent_layout().setBackgroundColor(normal);
+            holder.getParent_layout().setBackgroundColor(ctx.getResources().getColor(R.color.pomodoroBlue));
         } else {
-            currentHolder.getParent_layout().setBackgroundColor(normal);
+            currentHolder.getParent_layout().setBackgroundColor(ctx.getResources().getColor(R.color.pomodoroBlue));
             currentHolder = holder;
             currentItem = item;
-            holder.getParent_layout().setBackgroundColor(shaded);
+            holder.getParent_layout().setBackgroundColor(ctx.getResources().getColor(R.color.pomodoroDarkBlue));
         }
     }
 
