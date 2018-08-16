@@ -4,9 +4,14 @@ package com.example.mostafa.pomodoro.Fragments;
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
+import android.hardware.Sensor;
+import android.hardware.SensorEvent;
+import android.hardware.SensorListener;
+import android.hardware.SensorManager;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.preference.PreferenceManager;
@@ -21,12 +26,14 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.mostafa.pomodoro.Activities.BottomNavigatorActivity;
 import com.example.mostafa.pomodoro.Model.TODOitem;
 import com.example.mostafa.pomodoro.Presenter.Presenter_TODOitems;
 import com.example.mostafa.pomodoro.Presenter.Presenter_Timer;
 import com.example.mostafa.pomodoro.R;
+import com.example.mostafa.pomodoro.Sensors.ShakeDetector;
 
 import java.util.Locale;
 
@@ -35,12 +42,13 @@ import butterknife.ButterKnife;
 
 import static android.content.Context.MODE_PRIVATE;
 import static android.content.Context.NOTIFICATION_SERVICE;
+import static android.content.Context.SENSOR_SERVICE;
 import static com.example.mostafa.pomodoro.Model.TODOitem.decreasePomododro;
 import static com.example.mostafa.pomodoro.Model.TODOitem.markDone;
 
 public class TimerFragment extends Fragment {
     private static final String TAG = "TimerFragment";
-    private static final long START_TIME_IN_MILLIS = 6000;
+    private static final long START_TIME_IN_MILLIS = 1500000;
     private static final long BREAK_TIME_IN_MILLIS = 300000;
 
     @BindView(R.id.text_view_countdown)
@@ -71,6 +79,11 @@ public class TimerFragment extends Fragment {
     private Presenter_Timer presenter_timer;
     private SharedPreferences prefs;
 
+    // The following are used for the shake detection
+    private SensorManager mSensorManager;
+    private Sensor mAccelerometer;
+    private ShakeDetector mShakeDetector;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_timer, container, false);
@@ -78,9 +91,31 @@ public class TimerFragment extends Fragment {
         presenter_todos = new Presenter_TODOitems(this, getActivity().getApplicationContext());
         presenter_timer = new Presenter_Timer(this, getActivity().getApplicationContext());
 
+        // ShakeDetector initialization
+        mSensorManager = (SensorManager) getActivity().getApplicationContext().getSystemService(Context.SENSOR_SERVICE);
+        mAccelerometer = mSensorManager
+                .getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
+        mShakeDetector = new ShakeDetector();
+        mShakeDetector.setOnShakeListener(new ShakeDetector.OnShakeListener() {
+
+            @Override
+            public void onShake(int count) {
+                /*
+                 * The following method, "handleShakeEvent(count):" is a stub //
+                 * method you would use to setup whatever you want done once the
+                 * device has been shook.
+                 */
+                handleShakeEvent(count);
+            }
+        });
+
         createNotification();
         setOnClickListeners();
         return view;
+    }
+
+    private void handleShakeEvent(int count) {
+        mButtonStartPause.performClick();
     }
 
     private void setOnClickListeners() {
@@ -295,6 +330,20 @@ public class TimerFragment extends Fragment {
 
     public long getmEndTime() {
         return mEndTime;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        // Add the following line to register the Session Manager Listener onResume
+        mSensorManager.registerListener(mShakeDetector, mAccelerometer,	SensorManager.SENSOR_DELAY_UI);
+    }
+
+    @Override
+    public void onPause() {
+        // Add the following line to unregister the Sensor Manager onPause
+        mSensorManager.unregisterListener(mShakeDetector);
+        super.onPause();
     }
 
 
