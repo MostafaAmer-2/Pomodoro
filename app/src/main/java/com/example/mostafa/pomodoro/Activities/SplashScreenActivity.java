@@ -75,9 +75,15 @@ public class SplashScreenActivity extends Activity {
                 }
             });
         } else {
-            //TODO: splash screen doesnt appear because of this
-            Preferences.saveDataFlag(getApplicationContext(), "false");
-            goToBottomNavigator();
+            Handler handler = new Handler();
+
+            handler.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    Preferences.saveDataFlag(getApplicationContext(), "false");
+                    goToBottomNavigator();
+                }
+            }, 2000);
         }
     }
 }

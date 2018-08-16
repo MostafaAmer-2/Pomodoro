@@ -109,15 +109,18 @@ public class Presenter_Timer {
             timerFragment.getPresenter_todos().getNetwork().updatePomodoros(currentItem);
             timerFragment.updateBtnText(timerFragment.getPresenter_todos().getCurrentHolder().getAdd_pomodoro_btn(), currentItem);
             if (currentItem.getPomodoros() == 0) {
-                timerFragment.getPresenter_todos().getNetwork().removeNode(currentItem.getDescription());
-                realm.beginTransaction();
-                markDone(currentItem);
-                realm.commitTransaction();
-                timerFragment.getPresenter_todos().getNetwork().addNode(currentItem.getDescription(), currentItem.isDone(), currentItem.getPomodoros());
+//                timerFragment.getPresenter_todos().getNetwork().removeNode(currentItem.getDescription());
+
+
+                timerFragment.getPresenter_todos().getCurrentHolder().getMarkDone().performClick();
+//                markDone(currentItem);
+
+//                timerFragment.getPresenter_todos().addDoneItem(currentItem);
+//                timerFragment.getPresenter_todos().getNetwork().addNode(currentItem.getDescription(), currentItem.isDone(), currentItem.getPomodoros());
 
                 //resetting everything in the viewHolder
                 timerFragment.getPresenter_todos().setCurrentItem(null);
-                timerFragment.getPresenter_todos().getCurrentHolder().getParent_layout().setBackgroundColor(ctx.getResources().getColor(R.color.pomodoroRed));
+                timerFragment.getPresenter_todos().getCurrentHolder().getParent_layout().setBackgroundColor(ctx.getResources().getColor(R.color.pomodoroBlue));
                 timerFragment.getPresenter_todos().setCurrentHolder(null);
             }
         }

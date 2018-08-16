@@ -92,6 +92,10 @@ public class RecyclerViewAdapter_TODOs extends RecyclerView.Adapter<RecyclerView
             return add_pomodoro_btn;
         }
 
+        public Button getMarkDone() {
+            return markDone;
+        }
+
         private void setOnClickListeners() {
             add_pomodoro_btn.setOnClickListener(new View.OnClickListener() {
                 @Override
