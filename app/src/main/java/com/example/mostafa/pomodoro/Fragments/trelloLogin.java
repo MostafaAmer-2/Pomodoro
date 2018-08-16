@@ -48,7 +48,7 @@ public class trelloLogin extends Fragment {
         ButterKnife.bind(this, view);
 
         loadToken();
-        if (Preferences.isTokenPresent(getActivity().getApplicationContext()) && Preferences.loadDataFlag(getActivity().getApplicationContext())) { //token already has a value stored
+        if (Preferences.isTokenPresent(getActivity().getApplicationContext()) && Preferences.loadDataFlag(getActivity().getApplicationContext()).equals("true")) { //token already has a value stored
             goToBoards();
         } else { //No Valid token present
             if (!returnedFromLogin) { //Still did not go to trello login page

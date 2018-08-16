@@ -5,7 +5,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".Fragments.trelloLogin">
+    tools:context=".Fragments.trelloLogin"
+    android:background="@color/pomodoroBlue">
 
     <RelativeLayout
         android:layout_weight="1"
@@ -26,20 +27,22 @@
         android:layout_height="0dp"
         android:layout_width="fill_parent">
 
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Login with Trello"
-        android:id="@+id/loginBtn"
-        android:layout_centerInParent="true"
-        android:layout_centerHorizontal="true"/>
+        <Button
+            android:id="@+id/loginBtn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="64dp"
+            android:text="Login with Trello" />
 
         <LinearLayout
             android:id="@+id/linearLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@id/loginBtn"
-            android:layout_margin="8dp">
+            android:layout_margin="8dp"
+            android:paddingTop="30dp">
 
             <EditText
                 android:id="@+id/editText"

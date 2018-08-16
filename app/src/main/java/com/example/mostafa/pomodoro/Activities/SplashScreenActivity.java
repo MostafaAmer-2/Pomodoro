@@ -34,7 +34,7 @@ public class SplashScreenActivity extends Activity {
         doSplashScreenAnimation();
         checkTokenValidityAndUpdatePrefrences();
         // Initialize Realm (just once per application)
-        //TODO: initialize realm         Realm.init(getApplicationContext());
+        Realm.init(getApplicationContext());
     }
 
     private void goToBottomNavigator() {
@@ -64,18 +64,19 @@ public class SplashScreenActivity extends Activity {
             network.testTokenValid(token).done(new DoneCallback<JSONArray>() {
                 @Override
                 public void onDone(JSONArray result) {
-                    Preferences.saveDataFlag(getApplicationContext(), true);
+                    Preferences.saveDataFlag(getApplicationContext(), "true");
                     goToBottomNavigator();
                 }
             }).fail(new FailCallback<VolleyError>() {
                 @Override
                 public void onFail(VolleyError result) {
-                    Preferences.saveDataFlag(getApplicationContext(), false);
+                    Preferences.saveDataFlag(getApplicationContext(), "false");
                     goToBottomNavigator();
                 }
             });
         } else {
-            Preferences.saveDataFlag(getApplicationContext(), false);
+            //TODO: splash screen doesnt appear because of this
+            Preferences.saveDataFlag(getApplicationContext(), "false");
             goToBottomNavigator();
         }
     }

@@ -157,7 +157,6 @@ public class TimerFragment extends Fragment {
         mTextViewCountDown.setText(timeLeftFormatted);
     }
 
-    //TODO: onStop and onStart methods may need more refactoring
     @Override
     public void onStop() {
         super.onStop();

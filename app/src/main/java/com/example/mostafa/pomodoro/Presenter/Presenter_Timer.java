@@ -10,6 +10,8 @@ import com.example.mostafa.pomodoro.Fragments.TimerFragment;
 import com.example.mostafa.pomodoro.Model.TODOitem;
 import com.example.mostafa.pomodoro.R;
 
+import io.realm.Realm;
+
 import static android.content.Context.NOTIFICATION_SERVICE;
 import static com.example.mostafa.pomodoro.Model.TODOitem.decreasePomododro;
 import static com.example.mostafa.pomodoro.Model.TODOitem.markDone;
@@ -17,10 +19,12 @@ import static com.example.mostafa.pomodoro.Model.TODOitem.markDone;
 public class Presenter_Timer {
     private TimerFragment timerFragment;
     private Context ctx;
+    Realm realm;
 
     public Presenter_Timer(TimerFragment timerFragment, Context ctx) {
         this.timerFragment = timerFragment;
         this.ctx=ctx;
+        realm = Realm.getDefaultInstance();
     }
 
     public void popNotification() {
@@ -99,12 +103,16 @@ public class Presenter_Timer {
         //decreasing a pomodoro
         TODOitem currentItem = timerFragment.getPresenter_todos().getCurrentItem();
         if (currentItem != null && timerFragment.isOnBreak()) {
+            realm.beginTransaction();
             decreasePomododro(currentItem);
+            realm.commitTransaction();
             timerFragment.getPresenter_todos().getNetwork().updatePomodoros(currentItem);
             timerFragment.updateBtnText(timerFragment.getPresenter_todos().getCurrentHolder().getAdd_pomodoro_btn(), currentItem);
             if (currentItem.getPomodoros() == 0) {
                 timerFragment.getPresenter_todos().getNetwork().removeNode(currentItem.getDescription());
+                realm.beginTransaction();
                 markDone(currentItem);
+                realm.commitTransaction();
                 timerFragment.getPresenter_todos().getNetwork().addNode(currentItem.getDescription(), currentItem.isDone(), currentItem.getPomodoros());
 
                 //resetting everything in the viewHolder
