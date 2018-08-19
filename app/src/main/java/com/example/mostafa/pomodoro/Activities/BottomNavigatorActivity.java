@@ -9,6 +9,7 @@ import android.view.MenuItem;
 import android.widget.RelativeLayout;
 
 import com.example.mostafa.pomodoro.Fragments.TimerFragment;
+import com.example.mostafa.pomodoro.Fragments.XPFragment;
 import com.example.mostafa.pomodoro.Fragments.trelloLogin;
 import com.example.mostafa.pomodoro.R;
 
@@ -40,6 +41,8 @@ public class BottomNavigatorActivity extends AppCompatActivity {
                         return loadFragment(new TimerFragment());
                     case R.id.action_boards:
                         return loadFragment(new trelloLogin());
+                    case R.id.action_XP:
+                        return loadFragment(new XPFragment());
                     default:
                         return false;
                 }
