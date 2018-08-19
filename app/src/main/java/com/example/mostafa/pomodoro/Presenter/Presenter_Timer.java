@@ -9,6 +9,7 @@ import android.util.Log;
 import com.example.mostafa.pomodoro.Fragments.TimerFragment;
 import com.example.mostafa.pomodoro.Model.TODOitem;
 import com.example.mostafa.pomodoro.R;
+import com.example.mostafa.pomodoro.Settings.Preferences;
 
 import io.realm.Realm;
 
@@ -125,6 +126,7 @@ public class Presenter_Timer {
             }
         }
     }
+
 
     public void updateState() {
         if (timerFragment.getmTimeLeftInMillis() == timerFragment.getBreakTimeInMillis()) {

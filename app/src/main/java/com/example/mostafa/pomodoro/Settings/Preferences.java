@@ -31,6 +31,19 @@ public class Preferences {
         return sharedpreferences.getString("isTokenValid", "false");
     }
 
+    public static int loadPoints(Context ctx) {
+        SharedPreferences sharedpreferences = ctx.getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);
+        return sharedpreferences.getInt("points", 0);
+    }
+
+    public static void savePoints(Context ctx, int points) {
+        SharedPreferences sharedpreferences = ctx.getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedpreferences.edit();
+        editor.putInt("points", points);
+        editor.commit();
+    }
+
+
     public static boolean isTokenPresent(Context ctx){
         return !loadData(ctx).equals("");
     }
