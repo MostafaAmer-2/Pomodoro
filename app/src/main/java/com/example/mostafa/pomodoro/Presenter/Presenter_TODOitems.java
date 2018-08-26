@@ -1,7 +1,6 @@
 package com.example.mostafa.pomodoro.Presenter;
 
 import android.content.Context;
-import android.graphics.Color;
 import android.support.v7.widget.LinearLayoutManager;
 import android.util.Log;
 
@@ -44,7 +43,7 @@ public class Presenter_TODOitems {
     private void setAdaptersAndUpdateLists() {
         setAdapterForTODOitems();
         setAdapterForDoneItems();
-        updateBotheItemsLists();
+        updateBothItemsLists();
         getTimerFragment().getRecyclerView_todoList().setLayoutManager(new LinearLayoutManager(ctx));
     }
 
@@ -56,7 +55,7 @@ public class Presenter_TODOitems {
 
     }
 
-    private void updateBotheItemsLists() {
+    private void updateBothItemsLists() {
         RealmResults<TODOitem> cache = realm.where(TODOitem.class).equalTo("done", false).findAll();
         RealmResults<TODOitem> cacheDone = realm.where(TODOitem.class).equalTo("done", true).findAll();
         Log.i("Network_timer", "loadBoards0: " + cache.size());
@@ -89,6 +88,7 @@ public class Presenter_TODOitems {
         newItem.setDescription(itemEntered);
         realm.commitTransaction();
         addItemToRecyclerView(newItem);
+        //adding to firebase
         network.addItem(newItem);
     }
 

@@ -12,6 +12,7 @@ import android.widget.TextView;
 
 import com.example.mostafa.pomodoro.Network.Network_XP;
 import com.example.mostafa.pomodoro.R;
+import com.example.mostafa.pomodoro.Settings.Preferences;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -30,6 +31,8 @@ public class XPFragment extends Fragment {
     TextView text_percentage;
     @BindView(R.id.XPProgressBar)
     ProgressBar xp_progressBar;
+    @BindView(R.id.loading)
+    ProgressBar loading;
 
     Network_XP network;
 
@@ -61,6 +64,8 @@ public class XPFragment extends Fragment {
 
     public void continueOps(int xp) {
         points = xp;
+        text_percentage.setVisibility(View.VISIBLE);
+        loading.setVisibility(View.INVISIBLE);
         calculateLevelAndPercentage();
         setUIViews();
     }

@@ -123,8 +123,14 @@ public class Network_Cards {
     public Promise<String, String, Double> addItem(TODOitem newItem) {
         final Deferred<String, String, Double> deferred = new DeferredObject<>();
         try{
-            itemsRef.child(newItem.getDescription()).child("isDone").setValue(newItem.isDone());
-            itemsRef.child(newItem.getDescription()).child("pomodoros").setValue(newItem.getPomodoros());
+            String nodeName= newItem.getDescription();
+            nodeName = nodeName.replace(".","");
+            nodeName = nodeName.replace("#","");
+            nodeName = nodeName.replace("$","");
+            nodeName = nodeName.replace("[","");
+            nodeName = nodeName.replace("]","");
+            itemsRef.child(nodeName).child("isDone").setValue(newItem.isDone());
+            itemsRef.child(nodeName).child("pomodoros").setValue(newItem.getPomodoros());
             deferred.resolve("Item added");
         }
         catch(Error error){

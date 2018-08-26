@@ -9,6 +9,7 @@ import android.util.Log;
 import com.example.mostafa.pomodoro.Fragments.TimerFragment;
 import com.example.mostafa.pomodoro.Model.TODOitem;
 import com.example.mostafa.pomodoro.R;
+import com.example.mostafa.pomodoro.RecyclerViewAdapter_TODOs;
 import com.example.mostafa.pomodoro.Settings.Preferences;
 
 import io.realm.Realm;
@@ -103,7 +104,8 @@ public class Presenter_Timer {
 
         //decreasing a pomodoro
         TODOitem currentItem = timerFragment.getPresenter_todos().getCurrentItem();
-        if (currentItem != null && timerFragment.isOnBreak()) {
+        RecyclerViewAdapter_TODOs.ViewHolder currentHolder = timerFragment.getPresenter_todos().getCurrentHolder();
+        if (currentItem != null && currentHolder!=null && timerFragment.isOnBreak()) {
             realm.beginTransaction();
             decreasePomododro(currentItem);
             realm.commitTransaction();
@@ -119,10 +121,11 @@ public class Presenter_Timer {
 //                timerFragment.getPresenter_todos().addDoneItem(currentItem);
 //                timerFragment.getPresenter_todos().getNetwork().addNode(currentItem.getDescription(), currentItem.isDone(), currentItem.getPomodoros());
 
-                //resetting everything in the viewHolder
-                timerFragment.getPresenter_todos().setCurrentItem(null);
-                timerFragment.getPresenter_todos().getCurrentHolder().getParent_layout().setBackgroundColor(ctx.getResources().getColor(R.color.pomodoroBlueTrans));
-                timerFragment.getPresenter_todos().setCurrentHolder(null);
+//                //resetting everything in the viewHolder
+//                timerFragment.getPresenter_todos().setCurrentItem(null);
+//                Log.i("NullTest", "doneTimer: "+timerFragment.getPresenter_todos().getCurrentHolder());
+//                timerFragment.getPresenter_todos().getCurrentHolder().getParent_layout().setBackgroundColor(ctx.getResources().getColor(R.color.pomodoroBlueTrans));
+//                timerFragment.getPresenter_todos().setCurrentHolder(null);
             }
         }
     }

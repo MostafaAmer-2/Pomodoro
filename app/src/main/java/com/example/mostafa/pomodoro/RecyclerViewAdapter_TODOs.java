@@ -118,6 +118,12 @@ public class RecyclerViewAdapter_TODOs extends RecyclerView.Adapter<RecyclerView
                     decreasePomododro(itemSelected);
                     realm.commitTransaction();
                     if (itemSelected.getPomodoros() == 0) {
+                        if(presenter.getCurrentHolder()!= null && presenter.getCurrentItem()!=null) {
+                            //resetting the current item and current holder
+                            presenter.getCurrentHolder().getParent_layout().setBackgroundColor(presenter.getTimerFragment().getResources().getColor(R.color.pomodoroBlueTrans));
+                            presenter.setCurrentHolder(null);
+                            presenter.setCurrentItem(null);
+                        }
                         presenter.getNetwork().removeNode(itemSelected.getDescription());
                         presenter.removeItem(itemSelected);
                         presenter.getNetwork().removeFromRealm(itemSelected);
@@ -134,6 +140,12 @@ public class RecyclerViewAdapter_TODOs extends RecyclerView.Adapter<RecyclerView
                     TODOitem itemSelected = presenter.getItems().get(getAdapterPosition());
                     presenter.getNetwork().markNodeDone(itemSelected.getDescription());
                     presenter.getItems().remove(itemSelected);
+                    //resetting the current item and current holder
+                    if(presenter.getCurrentHolder()!= null && presenter.getCurrentItem()!=null) {
+                        presenter.getCurrentHolder().getParent_layout().setBackgroundColor(presenter.getTimerFragment().getResources().getColor(R.color.pomodoroBlueTrans));
+                        presenter.setCurrentHolder(null);
+                        presenter.setCurrentItem(null);
+                    }
                     realm.beginTransaction();
                     //setting pomodoros to zero first to update xp
                     setPomodorosZero(itemSelected);
