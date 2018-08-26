@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
+import android.util.Log;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
@@ -37,9 +38,13 @@ public class SplashScreenActivity extends Activity {
         Realm.init(getApplicationContext());
     }
 
-    private void goToBottomNavigator() {
-        Intent go_to_BottomNavigator = new Intent(getApplicationContext(), BottomNavigatorActivity.class);
-        startActivity(go_to_BottomNavigator);
+    private void goToAuthentication() {
+        Intent go_to_Authentication = new Intent(getApplicationContext(), Authentication.class);
+        startActivity(go_to_Authentication);
+    }
+    private void goToBottomNavigatorActivity() {
+        Intent go_to_BottomNavigation = new Intent(getApplicationContext(), BottomNavigatorActivity.class);
+        startActivity(go_to_BottomNavigation);
     }
 
     private void doSplashScreenAnimation() {
@@ -65,13 +70,25 @@ public class SplashScreenActivity extends Activity {
                 @Override
                 public void onDone(JSONArray result) {
                     Preferences.saveDataFlag(getApplicationContext(), "true");
-                    goToBottomNavigator();
+                    Log.i(TAG, "onDone: 1"+Preferences.loadUserID(getApplicationContext()));
+                    if(!Preferences.loadUserID(getApplicationContext()).equals("")){
+                        goToBottomNavigatorActivity();
+                    }
+                    else{
+                        goToAuthentication();
+                    }
                 }
             }).fail(new FailCallback<VolleyError>() {
                 @Override
                 public void onFail(VolleyError result) {
                     Preferences.saveDataFlag(getApplicationContext(), "false");
-                    goToBottomNavigator();
+                    Log.i(TAG, "onDone: 2"+Preferences.loadUserID(getApplicationContext()));
+                    if(!Preferences.loadUserID(getApplicationContext()).equals("")){
+                        goToBottomNavigatorActivity();
+                    }
+                    else{
+                        goToAuthentication();
+                    }
                 }
             });
         } else {
@@ -81,7 +98,13 @@ public class SplashScreenActivity extends Activity {
                 @Override
                 public void run() {
                     Preferences.saveDataFlag(getApplicationContext(), "false");
-                    goToBottomNavigator();
+                    Log.i(TAG, "onDone: 3"+Preferences.loadUserID(getApplicationContext()));
+                    if(!Preferences.loadUserID(getApplicationContext()).equals("")){
+                        goToBottomNavigatorActivity();
+                    }
+                    else{
+                        goToAuthentication();
+                    }
                 }
             }, 2000);
         }

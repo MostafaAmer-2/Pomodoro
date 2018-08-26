@@ -4,11 +4,13 @@ import android.content.Context;
 
 import com.example.mostafa.pomodoro.Model.TODOitem;
 import com.example.mostafa.pomodoro.Presenter.Presenter_TODOitems;
+import com.example.mostafa.pomodoro.Settings.Preferences;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import io.realm.Realm;
 import io.realm.RealmResults;
@@ -17,19 +19,35 @@ import io.realm.RealmResults;
 
 public class Network_timer {
 
-    private DatabaseReference dref = FirebaseDatabase.getInstance().getReference();
-    private DatabaseReference itemsRef = dref.child("items");
-    private DatabaseReference doneRef = dref.child("done");
-
-    private DatabaseReference usersRef = dref.child("users");
-    private DatabaseReference IDref;// = usersRef.child(FirebaseAuth.getInstance().getCurrentUser().getUid());
+    private DatabaseReference dref;
+    private DatabaseReference itemsRef;
 
     Presenter_TODOitems presenter;
     Realm realm;
+    Context ctx;
 
 
     public Network_timer(Presenter_TODOitems presenter, Context ctx) {
         this.presenter = presenter;
+        this.ctx=ctx;
+
+        dref = FirebaseDatabase.getInstance().getReference().child(Preferences.loadUserID(ctx));
+        itemsRef = dref.child("items");
+
+        dref.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                if (!dataSnapshot.hasChild("xp")) {
+                    dref.child("xp").setValue(0);
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+
         addChildEventListener();
         // Get a Realm instance for this thread
         realm = io.realm.Realm.getDefaultInstance();

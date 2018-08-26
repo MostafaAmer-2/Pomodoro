@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="200dp"
+        android:layout_height="200dp"
+        android:layout_above="@+id/emailField"
+        android:layout_centerHorizontal="true"/>
+
+    <EditText
+        android:id="@+id/emailField"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:ems="10"
+        android:hint="Choose e-mail"
+        android:inputType="textEmailAddress"
+        android:textColor="@color/pomodoroDarkBlue"
+        android:textColorHint="@color/pomodoroDarkBlue" />
+
+    <EditText
+        android:id="@+id/passwordField"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/emailField"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="8dp"
+        android:ems="10"
+        android:hint="Choose password"
+        android:inputType="textPassword"
+        android:textColor="@color/pomodoroDarkBlue"
+        android:textColorHint="@color/pomodoroDarkBlue" />
+
+    <Button
+        android:id="@+id/registerBtn"
+        style="@style/LoginButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/passwordField"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="30dp"
+        android:text="Register" />
+
+
+</RelativeLayout>

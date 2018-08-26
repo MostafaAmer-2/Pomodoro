@@ -6,10 +6,18 @@
         <item name="colorPrimary">#118AB2</item>
         <item name="colorPrimaryDark">#073B4C</item>
         <item name="colorAccent">#D33E43</item>
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
     </style>
 
     <style name="AppTheme.whiteProgressBar">
         <item name="colorAccent">@color/white</item> <!-- Whatever color you want-->
+    </style>
+
+    <style name="LoginButton">
+        <!-- Customize your theme here. -->
+        <item name="android:textColor">@color/white</item>
+        <item name="android:background">@color/pomodoroRed</item>
     </style>
 
 

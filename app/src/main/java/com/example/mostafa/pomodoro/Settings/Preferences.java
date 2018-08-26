@@ -43,6 +43,18 @@ public class Preferences {
         editor.commit();
     }
 
+    public static void saveUserID(Context ctx, String id) {
+        SharedPreferences sharedpreferences = ctx.getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedpreferences.edit();
+        editor.putString("userID", id);
+        editor.commit();
+    }
+
+    public static String loadUserID(Context ctx) {
+        SharedPreferences sharedpreferences = ctx.getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);
+        return sharedpreferences.getString("userID", "");
+    }
+
 
     public static boolean isTokenPresent(Context ctx){
         return !loadData(ctx).equals("");
