@@ -10,7 +10,7 @@ admin.initializeApp();
 //   console.log("Hello!")
 //  response.send("Hello World!");
 // });
-exports.updateXP = functions.database.ref('/items/{todoID}/pomodoros')
+exports.updateXP = functions.database.ref('{userID}/items/{todoID}/pomodoros')
 .onUpdate((change, context) => {
   const before= change.before.val();
   const after= change.after.val();
@@ -18,11 +18,11 @@ exports.updateXP = functions.database.ref('/items/{todoID}/pomodoros')
   return admin.database().ref('/xp').once('value')
     .then(snapshot =>{
     var xp = snapshot.val();
-    xp=parseInt(xp)+10;    
+    xp=parseInt(xp)+10;
     return xp;
     })
     .then(result =>{
-      const xp_count= parseInt(result);      
+      const xp_count= parseInt(result);
       return admin.database().ref('/items').parent.update({"xp": xp_count});
     })
     .catch(error =>{
@@ -31,4 +31,4 @@ exports.updateXP = functions.database.ref('/items/{todoID}/pomodoros')
   }else{
     return null;
   }
-  });  
+  });
