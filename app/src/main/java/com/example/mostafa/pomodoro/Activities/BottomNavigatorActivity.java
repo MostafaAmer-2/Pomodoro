@@ -1,5 +1,6 @@
 package com.example.mostafa.pomodoro.Activities;
 
+import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.Fragment;
@@ -77,11 +78,16 @@ public class BottomNavigatorActivity extends AppCompatActivity {
         if (id == R.id.action_logout) {
             FirebaseAuth.getInstance().signOut();
             Preferences.saveUserID(getApplicationContext(),"");
-            finish();
+            goToAuthentication();
         }
 
 
         return super.onOptionsItemSelected(item);
+    }
+
+    private void goToAuthentication() {
+        Intent go_to_Authentication = new Intent(getApplicationContext(), Authentication.class);
+        startActivity(go_to_Authentication);
     }
 
     public boolean loadFragment(Fragment fragment) {
