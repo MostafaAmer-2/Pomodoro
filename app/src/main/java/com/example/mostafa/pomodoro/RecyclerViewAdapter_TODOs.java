@@ -21,6 +21,7 @@ import io.realm.Realm;
 import static com.example.mostafa.pomodoro.Model.TODOitem.decreasePomododro;
 import static com.example.mostafa.pomodoro.Model.TODOitem.increasePomododro;
 import static com.example.mostafa.pomodoro.Model.TODOitem.markDone;
+import static com.example.mostafa.pomodoro.Model.TODOitem.setPomodorosZero;
 
 public class RecyclerViewAdapter_TODOs extends RecyclerView.Adapter<RecyclerViewAdapter_TODOs.ViewHolder> {
     private static final String TAG = "RecyclerViewAdapter_TODOs";
@@ -134,6 +135,10 @@ public class RecyclerViewAdapter_TODOs extends RecyclerView.Adapter<RecyclerView
                     presenter.getNetwork().markNodeDone(itemSelected.getDescription());
                     presenter.getItems().remove(itemSelected);
                     realm.beginTransaction();
+                    //setting pomodoros to zero first to update xp
+                    setPomodorosZero(itemSelected);
+                    presenter.getNetwork().updatePomodoros(itemSelected);
+                    //marking the item done to remove it from todos list
                     markDone(itemSelected);
                     realm.commitTransaction();
                     presenter.addDoneItem(itemSelected);

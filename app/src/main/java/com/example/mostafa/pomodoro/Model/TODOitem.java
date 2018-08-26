@@ -70,6 +70,10 @@ public class TODOitem extends RealmObject {
         }
     }
 
+    public static void setPomodorosZero(TODOitem item) {
+            item.pomodoros = 0;
+    }
+
     public static void markDone(TODOitem item) {
         item.done = true;
     }

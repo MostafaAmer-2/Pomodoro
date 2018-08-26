@@ -162,8 +162,6 @@ public class Presenter_TODOitems {
     }
 
     public void onItemClicked(RecyclerViewAdapter_TODOs.ViewHolder holder, TODOitem item) {
-        int normal = Color.argb(255, 226, 193, 199);
-        int shaded = Color.argb(255, 255, 50, 50);
         if (currentHolder == null) {
             currentHolder = holder;
             currentItem = item;
@@ -171,9 +169,9 @@ public class Presenter_TODOitems {
         } else if (currentHolder.equals(holder)) {
             currentHolder = null;
             currentItem = null;
-            holder.getParent_layout().setBackgroundColor(ctx.getResources().getColor(R.color.pomodoroBlue));
+            holder.getParent_layout().setBackgroundColor(ctx.getResources().getColor(R.color.pomodoroBlueTrans));
         } else {
-            currentHolder.getParent_layout().setBackgroundColor(ctx.getResources().getColor(R.color.pomodoroBlue));
+            currentHolder.getParent_layout().setBackgroundColor(ctx.getResources().getColor(R.color.pomodoroBlueTrans));
             currentHolder = holder;
             currentItem = item;
             holder.getParent_layout().setBackgroundColor(ctx.getResources().getColor(R.color.pomodoroDarkBlue));

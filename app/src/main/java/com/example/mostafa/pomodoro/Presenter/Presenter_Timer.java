@@ -121,7 +121,7 @@ public class Presenter_Timer {
 
                 //resetting everything in the viewHolder
                 timerFragment.getPresenter_todos().setCurrentItem(null);
-                timerFragment.getPresenter_todos().getCurrentHolder().getParent_layout().setBackgroundColor(ctx.getResources().getColor(R.color.pomodoroBlue));
+                timerFragment.getPresenter_todos().getCurrentHolder().getParent_layout().setBackgroundColor(ctx.getResources().getColor(R.color.pomodoroBlueTrans));
                 timerFragment.getPresenter_todos().setCurrentHolder(null);
             }
         }

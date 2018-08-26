@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import com.example.mostafa.pomodoro.Network.Network_XP;
 import com.example.mostafa.pomodoro.R;
 
 import butterknife.BindView;
@@ -30,16 +31,18 @@ public class XPFragment extends Fragment {
     @BindView(R.id.XPProgressBar)
     ProgressBar xp_progressBar;
 
+    Network_XP network;
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_xp, null);
         ButterKnife.bind(this, view);
+
+        network=new Network_XP(this, getActivity().getApplicationContext());
         //TODO: Get xp from firebase and save in preferences
 //        points = Preferences.loadPoints(getActivity().getApplicationContext());
-        points = 150;
-        calculateLevelAndPercentage();
-        setUIViews();
+        network.getXP();
         return view;
     }
 
@@ -52,8 +55,13 @@ public class XPFragment extends Fragment {
 
     private void calculateLevelAndPercentage() {
         level = (points / 100) + 1;
-        percentage = (level * 100) - points;
+        percentage = 100-((level * 100) - points);
 
     }
 
+    public void continueOps(int xp) {
+        points = xp;
+        calculateLevelAndPercentage();
+        setUIViews();
+    }
 }
