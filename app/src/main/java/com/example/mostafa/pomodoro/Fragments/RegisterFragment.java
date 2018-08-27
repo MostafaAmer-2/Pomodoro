@@ -13,7 +13,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import com.example.mostafa.pomodoro.Activities.Authentication;
+import com.example.mostafa.pomodoro.Activities.AuthenticationActivity;
 import com.example.mostafa.pomodoro.R;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -105,7 +105,7 @@ public class RegisterFragment extends Fragment {
                     }
                     else {
                         FirebaseAuth.getInstance().signOut();
-                        ((Authentication)getActivity()).getViewPager().setCurrentItem(0); //to return back to the login tab
+                        ((AuthenticationActivity)getActivity()).getViewPager().setCurrentItem(0); //to return back to the login tab
                         //Intent goToLogin = new Intent(getActivity(), login_page.class);
                         //goToLogin.putExtra("email", email);
                         //goToLogin.putExtra("password", password);

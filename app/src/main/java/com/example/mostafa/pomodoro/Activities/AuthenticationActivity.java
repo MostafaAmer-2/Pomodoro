@@ -7,13 +7,12 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.View;
 
 import com.example.mostafa.pomodoro.Fragments.PageAdapter;
 import com.example.mostafa.pomodoro.R;
 
-public class Authentication extends AppCompatActivity {
+public class AuthenticationActivity extends AppCompatActivity {
 
      TabLayout tabLayout;
      TabItem tabChats;

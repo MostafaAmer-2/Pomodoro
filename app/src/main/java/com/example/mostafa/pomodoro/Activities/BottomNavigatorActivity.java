@@ -10,7 +10,6 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.RelativeLayout;
-import android.widget.Toast;
 
 import com.example.mostafa.pomodoro.Fragments.TimerFragment;
 import com.example.mostafa.pomodoro.Fragments.XPFragment;
@@ -86,7 +85,7 @@ public class BottomNavigatorActivity extends AppCompatActivity {
     }
 
     private void goToAuthentication() {
-        Intent go_to_Authentication = new Intent(getApplicationContext(), Authentication.class);
+        Intent go_to_Authentication = new Intent(getApplicationContext(), AuthenticationActivity.class);
         startActivity(go_to_Authentication);
     }
 

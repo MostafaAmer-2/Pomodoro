@@ -39,7 +39,7 @@ public class SplashScreenActivity extends Activity {
     }
 
     private void goToAuthentication() {
-        Intent go_to_Authentication = new Intent(getApplicationContext(), Authentication.class);
+        Intent go_to_Authentication = new Intent(getApplicationContext(), AuthenticationActivity.class);
         startActivity(go_to_Authentication);
     }
     private void goToBottomNavigatorActivity() {
