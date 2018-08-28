@@ -88,6 +88,7 @@ public class TimerFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_timer, container, false);
         ButterKnife.bind(this, view);
+        Toast.makeText(getActivity().getApplicationContext(), "Shake device to start pomodoro", Toast.LENGTH_SHORT).show();
         presenter_todos = new Presenter_TODOitems(this, getActivity().getApplicationContext());
         presenter_timer = new Presenter_Timer(this, getActivity().getApplicationContext());
 
@@ -151,7 +152,18 @@ public class TimerFragment extends Fragment {
         addBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                presenter_todos.onAddBtnClicked();
+                itemNameField.setText(itemNameField.getText().toString().replace(".",""));
+                itemNameField.setText(itemNameField.getText().toString().replace("#",""));
+                itemNameField.setText(itemNameField.getText().toString().replace("$",""));
+                itemNameField.setText(itemNameField.getText().toString().replace("[",""));
+                itemNameField.setText(itemNameField.getText().toString().replace("]",""));
+                if (!itemNameField.getText().toString().equals("")) {
+                    presenter_todos.onAddBtnClicked();
+                    Toast.makeText(getActivity().getApplicationContext(), "Click on an item to start working on", Toast.LENGTH_SHORT).show();
+                }
+                else{
+                    Toast.makeText(getActivity().getApplicationContext(), "Please insert a name", Toast.LENGTH_SHORT).show();
+                }
             }
         });
     }

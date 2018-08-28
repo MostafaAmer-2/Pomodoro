@@ -31,6 +31,16 @@
         android:color="@color/tab_disable"
         android:state_enabled="false"/>
 
+    <item
+        android:id="@+id/action_settings"
+        android:enabled="true"
+        android:icon="@drawable/ic_settings"
+        android:title="Settings"
+        app:showAsAction="ifRoom"
+        android:iconTint="#FFFFFF"
+        android:color="@color/tab_disable"
+        android:state_enabled="false"/>
+
 
 
 

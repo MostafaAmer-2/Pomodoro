@@ -12,6 +12,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.RelativeLayout;
 
+import com.example.mostafa.pomodoro.Fragments.SettingsFragment;
 import com.example.mostafa.pomodoro.Fragments.TimerFragment;
 import com.example.mostafa.pomodoro.Fragments.XPFragment;
 import com.example.mostafa.pomodoro.Fragments.trelloLogin;
@@ -59,6 +60,8 @@ public class BottomNavigatorActivity extends AppCompatActivity {
                         return loadFragment(new trelloLogin());
                     case R.id.action_XP:
                         return loadFragment(new XPFragment());
+                    case R.id.action_settings:
+                        return loadFragment(new SettingsFragment());
                     default:
                         return false;
                 }
@@ -88,19 +91,18 @@ public class BottomNavigatorActivity extends AppCompatActivity {
             realm.beginTransaction();
             realm.deleteAll();
             realm.commitTransaction();
-            checkFBLoginStatus();
             goToAuthentication();
         }
 
 
         return super.onOptionsItemSelected(item);
     }
-    private void checkFBLoginStatus() {
-        //Checking on fb login status
-        AccessToken accessToken = AccessToken.getCurrentAccessToken();
-        boolean isLoggedIn = accessToken != null && !accessToken.isExpired();
-        Log.i("checkStatus", "onCreateView: FB status"+isLoggedIn+"  token:"+accessToken);
-    }
+//    private void checkFBLoginStatus() {
+//        //Checking on fb login status
+//        AccessToken accessToken = AccessToken.getCurrentAccessToken();
+//        boolean isLoggedIn = accessToken != null && !accessToken.isExpired();
+//        Log.i("checkStatus", "onCreateView: FB status"+isLoggedIn+"  token:"+accessToken);
+//    }
 
     private void goToAuthentication() {
         Intent go_to_Authentication = new Intent(getApplicationContext(), AuthenticationActivity.class);

@@ -5,6 +5,7 @@ import android.content.Context;
 import android.graphics.Color;
 import android.os.CountDownTimer;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.example.mostafa.pomodoro.Fragments.TimerFragment;
 import com.example.mostafa.pomodoro.Model.TODOitem;
@@ -65,6 +66,7 @@ public class Presenter_Timer {
     }
 
     public void startTimer() {
+        Toast.makeText(ctx, "Timer Started", Toast.LENGTH_SHORT).show();
         timerFragment.setmEndTime(System.currentTimeMillis() + timerFragment.getmTimeLeftInMillis());
 
         timerFragment.setmCountDownTimer(new CountDownTimer(timerFragment.getmTimeLeftInMillis(), 1000) {
