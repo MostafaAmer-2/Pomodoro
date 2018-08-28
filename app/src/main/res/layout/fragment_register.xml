@@ -1,26 +1,47 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <ImageView
         android:id="@+id/imageView"
-        android:layout_width="200dp"
-        android:layout_height="200dp"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
         android:layout_above="@+id/emailField"
-        android:layout_centerHorizontal="true"/>
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        app:layout_constraintBottom_toTopOf="@+id/emailField"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.953"
+        android:src="@drawable/pomodoro"/>
 
     <EditText
         android:id="@+id/emailField"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
+        android:layout_marginBottom="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginStart="8dp"
         android:ems="10"
         android:hint="Choose e-mail"
         android:inputType="textEmailAddress"
         android:textColor="@color/pomodoroDarkBlue"
-        android:textColorHint="@color/pomodoroDarkBlue" />
+        android:textColorHint="@color/pomodoroDarkBlue"
+        app:layout_constraintBottom_toTopOf="@+id/passwordField"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 
     <EditText
         android:id="@+id/passwordField"
@@ -28,12 +49,20 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/emailField"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="8dp"
+        android:layout_marginBottom="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginStart="8dp"
         android:ems="10"
         android:hint="Choose password"
         android:inputType="textPassword"
         android:textColor="@color/pomodoroDarkBlue"
-        android:textColorHint="@color/pomodoroDarkBlue" />
+        android:textColorHint="@color/pomodoroDarkBlue"
+        app:layout_constraintBottom_toTopOf="@+id/registerBtn"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.503"
+        app:layout_constraintStart_toStartOf="parent" />
 
     <Button
         android:id="@+id/registerBtn"
@@ -42,8 +71,15 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/passwordField"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="30dp"
-        android:text="Register" />
+        android:layout_marginBottom="188dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginStart="8dp"
+        android:text="Register"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 
 
-</RelativeLayout>
+</android.support.constraint.ConstraintLayout>
