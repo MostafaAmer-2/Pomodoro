@@ -62,7 +62,9 @@ dependencies {
 
     implementation 'com.google.firebase:firebase-core:11.6.0'
 
-    //
+    //Facebook login deppendency
+    implementation 'com.facebook.android:facebook-login:[4,5)'
+
 }
 
 apply plugin: 'com.google.gms.google-services'

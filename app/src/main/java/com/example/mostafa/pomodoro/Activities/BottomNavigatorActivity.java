@@ -7,6 +7,7 @@ import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.RelativeLayout;
@@ -16,10 +17,13 @@ import com.example.mostafa.pomodoro.Fragments.XPFragment;
 import com.example.mostafa.pomodoro.Fragments.trelloLogin;
 import com.example.mostafa.pomodoro.R;
 import com.example.mostafa.pomodoro.Settings.Preferences;
+import com.facebook.AccessToken;
+import com.facebook.login.LoginManager;
 import com.google.firebase.auth.FirebaseAuth;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import io.realm.Realm;
 
 public class BottomNavigatorActivity extends AppCompatActivity {
 
@@ -30,12 +34,15 @@ public class BottomNavigatorActivity extends AppCompatActivity {
     @BindView(R.id.my_toolbar)
     Toolbar mTopToolbar;
 
+    Realm realm;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_bottom_navigator);
         ButterKnife.bind(this);
+        realm = Realm.getDefaultInstance();
         setSupportActionBar(mTopToolbar);
         handleButtonNavigationFunctionality();
     }
@@ -76,12 +83,23 @@ public class BottomNavigatorActivity extends AppCompatActivity {
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_logout) {
             FirebaseAuth.getInstance().signOut();
+            LoginManager.getInstance().logOut();
             Preferences.saveUserID(getApplicationContext(),"");
+            realm.beginTransaction();
+            realm.deleteAll();
+            realm.commitTransaction();
+            checkFBLoginStatus();
             goToAuthentication();
         }
 
 
         return super.onOptionsItemSelected(item);
+    }
+    private void checkFBLoginStatus() {
+        //Checking on fb login status
+        AccessToken accessToken = AccessToken.getCurrentAccessToken();
+        boolean isLoggedIn = accessToken != null && !accessToken.isExpired();
+        Log.i("checkStatus", "onCreateView: FB status"+isLoggedIn+"  token:"+accessToken);
     }
 
     private void goToAuthentication() {

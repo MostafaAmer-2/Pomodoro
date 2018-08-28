@@ -17,9 +17,17 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.example.mostafa.pomodoro.Activities.BottomNavigatorActivity;
+import com.example.mostafa.pomodoro.Auth.FacebookAuth;
 import com.example.mostafa.pomodoro.Auth.GoogleAuth;
 import com.example.mostafa.pomodoro.R;
 import com.example.mostafa.pomodoro.Settings.Preferences;
+import com.facebook.AccessToken;
+import com.facebook.CallbackManager;
+import com.facebook.FacebookCallback;
+import com.facebook.FacebookException;
+import com.facebook.login.LoginManager;
+import com.facebook.login.LoginResult;
+import com.facebook.login.widget.LoginButton;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.common.SignInButton;
@@ -47,10 +55,15 @@ public class LoginFragment extends Fragment {
     ImageView imageView;
     @BindView(R.id.googleSignIn)
     SignInButton googleBtn;
+    @BindView(R.id.facebookSignIn)
+    LoginButton fbBtn;
 
     private FirebaseAuth mAuth;
     private FirebaseAuth.AuthStateListener mAuthListener;
     private GoogleAuth gAuth;
+    private FacebookAuth fbAuth;
+    public CallbackManager mCallbackManager;
+
 
     public LoginFragment() {
         // Required empty public constructor
@@ -63,6 +76,9 @@ public class LoginFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_login, container, false);
         ButterKnife.bind(this, view);
+        checkFBLoginStatus();
+        handleFBLogin();
+        checkFBLoginStatus();
         mAuth = FirebaseAuth.getInstance();
 
         gAuth = new GoogleAuth(getActivity().getApplicationContext());
@@ -100,6 +116,8 @@ public class LoginFragment extends Fragment {
         return view;
     }
 
+
+
     private void signInWithGoogle() {
         Intent signInIntent = gAuth.mGoogleSignInClient.getSignInIntent();
         startActivityForResult(signInIntent, gAuth.RC_SIGN_IN);
@@ -108,7 +126,8 @@ public class LoginFragment extends Fragment {
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-
+        Log.i(TAG, "onActivityResult:FB on restult ");
+        //Google
         // Result returned from launching the Intent from GoogleSignInClient.getSignInIntent(...);
         if (requestCode == gAuth.RC_SIGN_IN) {
             // The Task returned from this call is always completed, no need to attach
@@ -116,6 +135,11 @@ public class LoginFragment extends Fragment {
             Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
             gAuth.handleSignInResult(task);
         }
+
+        //Facebook
+        // Pass the activity result back to the Facebook SDK
+        mCallbackManager.onActivityResult(requestCode, resultCode, data);
+
     }
 
     private void goToMain(){
@@ -180,5 +204,41 @@ public class LoginFragment extends Fragment {
                 }
             });
         }
+    }
+
+
+    private void handleFBLogin(){
+        fbAuth=new FacebookAuth(this,getActivity().getApplicationContext());
+        mCallbackManager = CallbackManager.Factory.create();
+        fbBtn.setReadPermissions("email", "public_profile");
+        fbBtn.setFragment(this);
+        Log.i(TAG, "onCreateView: testin10");
+        fbBtn.registerCallback(mCallbackManager, new FacebookCallback<LoginResult>() {
+            @Override
+            public void onSuccess(LoginResult loginResult) {
+                Log.d(TAG, "facebook:onSuccess:" + loginResult);
+                fbAuth.handleFacebookAccessToken(loginResult.getAccessToken());
+            }
+
+            @Override
+            public void onCancel() {
+                Log.d(TAG, "facebook:onCancel");
+                // ...
+            }
+
+            @Override
+            public void onError(FacebookException error) {
+                Log.d(TAG, "facebook:onError", error);
+                // ...
+            }
+        });
+
+    }
+
+    private void checkFBLoginStatus() {
+        //Checking on fb login status
+        AccessToken accessToken = AccessToken.getCurrentAccessToken();
+        boolean isLoggedIn = accessToken != null && !accessToken.isExpired();
+        Log.i(TAG, "onCreateView: FB status"+isLoggedIn+"  token:"+accessToken);
     }
 }

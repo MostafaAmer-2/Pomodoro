@@ -6,8 +6,8 @@
 
     <ImageView
         android:id="@+id/imageView"
-        android:layout_width="200dp"
-        android:layout_height="200dp"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
         android:layout_above="@+id/emailField"
         android:layout_centerHorizontal="true"/>
 
@@ -42,7 +42,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/passwordField"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="30dp"
+        android:layout_marginTop="20dp"
         android:text="Sign in" />
 
     <com.google.android.gms.common.SignInButton
@@ -52,6 +52,15 @@
         android:layout_below="@id/loginBtn"
         android:layout_centerHorizontal="true"
         android:padding="8dp"/>
+
+    <com.facebook.login.widget.LoginButton
+        android:id="@+id/facebookSignIn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+       android:padding="8dp"
+        android:layout_below="@id/googleSignIn"
+        android:layout_centerHorizontal="true"/>
 
 
 </RelativeLayout>
