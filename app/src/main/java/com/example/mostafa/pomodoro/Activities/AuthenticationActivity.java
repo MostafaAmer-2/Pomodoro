@@ -6,11 +6,16 @@ import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
 import android.util.AttributeSet;
 import android.view.View;
 
 import com.example.mostafa.pomodoro.Fragments.PageAdapter;
 import com.example.mostafa.pomodoro.R;
+
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import io.realm.Realm;
 
 public class AuthenticationActivity extends AppCompatActivity {
 

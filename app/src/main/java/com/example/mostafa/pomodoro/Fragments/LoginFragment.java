@@ -1,7 +1,6 @@
 package com.example.mostafa.pomodoro.Fragments;
 
 
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -14,6 +13,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.example.mostafa.pomodoro.Activities.BottomNavigatorActivity;
@@ -25,7 +25,6 @@ import com.facebook.AccessToken;
 import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;
-import com.facebook.login.LoginManager;
 import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
@@ -57,6 +56,8 @@ public class LoginFragment extends Fragment {
     SignInButton googleBtn;
     @BindView(R.id.facebookSignIn)
     LoginButton fbBtn;
+    @BindView(R.id.progressBar)
+    ProgressBar progressBar;
 
     private FirebaseAuth mAuth;
     private FirebaseAuth.AuthStateListener mAuthListener;
@@ -101,8 +102,9 @@ public class LoginFragment extends Fragment {
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
                 if (firebaseAuth.getCurrentUser() != null) { //if there exists a user who is signed in right now
                     Log.i(TAG, "onAuthStateChanged: USER JUST SIGNED IN WITH GOOGLE"+firebaseAuth.getCurrentUser().getUid());
-                     Preferences.saveUserID(getActivity().getApplicationContext(), firebaseAuth.getCurrentUser().getUid());
-                     goToMain();
+                    hideProgressBar();
+                    Preferences.saveUserID(getActivity().getApplicationContext(), firebaseAuth.getCurrentUser().getUid());
+                    goToMain();
                 }
             }
         };
@@ -110,7 +112,8 @@ public class LoginFragment extends Fragment {
         googleBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                signInWithGoogle();
+                showProgressBar();
+                handleGoogleLogin();
             }
         });
         return view;
@@ -118,7 +121,7 @@ public class LoginFragment extends Fragment {
 
 
 
-    private void signInWithGoogle() {
+    private void handleGoogleLogin() {
         Intent signInIntent = gAuth.mGoogleSignInClient.getSignInIntent();
         startActivityForResult(signInIntent, gAuth.RC_SIGN_IN);
     }
@@ -158,6 +161,7 @@ public class LoginFragment extends Fragment {
              */
             @Override
             public void onClick(View view) {
+                showProgressBar();
                 startSignIn();
             }
         });
@@ -212,7 +216,12 @@ public class LoginFragment extends Fragment {
         mCallbackManager = CallbackManager.Factory.create();
         fbBtn.setReadPermissions("email", "public_profile");
         fbBtn.setFragment(this);
-        Log.i(TAG, "onCreateView: testin10");
+        fbBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                showProgressBar();
+            }
+        });
         fbBtn.registerCallback(mCallbackManager, new FacebookCallback<LoginResult>() {
             @Override
             public void onSuccess(LoginResult loginResult) {
@@ -240,5 +249,13 @@ public class LoginFragment extends Fragment {
         AccessToken accessToken = AccessToken.getCurrentAccessToken();
         boolean isLoggedIn = accessToken != null && !accessToken.isExpired();
         Log.i(TAG, "onCreateView: FB status"+isLoggedIn+"  token:"+accessToken);
+    }
+
+    public void showProgressBar(){
+        progressBar.setVisibility(View.VISIBLE);
+    }
+
+    public void hideProgressBar(){
+        progressBar.setVisibility(View.INVISIBLE);
     }
 }

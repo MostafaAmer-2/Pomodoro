@@ -1,21 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/parent_layout"
     android:layout_width="match_parent"
     android:layout_height="60dp"
     android:layout_margin="4dp"
-    android:id="@+id/parent_layout"
     android:background="@color/pomodoroBlueTrans">
 
     <TextView xmlns:android="http://schemas.android.com/apk/res/android"
         android:id="@+id/item_name"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
-        android:textColor="#FFFFFF"
         android:gravity="center_vertical"
-        android:textSize="20dp"
+        android:paddingLeft="30dp"
         android:text="HELLO"
-        android:paddingLeft="30dp"/>
+        android:textColor="#FFFFFF"
+        android:textSize="20dp" />
 
     <Button
         android:id="@+id/addPomodoro"
@@ -62,5 +62,6 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/addPomodoro"
         app:layout_constraintTop_toTopOf="parent" />
+
 
 </android.support.constraint.ConstraintLayout>

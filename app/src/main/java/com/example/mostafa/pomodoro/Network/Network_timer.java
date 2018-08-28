@@ -38,7 +38,7 @@ public class Network_timer {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 if (!dataSnapshot.hasChild("xp")) {
-                    dref.child("xp").setValue(0);
+                    dref.child("xp").setValue(0); //To create an XP node for the item if still doesn't have one
                 }
             }
 

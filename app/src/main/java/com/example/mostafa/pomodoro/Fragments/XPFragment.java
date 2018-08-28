@@ -64,9 +64,16 @@ public class XPFragment extends Fragment {
 
     public void continueOps(int xp) {
         points = xp;
-        text_percentage.setVisibility(View.VISIBLE);
-        loading.setVisibility(View.INVISIBLE);
+        hideProgressBar();
         calculateLevelAndPercentage();
         setUIViews();
+    }
+
+    //only hideProgressBar is needed as the progress bar is visible on the startup of the fragment
+    public void hideProgressBar(){
+        loading.setVisibility(View.INVISIBLE);
+        text_percentage.setVisibility(View.VISIBLE);
+        text_xpPoints.setVisibility(View.VISIBLE);
+        text_level.setVisibility(View.VISIBLE);
     }
 }
