@@ -2,23 +2,17 @@ package com.example.mostafa.pomodoro.Fragments;
 
 
 import android.app.Notification;
-import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.graphics.Color;
 import android.hardware.Sensor;
-import android.hardware.SensorEvent;
-import android.hardware.SensorListener;
 import android.hardware.SensorManager;
 import android.os.Bundle;
 import android.os.CountDownTimer;
-import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.NotificationCompat;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -41,18 +35,19 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 
 import static android.content.Context.MODE_PRIVATE;
-import static android.content.Context.NOTIFICATION_SERVICE;
-import static android.content.Context.SENSOR_SERVICE;
-import static com.example.mostafa.pomodoro.Model.TODOitem.decreasePomododro;
-import static com.example.mostafa.pomodoro.Model.TODOitem.markDone;
 
 public class TimerFragment extends Fragment {
     private static final String TAG = "TimerFragment";
+    //Shake feature variables
     private static final long START_TIME_IN_MILLIS = 6000;
     private static final long BREAK_TIME_IN_MILLIS = 300000;
-
+    //UI elements
     @BindView(R.id.text_view_countdown)
     TextView mTextViewCountDown;
+    @BindView(R.id.doneTextView)
+    TextView doneTextView;
+    @BindView(R.id.emptyTodoList)
+    TextView emptyTodoList;
     @BindView(R.id.button_start_pause)
     Button mButtonStartPause;
     @BindView(R.id.button_reset_done)
@@ -67,7 +62,7 @@ public class TimerFragment extends Fragment {
     Button addBtn;
     @BindView(R.id.item_edit_text)
     EditText itemNameField;
-
+    //Local variables
     private CountDownTimer mCountDownTimer;
     private boolean mTimerRunning;
     private boolean onBreak;
@@ -84,39 +79,57 @@ public class TimerFragment extends Fragment {
     private Sensor mAccelerometer;
     private ShakeDetector mShakeDetector;
 
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_timer, container, false);
         ButterKnife.bind(this, view);
+
+        //Toast to introduce shaking feature
         Toast.makeText(getActivity().getApplicationContext(), "Shake device to start pomodoro", Toast.LENGTH_SHORT).show();
+
+        //Init presenters
         presenter_todos = new Presenter_TODOitems(this, getActivity().getApplicationContext());
         presenter_timer = new Presenter_Timer(this, getActivity().getApplicationContext());
 
-        // ShakeDetector initialization
-        mSensorManager = (SensorManager) getActivity().getApplicationContext().getSystemService(Context.SENSOR_SERVICE);
-        mAccelerometer = mSensorManager
-                .getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
-        mShakeDetector = new ShakeDetector();
-        mShakeDetector.setOnShakeListener(new ShakeDetector.OnShakeListener() {
-
-            @Override
-            public void onShake(int count) {
-                /*
-                 * The following method, "handleShakeEvent(count):" is a stub //
-                 * method you would use to setup whatever you want done once the
-                 * device has been shook.
-                 */
-                handleShakeEvent(count);
-            }
-        });
-
+        //Setup fragment functionality
+        initShakeFeature();
         createNotification();
         setOnClickListeners();
         return view;
     }
 
-    private void handleShakeEvent(int count) {
-        mButtonStartPause.performClick();
+    @Override
+    public void onStop() {
+        super.onStop();
+        uploadToSharedPreferences();
+        if (mCountDownTimer != null) {
+            mCountDownTimer.cancel();
+        }
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        prefs = getActivity().getApplicationContext().getSharedPreferences("prefs", MODE_PRIVATE);
+        downloadFromSharedPreferences();
+        updateCountDownText();
+        presenter_timer.checkIfTimerFinished();
+        paintBackground();
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        // Add the following line to register the Session Manager Listener onResume
+        mSensorManager.registerListener(mShakeDetector, mAccelerometer, SensorManager.SENSOR_DELAY_UI);
+    }
+
+    @Override
+    public void onPause() {
+        // Add the following line to unregister the Sensor Manager onPause
+        mSensorManager.unregisterListener(mShakeDetector);
+        super.onPause();
     }
 
     private void setOnClickListeners() {
@@ -152,22 +165,77 @@ public class TimerFragment extends Fragment {
         addBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                itemNameField.setText(itemNameField.getText().toString().replace(".",""));
-                itemNameField.setText(itemNameField.getText().toString().replace("#",""));
-                itemNameField.setText(itemNameField.getText().toString().replace("$",""));
-                itemNameField.setText(itemNameField.getText().toString().replace("[",""));
-                itemNameField.setText(itemNameField.getText().toString().replace("]",""));
+                itemNameField.setText(itemNameField.getText().toString().replace(".", ""));
+                itemNameField.setText(itemNameField.getText().toString().replace("#", ""));
+                itemNameField.setText(itemNameField.getText().toString().replace("$", ""));
+                itemNameField.setText(itemNameField.getText().toString().replace("[", ""));
+                itemNameField.setText(itemNameField.getText().toString().replace("]", ""));
                 if (!itemNameField.getText().toString().equals("")) {
                     presenter_todos.onAddBtnClicked();
                     Toast.makeText(getActivity().getApplicationContext(), "Click on an item to start working on", Toast.LENGTH_SHORT).show();
-                }
-                else{
+                } else {
                     Toast.makeText(getActivity().getApplicationContext(), "Please insert a name", Toast.LENGTH_SHORT).show();
                 }
             }
         });
     }
 
+    //================================================================================
+    // Lists manipulation
+    //================================================================================
+
+    public void doneListIsEmpty() {
+        doneTextView.setVisibility(View.GONE);
+        recyclerView_doneList.setVisibility(View.GONE);
+    }
+
+    public void todoListIsEmpty() {
+        emptyTodoList.setVisibility(View.VISIBLE);
+        recyclerView_todoList.setVisibility(View.GONE);
+    }
+
+    public void doneListNotEmpty() {
+        doneTextView.setVisibility(View.VISIBLE);
+        recyclerView_doneList.setVisibility(View.VISIBLE);
+    }
+
+    public void todoListNotEmpty() {
+        emptyTodoList.setVisibility(View.GONE);
+        recyclerView_todoList.setVisibility(View.VISIBLE);
+    }
+
+    //================================================================================
+    // Shaking feature
+    //================================================================================
+
+    private void initShakeFeature() {
+        // ShakeDetector initialization
+        mSensorManager = (SensorManager) getActivity().getApplicationContext().getSystemService(Context.SENSOR_SERVICE);
+        mAccelerometer = mSensorManager
+                .getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
+        mShakeDetector = new ShakeDetector();
+        mShakeDetector.setOnShakeListener(new ShakeDetector.OnShakeListener() {
+
+            @Override
+            public void onShake(int count) {
+                /*
+                 * The following method, "handleShakeEvent(count):" is a stub //
+                 * method you would use to setup whatever you want done once the
+                 * device has been shook.
+                 */
+                handleShakeEvent(count);
+            }
+        });
+    }
+
+    private void handleShakeEvent(int count) {
+        mButtonStartPause.performClick();
+    }
+
+
+    //================================================================================
+    // Timer manipulation
+    //================================================================================
 
     private void createNotification() {
         notification = new NotificationCompat.Builder(getActivity().getApplicationContext());
@@ -185,15 +253,14 @@ public class TimerFragment extends Fragment {
 
     }
 
-
     public void paintBackground() {
         if (onBreak) {
             timerCard.setBackgroundColor(getResources().getColor(R.color.pomodoroGreen));
         } else {
-            timerCard.setBackgroundColor(getResources().getColor(R.color.pomodoroRed));        }
+            timerCard.setBackgroundColor(getResources().getColor(R.color.pomodoroRed));
+        }
 
     }
-
 
     public void updateCountDownText() {
         int minutes = (int) (mTimeLeftInMillis / 1000) / 60;
@@ -202,17 +269,6 @@ public class TimerFragment extends Fragment {
         String timeLeftFormatted = String.format(Locale.getDefault(), "%02d:%02d", minutes, seconds);
 
         mTextViewCountDown.setText(timeLeftFormatted);
-    }
-
-    @Override
-    public void onStop() {
-        super.onStop();
-        uploadToSharedPreferences();
-
-        if (mCountDownTimer != null) {
-            mCountDownTimer.cancel();
-        }
-//        presenter_todos.getNetwork().onCloseUpdateCache();
     }
 
     private void uploadToSharedPreferences() {
@@ -227,23 +283,16 @@ public class TimerFragment extends Fragment {
         editor.apply();
     }
 
-    @Override
-    public void onStart() {
-        super.onStart();
-
-        prefs = getActivity().getApplicationContext().getSharedPreferences("prefs", MODE_PRIVATE);
-        downloadFromSharedPreferences();
-        updateCountDownText();
-//        mButtonStartPause.setText("start");
-        presenter_timer.checkIfTimerFinished();
-        paintBackground();
-    }
-
     private void downloadFromSharedPreferences() {
         mTimeLeftInMillis = prefs.getLong("millisLeft", START_TIME_IN_MILLIS);
         mTimerRunning = prefs.getBoolean("timerRunning", false);
         onBreak = prefs.getBoolean("onBreak", false);
     }
+
+
+    //================================================================================
+    // Getters and Setters
+    //================================================================================
 
     public RecyclerView getRecyclerView_todoList() {
         return recyclerView_todoList;
@@ -262,7 +311,6 @@ public class TimerFragment extends Fragment {
     public EditText getItemNameField() {
         return itemNameField;
     }
-
 
     public static String getTAG() {
         return TAG;
@@ -342,20 +390,6 @@ public class TimerFragment extends Fragment {
 
     public long getmEndTime() {
         return mEndTime;
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-        // Add the following line to register the Session Manager Listener onResume
-        mSensorManager.registerListener(mShakeDetector, mAccelerometer,	SensorManager.SENSOR_DELAY_UI);
-    }
-
-    @Override
-    public void onPause() {
-        // Add the following line to unregister the Sensor Manager onPause
-        mSensorManager.unregisterListener(mShakeDetector);
-        super.onPause();
     }
 
 

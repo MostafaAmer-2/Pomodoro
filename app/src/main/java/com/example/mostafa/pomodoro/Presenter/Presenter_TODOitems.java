@@ -2,7 +2,6 @@ package com.example.mostafa.pomodoro.Presenter;
 
 import android.content.Context;
 import android.support.v7.widget.LinearLayoutManager;
-import android.util.Log;
 
 import com.example.mostafa.pomodoro.Fragments.TimerFragment;
 import com.example.mostafa.pomodoro.Model.TODOitem;
@@ -17,19 +16,19 @@ import io.realm.Realm;
 import io.realm.RealmResults;
 
 public class Presenter_TODOitems {
-    private ArrayList<TODOitem> items = new ArrayList<TODOitem>();
-    private ArrayList<TODOitem> doneItems = new ArrayList<TODOitem>();
-
+    //Lists of items
+    private ArrayList<TODOitem> items = new ArrayList<>();
+    private ArrayList<TODOitem> doneItems = new ArrayList<>();
+    //Variables for handling item selection
     private TODOitem currentItem;
     private RecyclerViewAdapter_TODOs.ViewHolder currentHolder;
-
+    //Recycler views
     private RecyclerViewAdapter_TODOs adapter;
     private RecyclerViewAdapter_TODOs_done doneAdapter;
-
+    //Local variables
     private TimerFragment timerFragment;
     private Network_timer network;
     private Context ctx;
-
     Realm realm;
 
     public Presenter_TODOitems(TimerFragment TimerFragment, Context ctx) {
@@ -40,10 +39,14 @@ public class Presenter_TODOitems {
         setAdaptersAndUpdateLists();
     }
 
+    //================================================================================
+    // Init adapters
+    //================================================================================
+
     private void setAdaptersAndUpdateLists() {
+        updateBothItemsLists();
         setAdapterForTODOitems();
         setAdapterForDoneItems();
-        updateBothItemsLists();
         getTimerFragment().getRecyclerView_todoList().setLayoutManager(new LinearLayoutManager(ctx));
     }
 
@@ -52,24 +55,16 @@ public class Presenter_TODOitems {
         timerFragment.getRecyclerView_doneList().setAdapter(doneAdapter);
         timerFragment.getRecyclerView_doneList().setLayoutManager(new LinearLayoutManager(ctx));
         timerFragment.getRecyclerView_doneList().setNestedScrollingEnabled(false);
-
+        checkIfDoneItemsIsEmpty();
     }
 
-    private void updateBothItemsLists() {
+    public void updateBothItemsLists() {
+        items.clear();
+        doneItems.clear();
         RealmResults<TODOitem> cache = realm.where(TODOitem.class).equalTo("done", false).findAll();
         RealmResults<TODOitem> cacheDone = realm.where(TODOitem.class).equalTo("done", true).findAll();
-        Log.i("Network_timer", "loadBoards0: " + cache.size());
-        for (int i = 0; i < cache.size(); i++) {
-            TODOitem cachedItem = cache.get(i);
-            addItem(cachedItem);
-        }
-        for (int i = 0; i < cacheDone.size(); i++) {
-            TODOitem cachedItem = cacheDone.get(i);
-            addDoneItem(cachedItem);
-        }
-        notifyAdapter();
-        notifyDoneAdapter();
-
+        items.addAll(cache);
+        doneItems.addAll(cacheDone);
     }
 
     private void setAdapterForTODOitems() {
@@ -77,7 +72,66 @@ public class Presenter_TODOitems {
         timerFragment.getRecyclerView_todoList().setAdapter(adapter);
         timerFragment.getRecyclerView_todoList().setLayoutManager(new LinearLayoutManager(ctx));
         timerFragment.getRecyclerView_todoList().setNestedScrollingEnabled(false);
+        checkIfTodoItemsIsEmpty();
+    }
 
+    //================================================================================
+    // Addition and removal of items
+    //================================================================================
+
+    public void addItem(TODOitem item) {
+        items.add(item);
+        notifyAdapter();
+    }
+
+    public void addDoneItem(TODOitem item) {
+        doneItems.add(item);
+        notifyDoneAdapter();
+    }
+
+    public void removeItem(TODOitem item) {
+        for (int i = 0; i < items.size(); i++) {
+            if (items.get(i).getDescription().equals(item.getDescription()))
+                items.remove(i);
+        }
+        notifyAdapter();
+    }
+
+    public void removeDoneItem(TODOitem item) {
+        for (int i = 0; i < doneItems.size(); i++) {
+            if (doneItems.get(i).getDescription().equals(item.getDescription()))
+                doneItems.remove(i);
+        }
+        notifyDoneAdapter();
+    }
+
+    private void addItemToRecyclerView(TODOitem itemToBeAdded) {
+        if (!itemToBeAdded.isDone()) {
+            addItem(itemToBeAdded);
+        } else {
+            addDoneItem(itemToBeAdded);
+        }
+    }
+
+    //================================================================================
+    // Click listeners
+    //================================================================================
+
+    public void onItemClicked(RecyclerViewAdapter_TODOs.ViewHolder holder, TODOitem item) {
+        if (currentHolder == null) {
+            currentHolder = holder;
+            currentItem = item;
+            holder.getParent_layout().setBackgroundColor(ctx.getResources().getColor(R.color.pomodoroDarkBlue));
+        } else if (currentHolder.equals(holder)) {
+            currentHolder = null;
+            currentItem = null;
+            holder.getParent_layout().setBackgroundColor(ctx.getResources().getColor(R.color.pomodoroBlueTrans));
+        } else {
+            currentHolder.getParent_layout().setBackgroundColor(ctx.getResources().getColor(R.color.pomodoroBlueTrans));
+            currentHolder = holder;
+            currentItem = item;
+            holder.getParent_layout().setBackgroundColor(ctx.getResources().getColor(R.color.pomodoroDarkBlue));
+        }
     }
 
     public void onAddBtnClicked() {
@@ -92,42 +146,44 @@ public class Presenter_TODOitems {
         network.addItem(newItem);
     }
 
-    private void addItemToRecyclerView(TODOitem itemToBeAdded) {
-        if (!itemToBeAdded.isDone()) {
-            addItem(itemToBeAdded);
-            notifyAdapter();
-        } else {
-            addDoneItem(itemToBeAdded);
-            notifyDoneAdapter();
+    //================================================================================
+    // Adapting to items change
+    //================================================================================
 
-        }
-    }
-
-    public void notifyAdapter() {
-        adapter.notifyDataSetChanged();
-    }
-
-    public void addItem(TODOitem item) {
-        items.add(item);
+    public void notifyBothAdapters() {
         notifyAdapter();
-    }
-
-    public void addDoneItem(TODOitem item) {
-        doneItems.add(item);
         notifyDoneAdapter();
     }
 
-    public void notifyDoneAdapter() {
+    private void notifyAdapter() {
+        checkIfTodoItemsIsEmpty();
+        adapter.notifyDataSetChanged();
+    }
+
+    private void notifyDoneAdapter() {
+        checkIfDoneItemsIsEmpty();
         doneAdapter.notifyDataSetChanged();
     }
 
-    public void removeItem(TODOitem item) {
-        for (int i = 0; i < items.size(); i++) {
-            if (items.get(i).getDescription().equals(item.getDescription()))
-                items.remove(i);
+    private void checkIfDoneItemsIsEmpty() {
+        if (!doneItems.isEmpty()) {
+            timerFragment.doneListNotEmpty();
+        } else {
+            timerFragment.doneListIsEmpty();
         }
-        notifyAdapter();
     }
+
+    private void checkIfTodoItemsIsEmpty() {
+        if (!items.isEmpty()) {
+            timerFragment.todoListNotEmpty();
+        } else {
+            timerFragment.todoListIsEmpty();
+        }
+    }
+
+    //================================================================================
+    // Getters and Setters
+    //================================================================================
 
     public ArrayList<TODOitem> getItems() {
         return items;
@@ -161,28 +217,4 @@ public class Presenter_TODOitems {
         return doneItems;
     }
 
-    public void onItemClicked(RecyclerViewAdapter_TODOs.ViewHolder holder, TODOitem item) {
-        if (currentHolder == null) {
-            currentHolder = holder;
-            currentItem = item;
-            holder.getParent_layout().setBackgroundColor(ctx.getResources().getColor(R.color.pomodoroDarkBlue));
-        } else if (currentHolder.equals(holder)) {
-            currentHolder = null;
-            currentItem = null;
-            holder.getParent_layout().setBackgroundColor(ctx.getResources().getColor(R.color.pomodoroBlueTrans));
-        } else {
-            currentHolder.getParent_layout().setBackgroundColor(ctx.getResources().getColor(R.color.pomodoroBlueTrans));
-            currentHolder = holder;
-            currentItem = item;
-            holder.getParent_layout().setBackgroundColor(ctx.getResources().getColor(R.color.pomodoroDarkBlue));
-        }
-    }
-
-    public void setItems(Context ctx, ArrayList<TODOitem> items) {
-        this.items = items;
-    }
-
-    public void setDoneItems(ArrayList<TODOitem> doneItems) {
-        this.doneItems = doneItems;
-    }
 }

@@ -29,7 +29,7 @@ public class Network_timer {
 
     public Network_timer(Presenter_TODOitems presenter, Context ctx) {
         this.presenter = presenter;
-        this.ctx=ctx;
+        this.ctx = ctx;
 
         dref = FirebaseDatabase.getInstance().getReference().child(Preferences.loadUserID(ctx));
         itemsRef = dref.child("items");
@@ -64,6 +64,8 @@ public class Network_timer {
                     realm.beginTransaction();
                     realm.copyToRealm(newItem);
                     realm.commitTransaction();
+                    presenter.updateBothItemsLists();
+                    presenter.notifyBothAdapters();
                 }
             }
 
@@ -81,7 +83,7 @@ public class Network_timer {
 
             @Override
             public void onCancelled(DatabaseError databaseError) {
-                presenter.notifyAdapter();
+                presenter.notifyBothAdapters();
             }
         });
     }
@@ -93,12 +95,12 @@ public class Network_timer {
     }
 
     public void addItem(TODOitem newItem) {
-        String nodeName= newItem.getDescription();
-        nodeName = nodeName.replace(".","");
-        nodeName = nodeName.replace("#","");
-        nodeName = nodeName.replace("$","");
-        nodeName = nodeName.replace("[","");
-        nodeName = nodeName.replace("]","");
+        String nodeName = newItem.getDescription();
+        nodeName = nodeName.replace(".", "");
+        nodeName = nodeName.replace("#", "");
+        nodeName = nodeName.replace("$", "");
+        nodeName = nodeName.replace("[", "");
+        nodeName = nodeName.replace("]", "");
         itemsRef.child(nodeName).child("isDone").setValue(newItem.isDone());
         itemsRef.child(nodeName).child("pomodoros").setValue(newItem.getPomodoros());
     }
@@ -114,13 +116,13 @@ public class Network_timer {
 
     public void removeNode(String name) {
         presenter.getNetwork().getItemsRef().child(name).setValue(null);
-        presenter.notifyAdapter();
+        presenter.notifyBothAdapters();
 
     }
 
     public void markNodeDone(String name) {
         presenter.getNetwork().getItemsRef().child(name).child("isDone").setValue(true);
-        presenter.notifyAdapter();
+        presenter.notifyBothAdapters();
 
     }
 

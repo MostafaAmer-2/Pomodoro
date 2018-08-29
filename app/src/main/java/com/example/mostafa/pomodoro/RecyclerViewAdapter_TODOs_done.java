@@ -72,9 +72,8 @@ public class RecyclerViewAdapter_TODOs_done extends RecyclerView.Adapter<Recycle
                 public void onClick(View view) {
                     TODOitem itemSelected = presenter.getDoneItems().get(getAdapterPosition());
                     presenter.getNetwork().removeNode(itemSelected.getDescription());
-                    presenter.getDoneItems().remove(itemSelected);
+                    presenter.removeDoneItem(itemSelected);
                     presenter.getNetwork().removeFromRealm(itemSelected);
-                    presenter.notifyDoneAdapter();
                 }
             });
         }
