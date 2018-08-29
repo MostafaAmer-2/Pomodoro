@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
@@ -22,7 +23,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import io.realm.Realm;
 
-public class SplashScreenActivity extends Activity {
+public class SplashScreenActivity extends AppCompatActivity{
     private static final String TAG = "SplashScreenActivity";
     @BindView(R.id.imageView)
     ImageView splashScreenImage;
@@ -32,6 +33,10 @@ public class SplashScreenActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
+
+        //Hide ActionBar for this activity
+        getSupportActionBar().hide();
+
         doSplashScreenAnimation();
         checkTokenValidityAndUpdatePrefrences();
         // Initialize Realm (just once per application)
