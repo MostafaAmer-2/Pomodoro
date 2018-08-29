@@ -46,10 +46,12 @@ public class SplashScreenActivity extends AppCompatActivity{
     private void goToAuthentication() {
         Intent go_to_Authentication = new Intent(getApplicationContext(), AuthenticationActivity.class);
         startActivity(go_to_Authentication);
+        finish();
     }
     private void goToBottomNavigatorActivity() {
         Intent go_to_BottomNavigation = new Intent(getApplicationContext(), BottomNavigatorActivity.class);
         startActivity(go_to_BottomNavigation);
+        finish();
     }
 
     private void doSplashScreenAnimation() {
