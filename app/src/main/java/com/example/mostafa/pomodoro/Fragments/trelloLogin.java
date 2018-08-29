@@ -6,7 +6,6 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -75,15 +74,15 @@ public class trelloLogin extends Fragment {
         enterTokenButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Preferences.saveData(getActivity().getApplicationContext(), tokenField.getText().toString());
-                // loadData();
+                Preferences.saveTrelloToken(getActivity().getApplicationContext(), tokenField.getText().toString());
+                // loadTrelloToken();
                 goToBoards();
             }
         });
     }
 
     private void loadToken() {
-        token = Preferences.loadData(getActivity().getApplicationContext());
+        token = Preferences.loadTrelloToken(getActivity().getApplicationContext());
     }
 
 

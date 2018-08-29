@@ -52,6 +52,7 @@ public class SettingsFragment extends Fragment {
                 realm.beginTransaction();
                 realm.deleteAll();
                 realm.commitTransaction();
+                Preferences.saveTrelloToken(getActivity().getApplicationContext(),"");
                 goToAuthentication();
             }
         });

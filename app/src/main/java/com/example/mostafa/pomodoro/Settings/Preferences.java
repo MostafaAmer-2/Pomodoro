@@ -6,12 +6,12 @@ import android.content.SharedPreferences;
 public class Preferences {
     static String MyPREFERENCES = "Pomodoro";
 
-    public static String loadData(Context ctx) {
+    public static String loadTrelloToken(Context ctx) {
         SharedPreferences sharedpreferences = ctx.getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);
         return sharedpreferences.getString("token", "");
     }
 
-    public static void saveData(Context ctx, String token) {
+    public static void saveTrelloToken(Context ctx, String token) {
         SharedPreferences sharedpreferences = ctx.getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedpreferences.edit();
         editor.putString("token", token);
@@ -31,17 +31,6 @@ public class Preferences {
         return sharedpreferences.getString("isTokenValid", "false");
     }
 
-    public static int loadPoints(Context ctx) {
-        SharedPreferences sharedpreferences = ctx.getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);
-        return sharedpreferences.getInt("points", 0);
-    }
-
-    public static void savePoints(Context ctx, int points) {
-        SharedPreferences sharedpreferences = ctx.getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);
-        SharedPreferences.Editor editor = sharedpreferences.edit();
-        editor.putInt("points", points);
-        editor.commit();
-    }
 
     public static void saveUserID(Context ctx, String id) {
         SharedPreferences sharedpreferences = ctx.getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);
@@ -57,6 +46,6 @@ public class Preferences {
 
 
     public static boolean isTokenPresent(Context ctx){
-        return !loadData(ctx).equals("");
+        return !loadTrelloToken(ctx).equals("");
     }
 }

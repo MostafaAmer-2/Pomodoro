@@ -41,7 +41,6 @@ public class trelloBoards extends Fragment {
 
     Presenter_Boards presenter;
     String token;
-    Realm realm;
 
     @SuppressLint("ValidFragment")
     public trelloBoards(String token) {
@@ -54,12 +53,6 @@ public class trelloBoards extends Fragment {
         View view = inflater.inflate(R.layout.fragment_trello_boards, null);
         ButterKnife.bind(this, view);
 
-        // Initialize Realm (just once per application)
-        io.realm.Realm.init(getActivity().getApplicationContext());
-
-// Get a Realm instance for this thread
-        realm = io.realm.Realm.getDefaultInstance();
-
         presenter =new Presenter_Boards(this, getContext().getApplicationContext());
         startProgressBar();
         loadBoards();
@@ -67,21 +60,8 @@ public class trelloBoards extends Fragment {
     }
 
     private void startProgressBar() {
-//        recyclerView_boards.setVisibility(View.INVISIBLE);
-//        progressBar.setVisibility(View.VISIBLE);
-
-        RealmResults<TrelloBoard> cach = realm.where(TrelloBoard.class).findAll();
-        Log.i(TAG, "loadBoards: "+cach.size());
-        ArrayList<TrelloBoard> cachedBoards=new ArrayList<TrelloBoard>();
-        for(int i=0; i< cach.size();i++){
-            cachedBoards.add(cach.get(i));
-        }
-        presenter.setItems(getContext().getApplicationContext(), cachedBoards);
-        RecyclerView.LayoutManager mLayoutManager = new GridLayoutManager(getActivity().getApplicationContext(), 2);
-        getRecyclerView_boards().setLayoutManager(mLayoutManager);
-        recyclerView_boards.setVisibility(View.VISIBLE);
-        progressBar.setVisibility(View.INVISIBLE);
-
+        recyclerView_boards.setVisibility(View.INVISIBLE);
+        progressBar.setVisibility(View.VISIBLE);
 
     }
 
@@ -91,21 +71,7 @@ public class trelloBoards extends Fragment {
             @Override
             public void onDone(JSONArray result) {
                 ArrayList<TrelloBoard> boards = parseJSONArrayIntoBoards(result);
-//                Log.i(TAG, "onDone: "+boards.size());
-//                Log.i(TAG, "onDone: "+realm.where(TrelloBoard.class).findAll().size());
-                if(boards.size()!=realm.where(TrelloBoard.class).findAll().size()){
-                   //updating the cache
-                    realm.beginTransaction();
-                    realm.deleteAll();
-                    for(int i=0; i< boards.size();i++){
-                        TrelloBoard tmpBoard= boards.get(i);
-                        TrelloBoard realmBoard = realm.copyToRealm(tmpBoard);
-                    }
-                    realm.commitTransaction();
-
-                    presenter.setCache(getContext().getApplicationContext(), boards);
-                    presenter.setItems(getContext().getApplicationContext(), presenter.getCache());
-                }
+                presenter.setItems(getContext().getApplicationContext(), boards);
                 RecyclerView.LayoutManager mLayoutManager = new GridLayoutManager(getActivity().getApplicationContext(), 2);
                 getRecyclerView_boards().setLayoutManager(mLayoutManager);
                 recyclerView_boards.setVisibility(View.VISIBLE);

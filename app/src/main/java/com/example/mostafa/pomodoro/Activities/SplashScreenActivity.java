@@ -61,7 +61,7 @@ public class SplashScreenActivity extends Activity {
     }
 
     public void checkTokenValidityAndUpdatePrefrences() {
-        String token = Preferences.loadData(getApplicationContext());
+        String token = Preferences.loadTrelloToken(getApplicationContext());
         Network_Boards network = new Network_Boards(null, getApplicationContext());
 
         if (Preferences.isTokenPresent(getApplicationContext())) {

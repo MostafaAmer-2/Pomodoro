@@ -69,7 +69,7 @@ public class RecyclerViewAdapter_Lists extends RecyclerView.Adapter<RecyclerView
                 @Override
                 public void onClick(View v) {
                     String listID= presenter.getItems().get(getAdapterPosition()).getId();
-                    presenter.goToCards(Preferences.loadData(mContext),listID);
+                    presenter.goToCards(Preferences.loadTrelloToken(mContext),listID);
                 }
             });
         }
