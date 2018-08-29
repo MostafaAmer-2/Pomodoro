@@ -1,12 +1,12 @@
 package com.example.mostafa.pomodoro;
 
 import android.support.annotation.NonNull;
-import android.support.constraint.ConstraintLayout;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.example.mostafa.pomodoro.Model.TODOitem;
@@ -70,7 +70,7 @@ public class RecyclerViewAdapter_TODOs extends RecyclerView.Adapter<RecyclerView
         @BindView(R.id.item_name)
         TextView itemName;
         @BindView(R.id.parent_layout)
-        ConstraintLayout parent_layout;
+        LinearLayout parent_layout;
         @BindView(R.id.addPomodoro)
         Button add_pomodoro_btn;
         @BindView(R.id.removePomodoro)
@@ -85,7 +85,7 @@ public class RecyclerViewAdapter_TODOs extends RecyclerView.Adapter<RecyclerView
             setOnClickListeners();
         }
 
-        public ConstraintLayout getParent_layout() {
+        public LinearLayout getParent_layout() {
             return parent_layout;
         }
 

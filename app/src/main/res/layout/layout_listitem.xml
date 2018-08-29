@@ -1,67 +1,55 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/parent_layout"
     android:layout_width="match_parent"
     android:layout_height="60dp"
     android:layout_margin="4dp"
-    android:background="@color/pomodoroBlueTrans">
+    android:background="@color/pomodoroBlueTrans"
+    android:orientation="horizontal"
+    android:weightSum="5">
 
-    <TextView xmlns:android="http://schemas.android.com/apk/res/android"
+
+    <TextView
         android:id="@+id/item_name"
-        android:layout_width="wrap_content"
-        android:layout_height="match_parent"
-        android:gravity="center_vertical"
-        android:paddingLeft="30dp"
-        android:text="HELLO"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        android:layout_marginLeft="5dp"
+        android:layout_weight="2"
+        android:gravity="start"
+        android:maxLines="1"
+        android:ellipsize="end"
+        android:text="Hello"
         android:textColor="#FFFFFF"
         android:textSize="20dp" />
 
-    <Button
-        android:id="@+id/addPomodoro"
-        android:layout_width="40dp"
-        android:layout_height="40dp"
-        android:layout_marginBottom="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginLeft="8dp"
-        android:layout_marginRight="8dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:gravity="center"
-        android:text="1"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/removePomodoro"
-        app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toEndOf="@+id/item_name"
-        app:layout_constraintTop_toTopOf="parent" />
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        android:layout_weight="3"
+        android:gravity="center">
 
-    <Button
-        android:id="@+id/removePomodoro"
-        android:layout_width="40dp"
-        android:layout_height="40dp"
-        android:layout_marginBottom="8dp"
-        android:layout_marginEnd="16dp"
-        android:layout_marginRight="16dp"
-        android:layout_marginTop="8dp"
-        android:gravity="center"
-        android:text="-"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        <Button
+            android:id="@+id/markDone"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:text="✓" />
 
-    <Button
-        android:id="@+id/markDone"
-        android:layout_width="40dp"
-        android:layout_height="40dp"
-        android:layout_marginBottom="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginRight="8dp"
-        android:layout_marginTop="8dp"
-        android:gravity="center"
-        android:text="✓"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/addPomodoro"
-        app:layout_constraintTop_toTopOf="parent" />
+        <Button
+            android:id="@+id/addPomodoro"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:text="1" />
+
+        <Button
+            android:id="@+id/removePomodoro"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:text="-" />
 
 
-</android.support.constraint.ConstraintLayout>
+    </LinearLayout>
+
+
+</LinearLayout>
