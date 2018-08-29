@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.example.mostafa.pomodoro.Model.TODOitem;
@@ -57,7 +58,7 @@ public class RecyclerViewAdapter_TODOs_done extends RecyclerView.Adapter<Recycle
         @BindView(R.id.item_name)
         TextView itemName;
         @BindView(R.id.parent_layout)
-        ConstraintLayout parentLayout;
+        LinearLayout parentLayout;
         @BindView(R.id.deleteBtn)
         Button deleteBtn;
 
