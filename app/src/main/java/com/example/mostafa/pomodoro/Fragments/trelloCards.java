@@ -67,6 +67,7 @@ public class trelloCards extends Fragment {
         ButterKnife.bind(this, view);
 
         presenter =new Presenter_Cards(this, getContext().getApplicationContext());
+        Toast.makeText(getActivity().getApplicationContext(), "Press a card and hold to add it to TODOs", Toast.LENGTH_SHORT).show();
         startProgressBar();
         loadCards();
         addFloatingActionButtonListener();
