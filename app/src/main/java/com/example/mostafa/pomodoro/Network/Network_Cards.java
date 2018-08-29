@@ -15,6 +15,7 @@ import com.android.volley.toolbox.Volley;
 import com.example.mostafa.pomodoro.Model.TODOitem;
 import com.example.mostafa.pomodoro.Presenter.Presenter_Cards;
 import com.example.mostafa.pomodoro.Presenter.Presenter_Lists;
+import com.example.mostafa.pomodoro.Settings.Preferences;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
@@ -26,8 +27,8 @@ import org.json.JSONObject;
 
 public class Network_Cards {
 
-    private DatabaseReference dref = FirebaseDatabase.getInstance().getReference();
-    private DatabaseReference itemsRef = dref.child("items");
+    private DatabaseReference dref;
+    private DatabaseReference itemsRef;
 
     private RequestQueue requestQueue;
     private Presenter_Cards presenter;
@@ -36,6 +37,9 @@ public class Network_Cards {
     public Network_Cards(Presenter_Cards presenter, Context ctx){
         requestQueue = Volley.newRequestQueue(ctx);
         this.presenter=presenter;
+        this.ctx=ctx;
+        dref = FirebaseDatabase.getInstance().getReference(Preferences.loadUserID(ctx));
+        itemsRef = dref.child("items");
     }
 
     public Promise<JSONArray, VolleyError, Double> getCards(String token, String listID) {

@@ -45,17 +45,9 @@ public class Presenter_Cards {
         return network;
     }
 
-    public ArrayList<TrelloCard> getItems() {
-        return items;
-    }
-
     public void setItems(Context applicationContext, ArrayList<TrelloCard> items) {
         this.items = items;
         initAdapter(applicationContext, items);
-    }
-
-    public RecyclerViewAdapter_Cards getAdapter() {
-        return adapter;
     }
 
     public void onItemLongClicked(String name) {
