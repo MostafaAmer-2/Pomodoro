@@ -80,7 +80,7 @@ public class BottomNavigatorActivity extends AppCompatActivity {
     }
 
     public boolean loadFragment(Fragment fragment) {
-        getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, fragment).commit();
+        getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, fragment).addToBackStack(null).commit();
         return true;
     }
 

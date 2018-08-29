@@ -36,7 +36,7 @@
         android:id="@+id/settingsLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:visibility="gone">
+        android:visibility="visible">
 
         <TextView
             android:id="@+id/contactUs"
@@ -49,6 +49,7 @@
             android:layout_marginTop="8dp"
             android:text="Contact us"
             android:textSize="20dp"
+            android:padding="10dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -64,6 +65,7 @@
             android:layout_marginTop="8dp"
             android:text="Logout"
             android:textSize="20dp"
+            android:padding="10dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/contactUs" />
