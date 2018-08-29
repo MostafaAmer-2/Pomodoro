@@ -31,7 +31,7 @@ public class BottomNavigatorActivity extends AppCompatActivity {
     @BindView(R.id.relativeLayout)
     RelativeLayout relativeLayout;
     @BindView(R.id.bottom_navigation)
-    BottomNavigationView bottomNavigationView;
+    public BottomNavigationView bottomNavigationView;
 
 
     Realm realm;

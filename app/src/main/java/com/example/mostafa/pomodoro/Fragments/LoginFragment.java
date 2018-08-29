@@ -149,7 +149,7 @@ public class LoginFragment extends Fragment {
         Intent go_to_main = new Intent(getActivity(), BottomNavigatorActivity.class);
         startActivity(go_to_main);
         getActivity().finish();
-        //TODO: Still foes back to an empty screen after back is pressed
+        //TODO: Still goes back to an empty screen after back is pressed
     }
 
     @Override
