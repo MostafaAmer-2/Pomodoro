@@ -32,6 +32,9 @@ public class AuthenticationActivity extends AppCompatActivity {
         tabChats = findViewById(R.id.tabLogin);
         tabStatus = findViewById(R.id.tabRegister);
         viewPager = findViewById(R.id.viewPager);
+        //Hide ActionBar for this activity
+        getSupportActionBar().hide();
+
 
         PageAdapter pageAdapter = new PageAdapter(getSupportFragmentManager(), tabLayout.getTabCount());
         viewPager.setAdapter(pageAdapter);

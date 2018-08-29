@@ -32,8 +32,7 @@ public class BottomNavigatorActivity extends AppCompatActivity {
     RelativeLayout relativeLayout;
     @BindView(R.id.bottom_navigation)
     BottomNavigationView bottomNavigationView;
-    @BindView(R.id.my_toolbar)
-    Toolbar mTopToolbar;
+
 
     Realm realm;
 
@@ -44,7 +43,6 @@ public class BottomNavigatorActivity extends AppCompatActivity {
         setContentView(R.layout.activity_bottom_navigator);
         ButterKnife.bind(this);
         realm = Realm.getDefaultInstance();
-        setSupportActionBar(mTopToolbar);
         handleButtonNavigationFunctionality();
     }
 
@@ -69,34 +67,6 @@ public class BottomNavigatorActivity extends AppCompatActivity {
         });
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.main_menu, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_logout) {
-            FirebaseAuth.getInstance().signOut();
-            LoginManager.getInstance().logOut();
-            Preferences.saveUserID(getApplicationContext(),"");
-            realm.beginTransaction();
-            realm.deleteAll();
-            realm.commitTransaction();
-            goToAuthentication();
-        }
-
-
-        return super.onOptionsItemSelected(item);
-    }
 //    private void checkFBLoginStatus() {
 //        //Checking on fb login status
 //        AccessToken accessToken = AccessToken.getCurrentAccessToken();
