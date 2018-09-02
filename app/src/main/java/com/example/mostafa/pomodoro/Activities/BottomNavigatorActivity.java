@@ -57,6 +57,20 @@ public class BottomNavigatorActivity extends AppCompatActivity {
         bottomNavigationView.setOnNavigationItemSelectedListener(listener);
     }
 
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        FragmentManager fm = getSupportFragmentManager();
+        if (fm.getBackStackEntryCount()==0){
+            //TODO: Exit the app
+            moveTaskToBack(true);
+            android.os.Process.killProcess(android.os.Process.myPid());
+            System.exit(1);
+
+        }
+
+    }
+
     BottomNavigationView.OnNavigationItemSelectedListener listener= new BottomNavigationView.OnNavigationItemSelectedListener() {
         @Override
         public boolean onNavigationItemSelected(@NonNull MenuItem item) {
