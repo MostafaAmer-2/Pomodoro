@@ -84,6 +84,6 @@ public class trelloLists extends Fragment {
 
     public RecyclerView getRecyclerView_lists() {
         return recyclerView_lists;
-    }
+    }//
 
 }
