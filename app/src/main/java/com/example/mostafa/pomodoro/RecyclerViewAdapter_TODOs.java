@@ -24,10 +24,9 @@ import static com.example.mostafa.pomodoro.Model.TODOitem.markDone;
 import static com.example.mostafa.pomodoro.Model.TODOitem.setPomodorosZero;
 
 public class RecyclerViewAdapter_TODOs extends RecyclerView.Adapter<RecyclerViewAdapter_TODOs.ViewHolder> {
-    private static final String TAG = "RecyclerViewAdapter_TODOs";
     private ArrayList<TODOitem> mItems;
     private Presenter_TODOitems presenter;
-    Realm realm;
+    private Realm realm;
 
     public RecyclerViewAdapter_TODOs(Presenter_TODOitems presenter, ArrayList<TODOitem> mItems) {
         this.presenter = presenter;

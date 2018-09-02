@@ -46,10 +46,6 @@ public class TODOitem extends RealmObject {
         return pomodoros;
     }
 
-    public void setPomodoros(int pomodoros) {
-        this.pomodoros = pomodoros;
-    }
-
     public static TODOitem convertToItem(DataSnapshot snapshot) {
         if (snapshot.child("pomodoros").getValue() != null)
             return new TODOitem(snapshot.getKey(), Boolean.parseBoolean(snapshot.child("isDone").getValue().toString()), Integer.parseInt(snapshot.child("pomodoros").getValue().toString()));

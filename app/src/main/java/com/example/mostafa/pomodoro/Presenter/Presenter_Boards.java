@@ -50,10 +50,6 @@ public class Presenter_Boards {
         return cache;
     }
 
-    public void setCache(Context applicationContext, ArrayList<TrelloBoard> cache) {
-        this.cache = cache;
-    }
-
     public void setItems(Context applicationContext, ArrayList<TrelloBoard> items) {
         this.items = items;
         initAdapter(applicationContext, items);

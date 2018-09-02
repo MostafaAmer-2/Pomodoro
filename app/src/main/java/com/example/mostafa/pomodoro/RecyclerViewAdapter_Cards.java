@@ -19,8 +19,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class RecyclerViewAdapter_Cards extends RecyclerView.Adapter<RecyclerViewAdapter_Cards.ViewHolder>{
-    private static final String TAG = "RecyclerViewAdapter_Car";
-    private ArrayList<TrelloCard> mItems= new ArrayList<TrelloCard>();
+    private ArrayList<TrelloCard> mItems;
     private Presenter_Cards presenter;
 
     public RecyclerViewAdapter_Cards(Presenter_Cards presenter, ArrayList<TrelloCard> mItems){
@@ -43,7 +42,6 @@ public class RecyclerViewAdapter_Cards extends RecyclerView.Adapter<RecyclerView
             @Override
             public boolean onLongClick(View view) {
                 presenter.onItemLongClicked(mItems.get(position).getName());
-//                notifyDataSetChanged(); //generates new random coloured cards
                 return false;
             }
         });
@@ -64,8 +62,6 @@ public class RecyclerViewAdapter_Cards extends RecyclerView.Adapter<RecyclerView
         public ViewHolder(View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);
-
-            //create random colours for cards
             createRandomBackgroundColour();
         }
 

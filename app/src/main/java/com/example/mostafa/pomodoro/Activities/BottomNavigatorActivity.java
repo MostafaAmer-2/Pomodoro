@@ -47,7 +47,7 @@ public class BottomNavigatorActivity extends AppCompatActivity {
         handleButtonNavigationFunctionality();
 
         FragmentManager fm = getSupportFragmentManager();
-        for(int i = 0; i < fm.getBackStackEntryCount(); ++i) {
+        for (int i = 0; i < fm.getBackStackEntryCount(); ++i) {
             fm.popBackStack();
         }
     }
@@ -61,8 +61,7 @@ public class BottomNavigatorActivity extends AppCompatActivity {
     public void onBackPressed() {
         super.onBackPressed();
         FragmentManager fm = getSupportFragmentManager();
-        if (fm.getBackStackEntryCount()==0){
-            //TODO: Exit the app
+        if (fm.getBackStackEntryCount() == 0) {
             moveTaskToBack(true);
             android.os.Process.killProcess(android.os.Process.myPid());
             System.exit(1);
@@ -71,7 +70,7 @@ public class BottomNavigatorActivity extends AppCompatActivity {
 
     }
 
-    BottomNavigationView.OnNavigationItemSelectedListener listener= new BottomNavigationView.OnNavigationItemSelectedListener() {
+    BottomNavigationView.OnNavigationItemSelectedListener listener = new BottomNavigationView.OnNavigationItemSelectedListener() {
         @Override
         public boolean onNavigationItemSelected(@NonNull MenuItem item) {
             switch (item.getItemId()) {
@@ -88,18 +87,6 @@ public class BottomNavigatorActivity extends AppCompatActivity {
             }
         }
     };
-
-//    private void checkFBLoginStatus() {
-//        //Checking on fb login status
-//        AccessToken accessToken = AccessToken.getCurrentAccessToken();
-//        boolean isLoggedIn = accessToken != null && !accessToken.isExpired();
-//        Log.i("checkStatus", "onCreateView: FB status"+isLoggedIn+"  token:"+accessToken);
-//    }
-
-    private void goToAuthentication() {
-        Intent go_to_Authentication = new Intent(getApplicationContext(), AuthenticationActivity.class);
-        startActivity(go_to_Authentication);
-    }
 
     public boolean loadFragment(Fragment fragment) {
         getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, fragment).addToBackStack(null).commit();

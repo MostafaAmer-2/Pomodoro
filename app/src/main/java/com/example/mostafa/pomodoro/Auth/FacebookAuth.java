@@ -28,7 +28,6 @@ public class FacebookAuth {
     private static final String TAG = "FacebookAuth";
     private FirebaseAuth mAuth;
 
-    //TODO: SH1 key is still invalid. Cannot sign in with FB
     public FacebookAuth(com.example.mostafa.pomodoro.Fragments.LoginFragment fragment, Context ctx){
         // Initialize Facebook Login button
         mAuth = FirebaseAuth.getInstance();

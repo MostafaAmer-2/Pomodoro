@@ -19,10 +19,10 @@ import io.realm.Realm;
 
 public class AuthenticationActivity extends AppCompatActivity {
 
-     TabLayout tabLayout;
-     TabItem tabChats;
-     TabItem tabStatus;
-     ViewPager viewPager;
+    TabLayout tabLayout;
+    TabItem tabChats;
+    TabItem tabStatus;
+    ViewPager viewPager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -69,7 +69,7 @@ public class AuthenticationActivity extends AppCompatActivity {
         return viewPager;
     }
 
-    public void finishActivity(){
+    public void finishActivity() {
         finish();
     }
 }

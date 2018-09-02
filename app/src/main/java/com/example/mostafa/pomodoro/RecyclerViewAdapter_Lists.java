@@ -21,7 +21,6 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class RecyclerViewAdapter_Lists extends RecyclerView.Adapter<RecyclerViewAdapter_Lists.ViewHolder>{
-    private static final String TAG = "RecyclerViewAdapter_Boards";
     private ArrayList<TrelloList> mItems;
     private Context mContext;
     private Presenter_Lists presenter;

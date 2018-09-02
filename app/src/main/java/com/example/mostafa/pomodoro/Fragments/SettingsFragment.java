@@ -67,12 +67,6 @@ public class SettingsFragment extends Fragment {
                 goToAuthentication();
 
                 getActivity().finish();
-
-//                FragmentManager fm = getActivity().getSupportFragmentManager();
-//                fm.popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
-
-
-
             }
         });
         backButton.setOnClickListener(new View.OnClickListener() {

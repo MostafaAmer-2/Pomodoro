@@ -8,7 +8,6 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -26,15 +25,12 @@ import java.util.ArrayList;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import io.realm.Realm;
-import io.realm.RealmResults;
 
 import static com.example.mostafa.pomodoro.Model.TrelloBoard.parseJSONArrayIntoBoards;
 
 @SuppressLint("ValidFragment")
 public class trelloBoards extends Fragment {
 
-    private static final String TAG = "trelloBoards";
     @BindView(R.id.recycler_view)
     RecyclerView recyclerView_boards;
     @BindView(R.id.progressBar)

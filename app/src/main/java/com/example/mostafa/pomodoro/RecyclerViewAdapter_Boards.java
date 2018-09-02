@@ -67,7 +67,6 @@ public class RecyclerViewAdapter_Boards extends RecyclerView.Adapter<RecyclerVie
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    //I'v been clicked (Boards card)
                     String boardsID= presenter.getItems().get(getAdapterPosition()).getId();
                     presenter.goToLists(Preferences.loadTrelloToken(mContext),boardsID);
                 }

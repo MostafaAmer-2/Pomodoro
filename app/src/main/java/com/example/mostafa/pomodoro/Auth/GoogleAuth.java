@@ -1,9 +1,7 @@
 package com.example.mostafa.pomodoro.Auth;
 
 import android.content.Context;
-import android.content.Intent;
 import android.support.annotation.NonNull;
-import android.support.design.widget.Snackbar;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -26,7 +24,7 @@ public class GoogleAuth {
     public final int RC_SIGN_IN = 1;
     private static final String TAG = "GoogleAuth";
     private FirebaseAuth mAuth;
-    Context ctx;
+    private Context ctx;
 
     public GoogleAuth(Context ctx) {
         // Configure Google Sign In
@@ -51,7 +49,6 @@ public class GoogleAuth {
         } catch (ApiException e) {
             // Google Sign In failed, update UI appropriately
             Log.w(TAG, "Google sign in failed", e);
-            // ...
         }
     }
 

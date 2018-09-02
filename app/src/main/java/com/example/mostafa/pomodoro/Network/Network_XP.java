@@ -2,11 +2,7 @@ package com.example.mostafa.pomodoro.Network;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
-import android.util.Log;
-import android.widget.Toast;
-
 import com.example.mostafa.pomodoro.Fragments.XPFragment;
-import com.example.mostafa.pomodoro.Presenter.Presenter_TODOitems;
 import com.example.mostafa.pomodoro.Settings.Preferences;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -20,12 +16,11 @@ public class Network_XP {
 
 
     private DatabaseReference dref;
-    private DatabaseReference itemsRef;
     private DatabaseReference xpRef;
 
-    Realm realm;
-    Context ctx;
-    XPFragment frag;
+    private Realm realm;
+    private Context ctx;
+    private XPFragment frag;
 
 
     public Network_XP(XPFragment frag, Context ctx) {
@@ -33,19 +28,19 @@ public class Network_XP {
         this.frag=frag;
 
         dref = FirebaseDatabase.getInstance().getReference().child(Preferences.loadUserID(ctx));
-        itemsRef = dref.child("items");
+        DatabaseReference itemsRef = dref.child("items");
         xpRef = dref.child("xp");
 
         dref.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 if (!dataSnapshot.hasChild("xp")) {
                     dref.child("xp").setValue(0);
                 }
             }
 
             @Override
-            public void onCancelled(DatabaseError databaseError) {
+            public void onCancelled(@NonNull DatabaseError databaseError) {
 
             }
         });

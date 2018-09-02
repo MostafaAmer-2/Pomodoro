@@ -1,7 +1,6 @@
 package com.example.mostafa.pomodoro;
 
 import android.support.annotation.NonNull;
-import android.support.constraint.ConstraintLayout;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -23,7 +22,7 @@ public class RecyclerViewAdapter_TODOs_done extends RecyclerView.Adapter<Recycle
     private static final String TAG = "RecyclerViewAdapter_TODOs";
     private ArrayList<TODOitem> mItems;
     private Presenter_TODOitems presenter;
-    Realm realm;
+    private Realm realm;
 
     public RecyclerViewAdapter_TODOs_done(Presenter_TODOitems presenter, ArrayList<TODOitem> mItems) {
         this.presenter = presenter;

@@ -2,22 +2,18 @@ package com.example.mostafa.pomodoro.Presenter;
 
 import android.app.NotificationManager;
 import android.content.Context;
-import android.graphics.Color;
 import android.os.CountDownTimer;
 import android.util.Log;
 import android.widget.Toast;
 
 import com.example.mostafa.pomodoro.Fragments.TimerFragment;
 import com.example.mostafa.pomodoro.Model.TODOitem;
-import com.example.mostafa.pomodoro.R;
 import com.example.mostafa.pomodoro.RecyclerViewAdapter_TODOs;
-import com.example.mostafa.pomodoro.Settings.Preferences;
 
 import io.realm.Realm;
 
 import static android.content.Context.NOTIFICATION_SERVICE;
 import static com.example.mostafa.pomodoro.Model.TODOitem.decreasePomododro;
-import static com.example.mostafa.pomodoro.Model.TODOitem.markDone;
 
 public class Presenter_Timer {
     private TimerFragment timerFragment;
@@ -113,22 +109,8 @@ public class Presenter_Timer {
             realm.commitTransaction();
             timerFragment.getPresenter_todos().getNetwork().updatePomodoros(currentItem);
             timerFragment.updateBtnText(timerFragment.getPresenter_todos().getCurrentHolder().getAdd_pomodoro_btn(), currentItem);
-            if (currentItem.getPomodoros() == 0) {
-//                timerFragment.getPresenter_todos().getNetwork().removeNode(currentItem.getDescription());
-
-
+            if (currentItem.getPomodoros() == 0)
                 timerFragment.getPresenter_todos().getCurrentHolder().getMarkDone().performClick();
-//                markDone(currentItem);
-
-//                timerFragment.getPresenter_todos().addDoneItem(currentItem);
-//                timerFragment.getPresenter_todos().getNetwork().addNode(currentItem.getDescription(), currentItem.isDone(), currentItem.getPomodoros());
-
-//                //resetting everything in the viewHolder
-//                timerFragment.getPresenter_todos().setCurrentItem(null);
-//                Log.i("NullTest", "doneTimer: "+timerFragment.getPresenter_todos().getCurrentHolder());
-//                timerFragment.getPresenter_todos().getCurrentHolder().getParent_layout().setBackgroundColor(ctx.getResources().getColor(R.color.pomodoroBlueTrans));
-//                timerFragment.getPresenter_todos().setCurrentHolder(null);
-            }
         }
     }
 
@@ -176,9 +158,7 @@ public class Presenter_Timer {
                 timerFragment.setmTimeLeftInMillis(0);
                 timerFragment.setmTimerRunning(false);
                 timerFragment.getPresenter_timer().resetTimer();
-//                pauseTimer();
                 timerFragment.getPresenter_timer().updateState();
-//                timerFragment.paintBackground(); //Already done in TimerFragment inside onStart method
                 timerFragment.getPresenter_timer().updateButtonsOnDone();
             } else {
                 timerFragment.getPresenter_timer().startTimer();

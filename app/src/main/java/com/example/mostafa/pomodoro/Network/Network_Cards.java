@@ -2,9 +2,6 @@ package com.example.mostafa.pomodoro.Network;
 
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.util.Log;
-
-import com.android.volley.NetworkResponse;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
@@ -27,7 +24,6 @@ import org.json.JSONObject;
 
 public class Network_Cards {
 
-    private DatabaseReference dref;
     private DatabaseReference itemsRef;
 
     private RequestQueue requestQueue;
@@ -38,7 +34,7 @@ public class Network_Cards {
         requestQueue = Volley.newRequestQueue(ctx);
         this.presenter=presenter;
         this.ctx=ctx;
-        dref = FirebaseDatabase.getInstance().getReference(Preferences.loadUserID(ctx));
+        DatabaseReference dref = FirebaseDatabase.getInstance().getReference(Preferences.loadUserID(ctx));
         itemsRef = dref.child("items");
     }
 
@@ -56,9 +52,6 @@ public class Network_Cards {
                     @Override
                     public void onErrorResponse(VolleyError error) {
                         deferred.reject(error);
-                       if(error.networkResponse!= null && error.networkResponse.statusCode== 400 || error.networkResponse.statusCode== 401 ){
-                           //   presenter.getListsFrag().goToMain();
-                       }
                     }
                 });
         //add request to queue

@@ -24,7 +24,6 @@ import butterknife.ButterKnife;
 
 public class trelloLogin extends Fragment {
 
-    private static final String TAG = "trelloLogin";
     @BindView(R.id.linearLayout)
     LinearLayout linearLayout;
     @BindView(R.id.loginBtn)
@@ -84,7 +83,6 @@ public class trelloLogin extends Fragment {
             @Override
             public void onClick(View view) {
                 Preferences.saveTrelloToken(getActivity().getApplicationContext(), tokenField.getText().toString());
-                // loadTrelloToken();
                 goToBoards();
             }
         });
@@ -104,7 +102,7 @@ public class trelloLogin extends Fragment {
     public void onResume() {
         super.onResume();
 
-        if (returnedFromLogin == true) {
+        if (returnedFromLogin) {
             linearLayout.setVisibility(View.VISIBLE);
         }
     }

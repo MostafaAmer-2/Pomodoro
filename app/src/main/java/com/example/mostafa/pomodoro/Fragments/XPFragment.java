@@ -15,7 +15,6 @@ import android.widget.TextView;
 import com.example.mostafa.pomodoro.Activities.BottomNavigatorActivity;
 import com.example.mostafa.pomodoro.Network.Network_XP;
 import com.example.mostafa.pomodoro.R;
-import com.example.mostafa.pomodoro.Settings.Preferences;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -53,10 +52,6 @@ public class XPFragment extends Fragment {
             FragmentManager fm = getActivity().getSupportFragmentManager();
             fm.popBackStack();
         }
-
-
-//        View xpTab= ((BottomNavigatorActivity)getActivity()).bottomNavigationView.findViewById(R.id.action_XP);
-//        xpTab.performClick();
 
         network=new Network_XP(this, getActivity().getApplicationContext());
         network.getXP();

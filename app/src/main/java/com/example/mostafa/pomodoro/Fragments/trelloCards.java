@@ -17,8 +17,6 @@ import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
-import com.example.mostafa.pomodoro.Activities.BottomNavigatorActivity;
-import com.example.mostafa.pomodoro.Model.TODOitem;
 import com.example.mostafa.pomodoro.Model.TrelloCard;
 import com.example.mostafa.pomodoro.Presenter.Presenter_Cards;
 import com.example.mostafa.pomodoro.R;
@@ -38,7 +36,6 @@ import static com.example.mostafa.pomodoro.Model.TrelloCard.parseJSONArrayIntoCa
 @SuppressLint("ValidFragment")
 public class trelloCards extends Fragment {
 
-    private static final String TAG = "trelloCards";
     @BindView(R.id.recycler_view)
     RecyclerView recyclerView_cards;
     @BindView(R.id.progressBar)
@@ -107,12 +104,6 @@ public class trelloCards extends Fragment {
                             presenter.getNetwork().getCards(token,listID).done(new DoneCallback<JSONArray>() {
                                 @Override
                                 public void onDone(JSONArray result) {
-//                                    realm.beginTransaction();
-//                                    TODOitem newItem = realm.createObject(TODOitem.class);
-//                                    newItem.setDescription(cardName.getText().toString());
-//                                    realm.commitTransaction();
-////                                    presenter.addItemToRecyclerView(newItem);
-////                                    network.addItem(newItem);
                                     ArrayList<TrelloCard> cards = parseJSONArrayIntoCards(result);
                                     presenter.setItems(getContext().getApplicationContext(), cards);
                                     RecyclerView.LayoutManager mLayoutManager = new GridLayoutManager(getActivity().getApplicationContext(), 2);

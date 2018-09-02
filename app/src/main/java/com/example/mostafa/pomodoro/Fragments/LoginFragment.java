@@ -150,7 +150,6 @@ public class LoginFragment extends Fragment {
         Intent go_to_main = new Intent(getActivity(), BottomNavigatorActivity.class);
         startActivity(go_to_main);
         ((AuthenticationActivity)getActivity()).finishActivity();
-        //TODO: Still goes back to an empty screen after back is pressed
     }
 
     @Override
@@ -235,13 +234,11 @@ public class LoginFragment extends Fragment {
             @Override
             public void onCancel() {
                 Log.d(TAG, "facebook:onCancel");
-                // ...
             }
 
             @Override
             public void onError(FacebookException error) {
                 Log.d(TAG, "facebook:onError", error);
-                // ...
             }
         });
 
