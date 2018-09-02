@@ -10,7 +10,7 @@
       "client_info": {
         "mobilesdk_app_id": "1:1030657485941:android:430dae43e169afbc",
         "android_client_info": {
-          "package_name": "com.example.mostafa.pomodoro"
+          "package_name": "com.dreidev.mostafa.pomodoro"
         }
       },
       "oauth_client": [
@@ -18,7 +18,7 @@
           "client_id": "1030657485941-fktvoue4p2laulpvfl236pior9e10i0e.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
-            "package_name": "com.example.mostafa.pomodoro",
+            "package_name": "com.dreidev.mostafa.pomodoro",
             "certificate_hash": "c41fe2d58a04758e76bc8de1279a3e0478d42939"
           }
         },

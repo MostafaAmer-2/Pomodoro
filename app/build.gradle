@@ -3,7 +3,7 @@ apply plugin: 'com.android.application'
 android {
     compileSdkVersion 28
     defaultConfig {
-        applicationId "com.example.mostafa.pomodoro"
+        applicationId "com.dreidev.mostafa.pomodoro"
         minSdkVersion 15
         targetSdkVersion 28
         versionCode 1
@@ -65,6 +65,7 @@ dependencies {
     //Facebook login deppendency
     implementation 'com.facebook.android:facebook-login:[4,5)'
 
+    androidTestImplementation 'junit:junit:4.12'
 }
 
 apply plugin: 'com.google.gms.google-services'
