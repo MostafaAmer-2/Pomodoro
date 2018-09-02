@@ -68,4 +68,8 @@ public class AuthenticationActivity extends AppCompatActivity {
     public ViewPager getViewPager() {
         return viewPager;
     }
+
+    public void finishActivity(){
+        finish();
+    }
 }

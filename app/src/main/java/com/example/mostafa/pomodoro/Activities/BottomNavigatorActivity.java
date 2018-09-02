@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
@@ -44,28 +45,35 @@ public class BottomNavigatorActivity extends AppCompatActivity {
         ButterKnife.bind(this);
         realm = Realm.getDefaultInstance();
         handleButtonNavigationFunctionality();
+
+        FragmentManager fm = getSupportFragmentManager();
+        for(int i = 0; i < fm.getBackStackEntryCount(); ++i) {
+            fm.popBackStack();
+        }
     }
 
     private void handleButtonNavigationFunctionality() {
         loadFragment(new TimerFragment());
-        bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
-            @Override
-            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-                switch (item.getItemId()) {
-                    case R.id.action_main:
-                        return loadFragment(new TimerFragment());
-                    case R.id.action_boards:
-                        return loadFragment(new trelloLogin());
-                    case R.id.action_XP:
-                        return loadFragment(new XPFragment());
-                    case R.id.action_settings:
-                        return loadFragment(new SettingsFragment());
-                    default:
-                        return false;
-                }
-            }
-        });
+        bottomNavigationView.setOnNavigationItemSelectedListener(listener);
     }
+
+    BottomNavigationView.OnNavigationItemSelectedListener listener= new BottomNavigationView.OnNavigationItemSelectedListener() {
+        @Override
+        public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+            switch (item.getItemId()) {
+                case R.id.action_main:
+                    return loadFragment(new TimerFragment());
+                case R.id.action_boards:
+                    return loadFragment(new trelloLogin());
+                case R.id.action_XP:
+                    return loadFragment(new XPFragment());
+                case R.id.action_settings:
+                    return loadFragment(new SettingsFragment());
+                default:
+                    return false;
+            }
+        }
+    };
 
 //    private void checkFBLoginStatus() {
 //        //Checking on fb login status

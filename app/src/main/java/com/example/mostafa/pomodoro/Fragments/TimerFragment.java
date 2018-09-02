@@ -39,7 +39,7 @@ import static android.content.Context.MODE_PRIVATE;
 public class TimerFragment extends Fragment {
     private static final String TAG = "TimerFragment";
     //Shake feature variables
-    private static final long START_TIME_IN_MILLIS = 6000;
+    private static final long START_TIME_IN_MILLIS = 1500000;
     private static final long BREAK_TIME_IN_MILLIS = 300000;
     //UI elements
     @BindView(R.id.text_view_countdown)
@@ -391,6 +391,5 @@ public class TimerFragment extends Fragment {
     public long getmEndTime() {
         return mEndTime;
     }
-
 
 }

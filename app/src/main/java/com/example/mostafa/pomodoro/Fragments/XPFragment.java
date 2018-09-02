@@ -45,13 +45,16 @@ public class XPFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_xp, null);
         ButterKnife.bind(this, view);
 
-        //TODO: Still the selected item from the bottom navigator doesnt change on pressing back
         //Trying to set the selected item from the bottom navigator from here
-        ((BottomNavigatorActivity)getActivity()).bottomNavigationView.setSelectedItemId(2);
+        if(((BottomNavigatorActivity)getActivity()).bottomNavigationView.getSelectedItemId()!=R.id.action_XP){
+            ((BottomNavigatorActivity)getActivity()).bottomNavigationView.setSelectedItemId(R.id.action_XP);
+        }
+
+
+//        View xpTab= ((BottomNavigatorActivity)getActivity()).bottomNavigationView.findViewById(R.id.action_XP);
+//        xpTab.performClick();
 
         network=new Network_XP(this, getActivity().getApplicationContext());
-        //TODO: Get xp from firebase and save in preferences
-//        points = Preferences.loadPoints(getActivity().getApplicationContext());
         network.getXP();
         return view;
     }

@@ -16,6 +16,7 @@ import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
+import com.example.mostafa.pomodoro.Activities.AuthenticationActivity;
 import com.example.mostafa.pomodoro.Activities.BottomNavigatorActivity;
 import com.example.mostafa.pomodoro.Auth.FacebookAuth;
 import com.example.mostafa.pomodoro.Auth.GoogleAuth;
@@ -148,7 +149,7 @@ public class LoginFragment extends Fragment {
     private void goToMain(){
         Intent go_to_main = new Intent(getActivity(), BottomNavigatorActivity.class);
         startActivity(go_to_main);
-        getActivity().finish();
+        ((AuthenticationActivity)getActivity()).finishActivity();
         //TODO: Still goes back to an empty screen after back is pressed
     }
 

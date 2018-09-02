@@ -3,6 +3,7 @@ package com.example.mostafa.pomodoro.Fragments;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -54,6 +55,14 @@ public class SettingsFragment extends Fragment {
                 realm.commitTransaction();
                 Preferences.saveTrelloToken(getActivity().getApplicationContext(),"");
                 goToAuthentication();
+
+                getActivity().finish();
+
+//                FragmentManager fm = getActivity().getSupportFragmentManager();
+//                fm.popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
+
+
+
             }
         });
         backButton.setOnClickListener(new View.OnClickListener() {
