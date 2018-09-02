@@ -11,6 +11,7 @@ import android.hardware.SensorManager;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.app.NotificationCompat;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -84,6 +85,14 @@ public class TimerFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_timer, container, false);
         ButterKnife.bind(this, view);
+
+        //Trying to set the selected item from the bottom navigator from here
+        if(((BottomNavigatorActivity)getActivity()).bottomNavigationView.getSelectedItemId()!=R.id.action_main){
+            ((BottomNavigatorActivity)getActivity()).bottomNavigationView.setSelectedItemId(R.id.action_main);
+            //pop one fragment from the back stack because it gets duplicated
+            FragmentManager fm = getActivity().getSupportFragmentManager();
+            fm.popBackStack();
+        }
 
         //Toast to introduce shaking feature
         Toast.makeText(getActivity().getApplicationContext(), "Shake device to start pomodoro", Toast.LENGTH_SHORT).show();

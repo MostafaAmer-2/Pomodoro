@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -52,6 +53,14 @@ public class trelloBoards extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_trello_boards, null);
         ButterKnife.bind(this, view);
+
+        //Trying to set the selected item from the bottom navigator from here
+        if(((BottomNavigatorActivity)getActivity()).bottomNavigationView.getSelectedItemId()!=R.id.action_boards){
+            ((BottomNavigatorActivity)getActivity()).bottomNavigationView.setSelectedItemId(R.id.action_boards);
+            //pop one fragment from the back stack because it gets duplicated
+            FragmentManager fm = getActivity().getSupportFragmentManager();
+            fm.popBackStack();
+        }
 
         presenter =new Presenter_Boards(this, getContext().getApplicationContext());
         startProgressBar();

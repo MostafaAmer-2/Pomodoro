@@ -6,6 +6,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
+import android.support.v4.app.FragmentManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -45,6 +46,14 @@ public class trelloLogin extends Fragment {
         View view = inflater.inflate(R.layout.fragment_trello_login, null);
         ;
         ButterKnife.bind(this, view);
+
+        //Trying to set the selected item from the bottom navigator from here
+        if(((BottomNavigatorActivity)getActivity()).bottomNavigationView.getSelectedItemId()!=R.id.action_boards){
+            ((BottomNavigatorActivity)getActivity()).bottomNavigationView.setSelectedItemId(R.id.action_boards);
+            //pop one fragment from the back stack because it gets duplicated
+            FragmentManager fm = getActivity().getSupportFragmentManager();
+            fm.popBackStack();
+        }
 
         loadToken();
         if (Preferences.isTokenPresent(getActivity().getApplicationContext()) && Preferences.loadDataFlag(getActivity().getApplicationContext()).equals("true")) { //token already has a value stored

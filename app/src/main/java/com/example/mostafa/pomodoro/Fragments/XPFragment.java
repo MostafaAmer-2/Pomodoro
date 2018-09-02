@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -48,6 +49,9 @@ public class XPFragment extends Fragment {
         //Trying to set the selected item from the bottom navigator from here
         if(((BottomNavigatorActivity)getActivity()).bottomNavigationView.getSelectedItemId()!=R.id.action_XP){
             ((BottomNavigatorActivity)getActivity()).bottomNavigationView.setSelectedItemId(R.id.action_XP);
+            //pop one fragment from the back stack because it gets duplicated
+            FragmentManager fm = getActivity().getSupportFragmentManager();
+            fm.popBackStack();
         }
 
 

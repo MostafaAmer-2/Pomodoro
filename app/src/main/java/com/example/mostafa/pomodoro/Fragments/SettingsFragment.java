@@ -11,6 +11,7 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.example.mostafa.pomodoro.Activities.AuthenticationActivity;
+import com.example.mostafa.pomodoro.Activities.BottomNavigatorActivity;
 import com.example.mostafa.pomodoro.R;
 import com.example.mostafa.pomodoro.Settings.Preferences;
 import com.facebook.login.LoginManager;
@@ -41,6 +42,15 @@ public class SettingsFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_settings, container, false);
         ButterKnife.bind(this, view);
+
+        //Trying to set the selected item from the bottom navigator from here
+        if(((BottomNavigatorActivity)getActivity()).bottomNavigationView.getSelectedItemId()!=R.id.action_settings){
+            ((BottomNavigatorActivity)getActivity()).bottomNavigationView.setSelectedItemId(R.id.action_settings);
+            //pop one fragment from the back stack because it gets duplicated
+            FragmentManager fm = getActivity().getSupportFragmentManager();
+            fm.popBackStack();
+        }
+
         realm = Realm.getDefaultInstance();
         settingsLayout.setVisibility(View.VISIBLE);
         contactUsLayout.setVisibility(View.GONE);
