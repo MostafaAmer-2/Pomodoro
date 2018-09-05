@@ -1,12 +1,17 @@
 apply plugin: 'com.android.application'
 
 android {
-    signingConfigs {
-        config {
-            keyAlias 'releaseKey1'
-            keyPassword 'Blackops2'
-            storeFile file('/Users/baselabdallah/dev/AndroidStudioProjects/Pomodoro/pomodoro keystore.jks')
-            storePassword 'Blackops2'
+    def propsFile = rootProject.file('keystore.properties')
+    if (propsFile.exists()) {
+        def props = new Properties()
+        props.load(new FileInputStream(propsFile))
+        signingConfigs {
+            config {
+                keyAlias props['keyAlias']
+                keyPassword props['keyPassword']
+                storeFile file(props['storeFile'])
+                storePassword props['storePassword']
+            }
         }
     }
     compileSdkVersion 28
